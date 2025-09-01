@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @theme {
   --color-primary-10: #ffe0cc;
@@ -14,4 +12,19 @@
   --color-primary-90: #803300;
   --color-primary-100: #552200;
   --color-primary-110: #331400;
+  --color-grey-10: #d8d9d9;
+  --color-grey-20: #bec0c0;
+  --color-grey-30: #9da0a0;
+  --color-grey-40: #7d8081;
+  --color-grey-50: #5d6162;
+  --color-grey: #3c4142;
+  --color-grey-70: #323637;
+  --color-grey-80: #282b2c;
+  --color-grey-90: #1e2121;
+  --color-grey-100: #141616;
+  --color-grey-110: #0c0d0d;
+}
+
+.layout-pad {
+  @apply mx-[3%] md:mx-[5%];
 }

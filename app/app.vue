@@ -4,8 +4,9 @@
   </NuxtLayout>
 </template>
 
-<style>
+<style lang="postcss">
 body {
+  @apply bg-[#fafafa] text-grey-110;
   font-family: Geist;
 }
 
