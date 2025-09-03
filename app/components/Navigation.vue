@@ -20,7 +20,7 @@ const props = defineProps({
     </div>
     <div :class="props.dark ? 'text-white ' + 'flex gap-6' : 'flex gap-6'">
       <NuxtLink to="/">Home</NuxtLink>
-      <NuxtLink to="/">About</NuxtLink>
+      <NuxtLink to="/about">About</NuxtLink>
       <NuxtLink to="/">Projects</NuxtLink>
       <div class="flex items-center gap-1 cursor-pointer">
         <span>Services</span> <Icon name="iconamoon:arrow-down-2-light"></Icon>

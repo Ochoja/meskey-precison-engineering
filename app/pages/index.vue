@@ -1,11 +1,25 @@
 <script setup lang="ts">
+import { Vue3Marquee } from 'vue3-marquee';
+
+const marqueelist = [
+  'Measuring',
+  'Automation',
+  'Monitoring',
+  'Control Systems',
+  'Fuel Systems',
+  'SCADA Integration',
+  'Pipeline Integrity Checks',
+  'Instrumentation',
+  'Procurement',
+];
+
 definePageMeta({
   layout: 'home',
 });
 </script>
 
 <template>
-  <header class="bg-grey-110">
+  <header class="bg-[url(~/assets/images/herobg.png)]">
     <Navigation dark="true" />
     <div
       class="text-white text-center py-[25vh] w-[85%] lg:w-[70%] mx-auto flex flex-col gap-6">
@@ -28,4 +42,16 @@ definePageMeta({
       </div>
     </div>
   </header>
+
+  <Vue3Marquee class="bg-grey-110 py-6 overflow-hidden">
+    <div
+      v-for="(item, key) in marqueelist"
+      :key="key"
+      class="flex items-center gap-8 px-8">
+      <img src="../assets/images/logo.png" alt="" height="50" width="50" />
+      <h5 class="text-white">
+        {{ item }}
+      </h5>
+    </div>
+  </Vue3Marquee>
 </template>

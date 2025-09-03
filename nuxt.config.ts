@@ -12,11 +12,15 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/icon', '@nuxt/fonts'],
   fonts: {
     families: [
-      { name: 'Geist', provider: 'google', weights: [300, 400, 500, 600, 700] },
+      {
+        name: 'Geist',
+        provider: 'google',
+        weights: [200, 300, 400, 500, 600, 700],
+      },
       {
         name: 'Poppins',
         provider: 'google',
-        weights: [300, 400, 500, 600, 700],
+        weights: [300, 400, 500, 600, 700, 800],
       },
     ],
   },

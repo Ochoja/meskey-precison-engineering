@@ -26,5 +26,5 @@
 }
 
 .layout-pad {
-  @apply mx-[3%] md:mx-[5%];
+  @apply px-[3%] md:px-[5%];
 }
