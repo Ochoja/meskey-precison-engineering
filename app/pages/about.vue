@@ -55,6 +55,11 @@ import aboutimg from '../assets/images/aboutimg.png';
         </div>
       </div>
     </header>
+
+    <section class="mt-24">
+      <h2>Our Story, Mission and Vision</h2>
+      <div></div>
+    </section>
   </div>
 </template>
 

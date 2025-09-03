@@ -8,6 +8,28 @@ const props = defineProps({
   dark: String,
   light: String,
 });
+
+const serviceDropdown = ref(false);
+const companyDropdown = ref(false);
+
+const toggleserviceDropdown = () => {
+  if (serviceDropdown.value == true) {
+    serviceDropdown.value = false;
+  } else {
+    companyDropdown.value = false;
+    serviceDropdown.value = true;
+  }
+  console.log('clicked');
+};
+
+const togglecompanyDropdown = () => {
+  if (companyDropdown.value == true) {
+    companyDropdown.value = false;
+  } else {
+    serviceDropdown.value = false;
+    companyDropdown.value = true;
+  }
+};
 </script>
 
 <template>
@@ -22,12 +44,36 @@ const props = defineProps({
       <NuxtLink to="/">Home</NuxtLink>
       <NuxtLink to="/about">About</NuxtLink>
       <NuxtLink to="/">Projects</NuxtLink>
-      <div class="flex items-center gap-1 cursor-pointer">
-        <span>Services</span> <Icon name="iconamoon:arrow-down-2-light"></Icon>
+      <div class="relative">
+        <div
+          @click="toggleserviceDropdown"
+          class="flex items-center gap-1 cursor-pointer">
+          <span>Services</span>
+          <Icon name="iconamoon:arrow-down-2-light"></Icon>
+        </div>
+
+        <div
+          v-if="serviceDropdown"
+          class="absolute flex flex-col gap-2 px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
+          <NuxtLink>Metering</NuxtLink>
+          <NuxtLink>Monitoring</NuxtLink>
+          <NuxtLink>Automation</NuxtLink>
+          <NuxtLink>Measuring</NuxtLink>
+          <NuxtLink>Analysis</NuxtLink>
+        </div>
       </div>
-      <div class="flex items-center gap-1 cursor-pointer">
-        <span>Our Companies</span>
-        <Icon name="iconamoon:arrow-down-2-light"></Icon>
+      <div class="relative">
+        <div
+          @click="togglecompanyDropdown"
+          class="flex items-center gap-1 cursor-pointer">
+          <span>Our Companies</span>
+          <Icon name="iconamoon:arrow-down-2-light"></Icon>
+        </div>
+        <div
+          v-if="companyDropdown"
+          class="w-[120%] absolute px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
+          <NuxtLink>Meskey Energy</NuxtLink>
+        </div>
       </div>
     </div>
     <div>
@@ -37,3 +83,13 @@ const props = defineProps({
     </div>
   </nav>
 </template>
+
+<style scoped>
+a {
+  cursor: pointer;
+}
+
+a:hover {
+  font-weight: 500;
+}
+</style>
