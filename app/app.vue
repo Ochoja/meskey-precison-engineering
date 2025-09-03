@@ -6,7 +6,8 @@
 
 <style lang="postcss">
 body {
-  @apply bg-[#fafafa] text-grey-110;
+  background: #fafafa;
+  color: #0c0d0d;
   font-family: Geist;
 }
 
