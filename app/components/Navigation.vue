@@ -3,6 +3,8 @@ import blackLogo from '@/assets/images/blacklogo.png';
 import whiteLogo from '@/assets/images/whitelogo.png';
 import mainLogo from '@/assets/images/mainlogo.png';
 
+const router = useRouter();
+
 const props = defineProps({
   default: String,
   dark: String,
@@ -77,7 +79,9 @@ const togglecompanyDropdown = () => {
       </div>
     </div>
     <div>
-      <button class="bg-primary font-medium text-white py-3 px-6 rounded-lg">
+      <button
+        @click="router.push('/contact')"
+        class="bg-primary font-medium text-white py-3 px-6 rounded-lg cursor-pointer">
         Contact Us
       </button>
     </div>

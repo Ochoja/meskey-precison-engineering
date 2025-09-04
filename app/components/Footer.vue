@@ -46,7 +46,7 @@ import logo from '@/assets/images/whitelogo.png';
           <a href="mailto:info@meskeyprecisioneng.org">
             info@meskeyprecisioneng.org
           </a>
-          <a>+234 (0) 802 872 0639</a>
+          <!-- <a>+234 (0) 802 872 0639</a> -->
           <a>+234 (0) 803 282 7341</a>
           <a>+234 (0) 703 039 9465</a>
         </div>
