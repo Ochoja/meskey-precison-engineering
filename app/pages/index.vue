@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Vue3Marquee } from 'vue3-marquee';
 
+const router = useRouter();
 const marqueelist = [
   'Measuring',
   'Automation',
@@ -36,7 +37,9 @@ definePageMeta({
         whether brownfield or greenfield.
       </p>
       <div>
-        <button class="bg-primary font-medium text-white py-3 px-6 rounded-lg">
+        <button
+          @click="router.push('/contact')"
+          class="bg-primary font-medium text-white py-3 px-6 rounded-lg">
           Contact Us
         </button>
       </div>
