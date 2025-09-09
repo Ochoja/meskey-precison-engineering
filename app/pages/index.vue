@@ -23,10 +23,10 @@ definePageMeta({
     <Navigation dark="true" />
     <div
       class="text-white text-center py-[25vh] w-[85%] lg:w-[70%] mx-auto flex flex-col gap-6">
-      <h1 class="font-medium text-4xl md:text-6xl xl:text-7xl">
+      <h1 class="font-medium text-5xl md:text-6xl xl:text-7xl">
         Optimization is our <span class="text-primary">Core</span>
       </h1>
-      <p class="font-light text-sm md:text-lg">
+      <p class="font-light md:text-lg">
         At Meskey Precision Engineering Limited, we integrate automation,
         metering, monitoring, and analytical expertise to deliver
         high-performance engineering solutions across oil & gas, industrial, and

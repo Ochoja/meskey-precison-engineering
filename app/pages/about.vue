@@ -4,7 +4,7 @@ import aboutimg from '../assets/images/aboutimg.png';
 
 <template>
   <header
-    class="layout-pad mt-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] items-end lg:gap-20">
+    class="layout-pad mt-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] items-center lg:gap-20">
     <div>
       <button
         class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">

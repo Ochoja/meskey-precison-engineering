@@ -36,11 +36,21 @@ const togglecompanyDropdown = () => {
 watch(route, () => {
   serviceDropdown.value = false;
   companyDropdown.value = false;
+  mobileMenuOpen.value = false;
 });
+
+const mobileMenuOpen = ref(false);
+
+const toggleMobileMenu = () => {
+  serviceDropdown.value = false;
+  companyDropdown.value = false;
+  mobileMenuOpen.value = !mobileMenuOpen.value;
+};
 </script>
 
 <template>
-  <nav class="layout-pad pt-4 flex justify-between items-center">
+  <!-- Desktop Navigation -->
+  <nav class="hidden layout-pad pt-4 lg:flex justify-between items-center">
     <div>
       <img
         :src="props.dark ? whiteLogo : mainLogo"
@@ -91,6 +101,69 @@ watch(route, () => {
       </button>
     </div>
   </nav>
+
+  <!-- Mobile and tablet Navigation -->
+  <nav class="flex justify-between items-center lg:hidden pt-4 layout-pad">
+    <div>
+      <img
+        :src="props.dark ? whiteLogo : mainLogo"
+        alt="Meskey Precision Engineering Logo"
+        class="w-[15rem]" />
+    </div>
+    <div>
+      <Icon
+        name="line-md:close-to-menu-transition"
+        @click="toggleMobileMenu"
+        :class="
+          props.dark
+            ? 'text-white ' + 'text-3xl cursor-pointer'
+            : 'text-3xl cursor-pointer'
+        " />
+    </div>
+  </nav>
+
+  <div
+    v-if="mobileMenuOpen"
+    class="flex flex-col justify-between fixed inset-0 bg-white/70 backdrop-blur-md z-50 layout-pad py-2">
+    <div class="flex justify-between items-end">
+      <img :src="mainLogo" alt="Logo" class="h-12" />
+      <div>
+        <Icon
+          name="line-md:menu-to-close-transition"
+          @click="toggleMobileMenu"
+          class="text-2xl cursor-pointer" />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 items-center text-lg">
+      <NuxtLink to="/">Home</NuxtLink>
+      <NuxtLink to="/about">About</NuxtLink>
+      <NuxtLink to="/">Projects</NuxtLink>
+      <div class="relative">
+        <div class="flex items-center gap-1 cursor-pointer">
+          <span>Services</span>
+          <Icon name="iconamoon:arrow-down-2-light"></Icon>
+        </div>
+      </div>
+
+      <button
+        @click="router.push('/contact')"
+        class="bg-primary px-6 py-3 text-white font-medium rounded-lg cursor-pointer">
+        Contact Us
+      </button>
+    </div>
+
+    <div class="flex justify-between mx-4 text-grey-80">
+      <div class="flex gap-2 items-center">
+        <a href="mailto:support@meskyprecisioneng.com">Email</a>
+        <Icon name="fluent:link-20-regular" />
+      </div>
+      <div class="flex gap-2 items-center">
+        <a href="tel:+2348032827341">Phone</a>
+        <Icon name="fluent:link-20-regular" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
