@@ -24,8 +24,8 @@ import logo from '@/assets/images/whitelogo.png';
       <div>
         <h6>Quick Links</h6>
         <div class="child-container">
-          <NuxtLink>Home</NuxtLink>
-          <NuxtLink>About</NuxtLink>
+          <NuxtLink to="/">Home</NuxtLink>
+          <NuxtLink to="/about">About</NuxtLink>
           <NuxtLink>Privacy Policy</NuxtLink>
           <NuxtLink>Projects</NuxtLink>
         </div>
@@ -33,11 +33,11 @@ import logo from '@/assets/images/whitelogo.png';
       <div>
         <h6>Services</h6>
         <div class="child-container">
-          <NuxtLink>Automation</NuxtLink>
-          <NuxtLink>Procurement</NuxtLink>
-          <NuxtLink>Analysis</NuxtLink>
-          <NuxtLink>Meteting</NuxtLink>
-          <NuxtLink>Monitoring</NuxtLink>
+          <NuxtLink to="services/4">Automation</NuxtLink>
+          <NuxtLink to="services/1">Measuring</NuxtLink>
+          <NuxtLink to="services/2">Analysis</NuxtLink>
+          <NuxtLink to="services/3">Meteting</NuxtLink>
+          <NuxtLink to="services/5">Monitoring</NuxtLink>
         </div>
       </div>
       <div>
@@ -47,7 +47,7 @@ import logo from '@/assets/images/whitelogo.png';
             info@meskeyprecisioneng.org
           </a>
           <!-- <a>+234 (0) 802 872 0639</a> -->
-          <a>+234 (0) 803 282 7341</a>
+          <a href="tel">+234 (0) 803 282 7341</a>
           <a>+234 (0) 703 039 9465</a>
         </div>
       </div>
@@ -66,6 +66,10 @@ img {
 a,
 p {
   font-weight: 300;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 h6 {

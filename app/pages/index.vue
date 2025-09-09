@@ -67,10 +67,10 @@ definePageMeta({
 
     <div class="grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] gap-4">
       <div>
-        <div class="flex gap-4 mb-4">
-          <div class="bg-white p-3 border border-primary-20 rounded-2xl h-full">
-            <Icon name="stash:globe" class="text-4xl text-primary" />
-            <h6 class="font-medium text-xl">
+        <div class="flex flex-col md:flex-row gap-4 mb-4">
+          <div class="bg-white p-4 border border-primary-20 rounded-2xl h-full">
+            <Icon name="stash:globe" class="text-4xl text-primary mb-2" />
+            <h6 class="font-medium text-xl mb-2">
               Standards-Driven, Globally Informed
             </h6>
             <p class="font-light">
@@ -79,9 +79,11 @@ definePageMeta({
               safety, quality, and regulatory compliance.
             </p>
           </div>
-          <div class="bg-white p-3 border border-primary-20 rounded-2xl h-full">
-            <Icon name="f7:graph-circle" class="text-4xl text-primary" />
-            <h6 class="font-medium text-xl">Precision Meets Performance</h6>
+          <div class="bg-white p-4 border border-primary-20 rounded-2xl h-full">
+            <Icon name="f7:graph-circle" class="text-4xl text-primary mb-2" />
+            <h6 class="font-medium text-xl mb-2">
+              Precision Meets Performance
+            </h6>
             <p class="font-light">
               Our systems are built with uncompromising attention to detail,
               designed and calibrated to deliver accurate results, long-term
@@ -89,11 +91,13 @@ definePageMeta({
             </p>
           </div>
         </div>
-        <div class="bg-white p-3 border border-primary-20 rounded-2xl">
+        <div class="bg-white p-4 border border-primary-20 rounded-2xl">
           <Icon
             name="fluent:weather-haze-24-regular"
-            class="text-4xl text-primary" />
-          <h6 class="font-medium text-xl">Engineered for Harsh Environments</h6>
+            class="text-4xl text-primary mb-2" />
+          <h6 class="font-medium text-xl mb-2">
+            Engineered for Harsh Environments
+          </h6>
           <p class="font-light">
             We specialize in delivering reliable, mission-critical solutions
             that perform under extreme conditions — from offshore platforms to
@@ -103,11 +107,13 @@ definePageMeta({
         </div>
       </div>
       <div
-        class="bg-primary p-3 text-white rounded-2xl flex flex-col justify-between">
+        class="bg-primary p-4 text-white rounded-2xl flex flex-col justify-between">
         <div>
-          <Icon name="mingcute:apple-intelligence-line" class="text-4xl" />
-          <h6 class="font-medium text-xl">Intelligence in Every Operation</h6>
-          <p class="font-light">
+          <Icon name="mingcute:apple-intelligence-line" class="text-4xl mb-2" />
+          <h6 class="font-medium text-xl mb-2">
+            Intelligence in Every Operation
+          </h6>
+          <p class="font-light mb-6">
             We deploy intelligent automation and monitoring systems that provide
             real-time insights and remote control capabilities, empowering
             operators with faster, data-driven decision-making.
