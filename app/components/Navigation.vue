@@ -4,6 +4,7 @@ import whiteLogo from '@/assets/images/whitelogo.png';
 import mainLogo from '@/assets/images/mainlogo.png';
 
 const router = useRouter();
+const route = useRoute();
 
 const props = defineProps({
   default: String,
@@ -21,7 +22,6 @@ const toggleserviceDropdown = () => {
     companyDropdown.value = false;
     serviceDropdown.value = true;
   }
-  console.log('clicked');
 };
 
 const togglecompanyDropdown = () => {
@@ -32,6 +32,11 @@ const togglecompanyDropdown = () => {
     companyDropdown.value = true;
   }
 };
+
+watch(route, () => {
+  serviceDropdown.value = false;
+  companyDropdown.value = false;
+});
 </script>
 
 <template>
@@ -57,11 +62,11 @@ const togglecompanyDropdown = () => {
         <div
           v-if="serviceDropdown"
           class="absolute flex flex-col gap-2 px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
-          <NuxtLink>Metering</NuxtLink>
-          <NuxtLink>Monitoring</NuxtLink>
-          <NuxtLink>Automation</NuxtLink>
-          <NuxtLink>Measuring</NuxtLink>
-          <NuxtLink>Analysis</NuxtLink>
+          <NuxtLink to="/services/3">Metering</NuxtLink>
+          <NuxtLink to="/services/5">Monitoring</NuxtLink>
+          <NuxtLink to="/services/4">Automation</NuxtLink>
+          <NuxtLink to="/services/1">Measuring</NuxtLink>
+          <NuxtLink to="/services/2">Analysis</NuxtLink>
         </div>
       </div>
       <div class="relative">

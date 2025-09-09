@@ -48,17 +48,23 @@
       <h4 class="text-2xl mb-8">Send a Message</h4>
       <div>
         <label for="full_name">Full Name</label>
-        <input type="text" id="full_name" />
+        <input
+          type="text"
+          id="full_name"
+          placeholder="Surname First"
+          maxlength="64" />
 
-        <label for="full_name">Email Address</label>
-        <input type="text" id="full_name" />
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="example@example.com" />
 
-        <label for="full_name">Phone Number</label>
-        <input type="tel" id="full_name" />
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" />
 
-        <label for="full_name">Full Name</label>
-        <select>
+        <label for="enquiry">Purpose of Enquiry</label>
+        <select id="">
           <option value="">Purpose of Enquiry</option>
+          <option value="">Business Deal</option>
+          <option value="">General Enquiries</option>
         </select>
 
         <label for="message">Message</label>
