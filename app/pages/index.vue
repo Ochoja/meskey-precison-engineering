@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Vue3Marquee } from 'vue3-marquee';
+import aboutImg from '../assets/images/about2.png';
 
 const router = useRouter();
 const marqueelist = [
@@ -57,6 +58,41 @@ definePageMeta({
       </h5>
     </div>
   </Vue3Marquee>
+
+  <section
+    class="layout-pad mt-16 grid items-center md:grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12">
+    <div>
+      <button
+        class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">
+        About Us
+      </button>
+      <h3 class="mb-2 text-3xl">Engineering Precision Where it matters Most</h3>
+      <p class="font-light">
+        Meskey Precision Engineering Limited (MPEL) is a multidisciplinary
+        engineering company delivering mission-critical solutions across oil and
+        gas, industrial automation, instrumentation, and pipeline integrity
+        management. We specialize in executing complex projects in hazardous
+        environments, drawing on decades of hands-on technical experience.
+        <br /><br />
+        Our team combines deep industry knowledge with a commitment to safety,
+        precision, and efficiency, enabling us to deliver fully integrated
+        solutions from design to deployment. Whether operating onshore or
+        offshore, for brownfield upgrades or new Greenfield developments, we
+        bring end-to-end execution and engineering excellence to every project.
+      </p>
+      <NuxtLink
+        to="/about"
+        class="flex gap-2 mt-2 items-center text-lg text-primary font-medium">
+        More About Us <Icon name="lsicon:arrow-right-outline" />
+      </NuxtLink>
+    </div>
+    <div>
+      <img
+        :src="aboutImg"
+        alt="facilities images"
+        class="md:max-w-[80%] lg:max-w-full" />
+    </div>
+  </section>
 
   <section class="layout-pad mt-16 mb-32">
     <button

@@ -124,9 +124,9 @@ const toggleMobileMenu = () => {
 
   <div
     v-if="mobileMenuOpen"
-    class="flex flex-col justify-between fixed inset-0 bg-white/70 backdrop-blur-md z-50 layout-pad py-2">
-    <div class="flex justify-between items-end">
-      <img :src="mainLogo" alt="Logo" class="h-12" />
+    class="flex flex-col justify-between fixed inset-0 bg-white/65 backdrop-blur-md z-50 layout-pad py-4">
+    <div class="flex justify-between items-center">
+      <img :src="mainLogo" alt="Logo" class="w-[15rem]" />
       <div>
         <Icon
           name="line-md:menu-to-close-transition"

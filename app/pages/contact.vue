@@ -10,7 +10,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h6>Support</h6>
-          <a>support@meskyprecisioneng.com</a>
+          <a href="mailto:info@meskyprecisioneng.com">support@meskyprecisioneng.com</a>
         </div>
         <div>
           <h6>General Enquiries</h6>
