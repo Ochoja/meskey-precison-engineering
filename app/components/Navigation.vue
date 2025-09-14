@@ -14,6 +14,8 @@ const props = defineProps({
 
 const serviceDropdown = ref(false);
 const companyDropdown = ref(false);
+const serviceDropdownMobile = ref(false);
+const companyDropdownMobile = ref(false);
 
 const toggleserviceDropdown = () => {
   if (serviceDropdown.value == true) {
@@ -122,9 +124,10 @@ const toggleMobileMenu = () => {
     </div>
   </nav>
 
+  <!-- Mobile Nav menu open -->
   <div
     v-if="mobileMenuOpen"
-    class="flex flex-col justify-between fixed inset-0 bg-white/65 backdrop-blur-md z-50 layout-pad py-4">
+    class="md:hidden flex flex-col justify-between fixed inset-0 bg-white/65 backdrop-blur-md z-50 layout-pad py-4">
     <div class="flex justify-between items-center">
       <img :src="mainLogo" alt="Logo" class="w-[15rem]" />
       <div>
@@ -139,10 +142,35 @@ const toggleMobileMenu = () => {
       <NuxtLink to="/">Home</NuxtLink>
       <NuxtLink to="/about">About</NuxtLink>
       <NuxtLink to="/">Projects</NuxtLink>
-      <div class="relative">
-        <div class="flex items-center gap-1 cursor-pointer">
+      <div class="flex flex-col">
+        <div
+          @click="serviceDropdownMobile = !serviceDropdownMobile"
+          class="flex items-center gap-1 cursor-pointer">
           <span>Services</span>
           <Icon name="iconamoon:arrow-down-2-light"></Icon>
+        </div>
+        <div
+          v-show="serviceDropdownMobile"
+          class="flex flex-col relative left-4 mt-1">
+          <NuxtLink to="/services/3">Metering</NuxtLink>
+          <NuxtLink to="/services/5">Monitoring</NuxtLink>
+          <NuxtLink to="/services/4">Automation</NuxtLink>
+          <NuxtLink to="/services/1">Measuring</NuxtLink>
+          <NuxtLink to="/services/2">Analysis</NuxtLink>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <div
+          @click="companyDropdownMobile = !companyDropdownMobile"
+          class="flex items-center gap-1 cursor-pointer">
+          <span>Our Company</span>
+          <Icon name="iconamoon:arrow-down-2-light"></Icon>
+        </div>
+        <div
+          v-show="companyDropdownMobile"
+          class="flex flex-col relative left-4 mt-1">
+          <NuxtLink to="/services/3">Meskey Energy</NuxtLink>
+          <NuxtLink to="/services/5">Meskey Group</NuxtLink>
         </div>
       </div>
 

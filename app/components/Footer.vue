@@ -13,12 +13,18 @@ import logo from '@/assets/images/whitelogo.png';
           <p>Zone C, Block 8 shop 23 ASPAMDA Plaza Trade fair complex Lagos.</p>
         </div>
         <div>
-          <h6>Lagos Office</h6>
-          <p>Zone C, Block 8 shop 23 ASPAMDA Plaza Trade fair complex Lagos.</p>
+          <h6>FCT Abuja Office</h6>
+          <p>
+            Dawaki Abuja Behind Sunset Energy Fueling Station Murtala Mohammed
+            Way (Kubwa Express)
+          </p>
         </div>
         <div>
-          <h6>Lagos Office</h6>
-          <p>Zone C, Block 8 shop 23 ASPAMDA Plaza Trade fair complex Lagos.</p>
+          <h6>Northern Region</h6>
+          <p>
+            No 4 School Road, Off Makama Plaza, Opposite Kaduna Refinery
+            Complex, Kaduna
+          </p>
         </div>
       </div>
       <div>
@@ -33,11 +39,11 @@ import logo from '@/assets/images/whitelogo.png';
       <div>
         <h6>Services</h6>
         <div class="child-container">
-          <NuxtLink to="services/4">Automation</NuxtLink>
-          <NuxtLink to="services/1">Measuring</NuxtLink>
-          <NuxtLink to="services/2">Analysis</NuxtLink>
-          <NuxtLink to="services/3">Meteting</NuxtLink>
-          <NuxtLink to="services/5">Monitoring</NuxtLink>
+          <NuxtLink to="/services/4">Automation</NuxtLink>
+          <NuxtLink to="/services/1">Measuring</NuxtLink>
+          <NuxtLink to="/services/2">Analysis</NuxtLink>
+          <NuxtLink to="/services/3">Meteting</NuxtLink>
+          <NuxtLink to="/services/5">Monitoring</NuxtLink>
         </div>
       </div>
       <div>

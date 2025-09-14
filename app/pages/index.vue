@@ -2,6 +2,10 @@
 import { Vue3Marquee } from 'vue3-marquee';
 import aboutImg from '../assets/images/about2.png';
 
+definePageMeta({
+  layout: 'home',
+});
+
 const router = useRouter();
 const marqueelist = [
   'Measuring',
@@ -15,9 +19,44 @@ const marqueelist = [
   'Procurement',
 ];
 
-definePageMeta({
-  layout: 'home',
-});
+const servicelist = [
+  {
+    service: 'Automation',
+    description:
+      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
+    image: '',
+  },
+  {
+    service: 'Automation',
+    description:
+      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
+    image: '',
+  },
+  {
+    service: 'Metering',
+    description:
+      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
+    image: '',
+  },
+  {
+    service: 'Monitoring',
+    description:
+      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
+    image: '',
+  },
+  {
+    service: 'Analysis',
+    description:
+      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
+    image: '',
+  },
+  {
+    service: 'Measuring',
+    description:
+      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
+    image: '',
+  },
+];
 </script>
 
 <template>
@@ -59,6 +98,26 @@ definePageMeta({
     </div>
   </Vue3Marquee>
 
+  <section class="mt-16">
+    <div class="layout-pad flex justify-between items-center">
+      <h2 class="text-5xl max-w-[50%]">
+        Structured Around Five
+        <span class="font-medium text-primary-50">Pillars of Excellence</span>
+      </h2>
+      <p class="font-light max-w-[40%]">
+        We provide reliable, high-performance engineering solutions that enhance
+        safety, efficiency, and precision across oil, gas, and industrial
+        operations.
+      </p>
+    </div>
+
+    <div class="services-wrapper mt-6">
+      <div v-for="(item, index) in servicelist" :key="index">
+        {{ item.service }}
+      </div>
+    </div>
+  </section>
+
   <section
     class="layout-pad mt-16 grid items-center md:grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12">
     <div>
@@ -92,6 +151,11 @@ definePageMeta({
         alt="facilities images"
         class="md:max-w-[80%] lg:max-w-full" />
     </div>
+  </section>
+
+  <!-- Our Projects Section -->
+  <section class="layout-pad mt-16 text-center">
+    <h2 class="text-3xl">Our Projects</h2>
   </section>
 
   <section class="layout-pad mt-16 mb-32">
@@ -160,7 +224,8 @@ definePageMeta({
         </div>
         <div>
           <button
-            class="text-grey-110 font-medium bg-white rounded-lg px-4 py-2">
+            @click="router.push('/contact')"
+            class="text-grey-110 font-medium bg-white rounded-lg px-4 py-2 cursor-pointer">
             Contact Us
           </button>
         </div>
