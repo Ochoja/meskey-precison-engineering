@@ -25,6 +25,10 @@
   --color-grey-110: #0c0d0d;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .layout-pad {
   @apply px-[3%] md:px-[5%] xl:px-[8%];
 }

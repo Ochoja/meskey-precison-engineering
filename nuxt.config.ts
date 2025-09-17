@@ -9,7 +9,13 @@ export default defineNuxtConfig({
   },
   css: ['~/assets/css/main.css'],
 
-  modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/icon', '@nuxt/fonts'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/image',
+    '@nuxt/icon',
+    '@nuxt/fonts',
+    '@vueuse/nuxt',
+  ],
   fonts: {
     families: [
       {

@@ -1,12 +1,25 @@
 <script setup lang="ts">
+import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import { Vue3Marquee } from 'vue3-marquee';
 import aboutImg from '../assets/images/about2.png';
+import LinkLogo from '../assets/icons/link.svg';
+import automationImg from '~/assets/images/automation.png';
+import meteringImg from '~/assets/images/metering.png';
+import monitoringImg from '~/assets/images/monitoring.png';
+import analysisImg from '~/assets/images/analysis.png';
+import measuringImg from '~/assets/images/measuring.png';
+
+gsap.registerPlugin(ScrollTrigger);
 
 definePageMeta({
   layout: 'home',
 });
 
 const router = useRouter();
+const services = ref<HTMLElement | null>(null);
+
 const marqueelist = [
   'Measuring',
   'Automation',
@@ -24,39 +37,90 @@ const servicelist = [
     service: 'Automation',
     description:
       'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
-    image: '',
-  },
-  {
-    service: 'Automation',
-    description:
-      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
-    image: '',
+    image: automationImg,
+    to: '/services/4',
   },
   {
     service: 'Metering',
     description:
-      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
-    image: '',
+      'Our metering solutions include precise flow measurement and custody transfer systems, advanced automatic tank gauging (ATG) for inventory accuracy, comprehensive fuel monitoring and transfer setups, as well as fuel purification systems to ensure product quality and compliance.',
+    image: meteringImg,
+    to: '/services/3',
   },
   {
     service: 'Monitoring',
     description:
-      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
-    image: '',
+      'We conduct thorough pipeline integrity checks, pressure and leakage verifications using industry-standard methods, install real-time monitoring systems for critical infrastructure, and provide fire hydrant and industrial safety control systems for risk mitigation.',
+    image: monitoringImg,
+    to: '/services/5',
   },
   {
     service: 'Analysis',
     description:
-      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
-    image: '',
+      'Our analytical services cover precise instrument calibration for accuracy and compliance, non-destructive testing methods including dye penetrant inspections, high-sensitivity leak detection using laser and acoustic technologies, and advanced Computational Pipeline Monitoring (CPM) for early fault identification and operational efficiency.',
+    image: analysisImg,
+    to: '/services/2',
   },
   {
     service: 'Measuring',
     description:
-      'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
-    image: '',
+      'At Meskey Precision Engineering Limited, we understand that reliable measurement is the foundation of safe and efficient industrial operations. Every decision, from process optimization to asset management, depends on accurate and timely data. Our measuring solutions are designed to provide clients with complete confidence in the numbers that drive their operations.',
+    image: measuringImg,
+    to: '/services/1',
   },
 ];
+
+let scrollTween: gsap.core.Tween | null = null;
+let scrollTrigger: ScrollTrigger | null = null;
+
+async function initScroll() {
+  await nextTick();
+  if (!services.value) return;
+
+  // Kill any existing before re-init
+  ScrollTrigger.getById('services-scroll')?.kill();
+  scrollTween?.kill();
+
+  const getScrollAmount = () =>
+    -(services.value!.scrollWidth - window.innerWidth);
+
+  scrollTween = gsap.to(services.value, {
+    x: getScrollAmount,
+    ease: 'none',
+  });
+
+  scrollTrigger = ScrollTrigger.create({
+    id: 'services-scroll',
+    trigger: '.servicesWrapper',
+    start: 'top 5%',
+    end: () => `+=${getScrollAmount() * -1}`,
+    pin: true,
+    animation: scrollTween,
+    scrub: 1,
+    invalidateOnRefresh: true,
+    markers: false,
+  });
+
+  ScrollTrigger.refresh();
+}
+
+function cleanupScroll() {
+  scrollTween?.kill();
+  scrollTween = null;
+  scrollTrigger?.kill();
+  scrollTrigger = null;
+  ScrollTrigger.getById('services-scroll')?.kill();
+}
+
+onMounted(() => {
+  initScroll();
+  window.addEventListener('resize', ScrollTrigger.refresh);
+});
+
+onBeforeUnmount(() => {
+  cleanupScroll();
+  window.removeEventListener('resize', ScrollTrigger.refresh);
+});
 </script>
 
 <template>
@@ -92,32 +156,47 @@ const servicelist = [
       :key="key"
       class="flex items-center gap-8 px-8">
       <img src="../assets/images/logo.png" alt="" height="50" width="50" />
-      <h5 class="text-white">
-        {{ item }}
-      </h5>
+      <h5 class="text-white">{{ item }}</h5>
     </div>
   </Vue3Marquee>
 
+  <!-- Services Horizontal Scroll Section -->
   <section class="mt-16">
-    <div class="layout-pad flex justify-between items-center">
-      <h2 class="text-5xl max-w-[50%]">
+    <div
+      class="layout-pad flex flex-col gap-2 md:flex-row justify-between items-center">
+      <h2
+        class="text-5xl text-center md:text-left md:max-w-[55%] lg:max-w-[50%]">
         Structured Around Five
         <span class="font-medium text-primary-50">Pillars of Excellence</span>
       </h2>
-      <p class="font-light max-w-[40%]">
+      <p
+        class="font-light text-center md:text-left md:max-w-[50%] lg:max-w-[40%]">
         We provide reliable, high-performance engineering solutions that enhance
         safety, efficiency, and precision across oil, gas, and industrial
         operations.
       </p>
     </div>
 
-    <div class="services-wrapper mt-6">
-      <div v-for="(item, index) in servicelist" :key="index">
-        {{ item.service }}
+    <div
+      ref="services"
+      class="servicesWrapper mt-12 flex flex-nowrap gap-6 px-[3%] md:px-[5%] xl:px-[8%] w-fit">
+      <div
+        v-for="(item, index) in servicelist"
+        :key="index"
+        class="min-w-[60vw] md:min-w-[50vw] lg:min-w-[25vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
+        :style="{ backgroundImage: `url(${item.image})` }">
+        <h5 class="font-medium text-xl">{{ item.service }}</h5>
+        <div>
+          <p class="font-light mb-2">{{ item.description }}</p>
+          <NuxtLink :to="item.to">
+            <NuxtImg :src="LinkLogo" alt="link" height="40" width="40" />
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- About Section -->
   <section
     class="layout-pad mt-16 grid items-center md:grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12">
     <div>
@@ -153,11 +232,10 @@ const servicelist = [
     </div>
   </section>
 
-  <!-- Our Projects Section -->
-  <section class="layout-pad mt-16 text-center">
-    <h2 class="text-3xl">Our Projects</h2>
-  </section>
+  <!-- Projects -->
+  <ProjectSection></ProjectSection>
 
+  <!-- Why Choose Us -->
   <section class="layout-pad mt-16 mb-32">
     <button
       class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">
@@ -167,7 +245,6 @@ const servicelist = [
       Why Meskey Precision is the
       <span class="font-semibold text-primary-50">Right Choice</span>
     </h1>
-
     <div class="grid grid-cols-1 lg:grid-cols-[2.5fr_1fr] gap-4">
       <div>
         <div class="flex flex-col md:flex-row gap-4 mb-4">

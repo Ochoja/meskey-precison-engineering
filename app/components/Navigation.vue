@@ -12,40 +12,40 @@ const props = defineProps({
   light: String,
 });
 
-const serviceDropdown = ref(false);
-const companyDropdown = ref(false);
-const serviceDropdownMobile = ref(false);
-const companyDropdownMobile = ref(false);
+const services = [
+  { name: 'Metering', path: '/services/3' },
+  { name: 'Monitoring', path: '/services/5' },
+  { name: 'Automation', path: '/services/4' },
+  { name: 'Measuring', path: '/services/1' },
+  { name: 'Analysis', path: '/services/2' },
+];
 
-const toggleserviceDropdown = () => {
-  if (serviceDropdown.value == true) {
-    serviceDropdown.value = false;
-  } else {
-    companyDropdown.value = false;
-    serviceDropdown.value = true;
-  }
-};
-
-const togglecompanyDropdown = () => {
-  if (companyDropdown.value == true) {
-    companyDropdown.value = false;
-  } else {
-    serviceDropdown.value = false;
-    companyDropdown.value = true;
-  }
-};
-
-watch(route, () => {
-  serviceDropdown.value = false;
-  companyDropdown.value = false;
-  mobileMenuOpen.value = false;
-});
+const companies = [
+  { name: 'Meskey Energy', path: '/services/3' }, // kept similar to your original links
+  { name: 'Meskey Group', path: '/services/5' },
+];
 
 const mobileMenuOpen = ref(false);
+const openDropdown = ref<null | 'services' | 'companies'>(null);
+
+// Toggle a dropdown: open it if closed, close it if open.
+// Opening one dropdown automatically closes the other.
+const toggleDropdown = (menu: 'services' | 'companies') => {
+  openDropdown.value = openDropdown.value === menu ? null : menu;
+};
+
+// Close menus when route changes
+watch(
+  () => route.fullPath,
+  () => {
+    mobileMenuOpen.value = false;
+    openDropdown.value = null;
+  }
+);
 
 const toggleMobileMenu = () => {
-  serviceDropdown.value = false;
-  companyDropdown.value = false;
+  // close dropdowns when toggling the mobile menu to keep visual state clean
+  openDropdown.value = null;
   mobileMenuOpen.value = !mobileMenuOpen.value;
 };
 </script>
@@ -59,42 +59,53 @@ const toggleMobileMenu = () => {
         alt="Meskey Precision Engineering Logo"
         class="w-[15rem]" />
     </div>
+
     <div :class="props.dark ? 'text-white ' + 'flex gap-6' : 'flex gap-6'">
       <NuxtLink to="/">Home</NuxtLink>
       <NuxtLink to="/about">About</NuxtLink>
       <NuxtLink to="/">Projects</NuxtLink>
+
+      <!-- Services dropdown (desktop) -->
       <div class="relative">
-        <div
-          @click="toggleserviceDropdown"
-          class="flex items-center gap-1 cursor-pointer">
+        <button
+          @click="toggleDropdown('services')"
+          class="flex items-center gap-1 cursor-pointer"
+          aria-haspopup="true"
+          :aria-expanded="openDropdown === 'services'">
           <span>Services</span>
           <Icon name="iconamoon:arrow-down-2-light"></Icon>
-        </div>
+        </button>
 
         <div
-          v-if="serviceDropdown"
+          v-if="openDropdown === 'services'"
           class="absolute flex flex-col gap-2 px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
-          <NuxtLink to="/services/3">Metering</NuxtLink>
-          <NuxtLink to="/services/5">Monitoring</NuxtLink>
-          <NuxtLink to="/services/4">Automation</NuxtLink>
-          <NuxtLink to="/services/1">Measuring</NuxtLink>
-          <NuxtLink to="/services/2">Analysis</NuxtLink>
+          <NuxtLink v-for="s in services" :key="s.path" :to="s.path">
+            {{ s.name }}
+          </NuxtLink>
         </div>
       </div>
+
+      <!-- Companies dropdown (desktop) -->
       <div class="relative">
-        <div
-          @click="togglecompanyDropdown"
-          class="flex items-center gap-1 cursor-pointer">
+        <button
+          @click="toggleDropdown('companies')"
+          class="flex items-center gap-1 cursor-pointer"
+          aria-haspopup="true"
+          :aria-expanded="openDropdown === 'companies'">
           <span>Our Companies</span>
           <Icon name="iconamoon:arrow-down-2-light"></Icon>
-        </div>
+        </button>
+
         <div
-          v-if="companyDropdown"
+          v-if="openDropdown === 'companies'"
           class="w-[120%] absolute px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
-          <NuxtLink>Meskey Energy</NuxtLink>
+          <NuxtLink v-for="c in companies" :key="c.path" :to="c.path">
+            {{ c.name }}
+          </NuxtLink>
         </div>
       </div>
     </div>
+
     <div>
       <button
         @click="router.push('/contact')"
@@ -127,7 +138,7 @@ const toggleMobileMenu = () => {
   <!-- Mobile Nav menu open -->
   <div
     v-if="mobileMenuOpen"
-    class="md:hidden flex flex-col justify-between fixed inset-0 bg-white/65 backdrop-blur-md z-50 layout-pad py-4">
+    class="lg:hidden flex flex-col justify-between fixed inset-0 bg-white/65 backdrop-blur-md z-50 layout-pad py-4">
     <div class="flex justify-between items-center">
       <img :src="mainLogo" alt="Logo" class="w-[15rem]" />
       <div>
@@ -142,35 +153,37 @@ const toggleMobileMenu = () => {
       <NuxtLink to="/">Home</NuxtLink>
       <NuxtLink to="/about">About</NuxtLink>
       <NuxtLink to="/">Projects</NuxtLink>
+
       <div class="flex flex-col">
         <div
-          @click="serviceDropdownMobile = !serviceDropdownMobile"
+          @click="toggleDropdown('services')"
           class="flex items-center gap-1 cursor-pointer">
           <span>Services</span>
           <Icon name="iconamoon:arrow-down-2-light"></Icon>
         </div>
         <div
-          v-show="serviceDropdownMobile"
+          v-show="openDropdown === 'services'"
           class="flex flex-col relative left-4 mt-1">
-          <NuxtLink to="/services/3">Metering</NuxtLink>
-          <NuxtLink to="/services/5">Monitoring</NuxtLink>
-          <NuxtLink to="/services/4">Automation</NuxtLink>
-          <NuxtLink to="/services/1">Measuring</NuxtLink>
-          <NuxtLink to="/services/2">Analysis</NuxtLink>
+          <NuxtLink v-for="s in services" :key="s.path" :to="s.path">
+            {{ s.name }}
+          </NuxtLink>
         </div>
       </div>
+
+      <!-- Mobile Companies -->
       <div class="flex flex-col">
         <div
-          @click="companyDropdownMobile = !companyDropdownMobile"
+          @click="toggleDropdown('companies')"
           class="flex items-center gap-1 cursor-pointer">
           <span>Our Company</span>
           <Icon name="iconamoon:arrow-down-2-light"></Icon>
         </div>
         <div
-          v-show="companyDropdownMobile"
+          v-show="openDropdown === 'companies'"
           class="flex flex-col relative left-4 mt-1">
-          <NuxtLink to="/services/3">Meskey Energy</NuxtLink>
-          <NuxtLink to="/services/5">Meskey Group</NuxtLink>
+          <NuxtLink v-for="c in companies" :key="c.path" :to="c.path">
+            {{ c.name }}
+          </NuxtLink>
         </div>
       </div>
 
