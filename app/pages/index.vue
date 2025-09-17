@@ -179,11 +179,11 @@ onBeforeUnmount(() => {
 
     <div
       ref="services"
-      class="servicesWrapper mt-12 flex flex-nowrap gap-6 px-[3%] md:px-[5%] xl:px-[8%] w-fit">
+      class="servicesWrapper mt-12 flex flex-nowrap gap-6 px-[5%] xl:px-[8%] w-fit">
       <div
         v-for="(item, index) in servicelist"
         :key="index"
-        class="min-w-[60vw] md:min-w-[50vw] lg:min-w-[25vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
+        class="min-w-[70vw] md:min-w-[55vw] lg:min-w-[25vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
         :style="{ backgroundImage: `url(${item.image})` }">
         <h5 class="font-medium text-xl">{{ item.service }}</h5>
         <div>

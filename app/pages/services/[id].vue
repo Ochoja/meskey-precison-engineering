@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import services from '@/assets/data/services.json';
+import ProjectSection from '~/components/ProjectSection.vue';
 
 const route = useRoute();
 const serviceId = Number(route.params.id);
@@ -16,4 +17,6 @@ const data = services.find((item) => item.id === serviceId);
       {{ data?.description }}
     </p>
   </main>
+
+  <ProjectSection />
 </template>

@@ -1,13 +1,9 @@
 <script setup>
-import projectImg1 from '../assets/images/automation.png';
-import projectImg2 from '../assets/images/metering.png';
-import projectImg3 from '../assets/images/monitoring.png';
-
 const route = useRoute();
-const headerString = 'Our Projects';
+const headerString = ref('Our Projects');
 
 if (route.fullPath.includes('services')) {
-  headerString = 'Our Completed Projects';
+  headerString.value = 'Our Completed Projects';
 }
 </script>
 
