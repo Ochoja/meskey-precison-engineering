@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Vue3Marquee } from 'vue3-marquee';
 import aboutImg from '../assets/images/about2.png';
 import LinkLogo from '../assets/icons/link.svg';
@@ -11,16 +9,15 @@ import monitoringImg from '~/assets/images/monitoring.png';
 import analysisImg from '~/assets/images/analysis.png';
 import measuringImg from '~/assets/images/measuring.png';
 
-if (process.client) {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 definePageMeta({
   layout: 'home',
 });
 
 const router = useRouter();
 const services = ref<HTMLElement | null>(null);
+
+// ✅ use gsap + ScrollTrigger via Nuxt injections
+const { $gsap, $ScrollTrigger } = useNuxtApp();
 
 const marqueelist = [
   'Measuring',
@@ -73,25 +70,25 @@ const servicelist = [
 ];
 
 let scrollTween: gsap.core.Tween | null = null;
-let scrollTrigger: ScrollTrigger | null = null;
+let scrollTrigger: typeof $ScrollTrigger | null = null;
 
 async function initScroll() {
   await nextTick();
   if (!services.value) return;
 
   // Kill any existing before re-init
-  ScrollTrigger.getById('services-scroll')?.kill();
+  $ScrollTrigger.getById('services-scroll')?.kill();
   scrollTween?.kill();
 
   const getScrollAmount = () =>
     -(services.value!.scrollWidth - window.innerWidth);
 
-  scrollTween = gsap.to(services.value, {
+  scrollTween = $gsap.to(services.value, {
     x: getScrollAmount,
     ease: 'none',
   });
 
-  scrollTrigger = ScrollTrigger.create({
+  scrollTrigger = $ScrollTrigger.create({
     id: 'services-scroll',
     trigger: '.servicesWrapper',
     start: 'top 5%',
@@ -103,7 +100,7 @@ async function initScroll() {
     markers: false,
   });
 
-  ScrollTrigger.refresh();
+  $ScrollTrigger.refresh();
 }
 
 function cleanupScroll() {
@@ -111,17 +108,17 @@ function cleanupScroll() {
   scrollTween = null;
   scrollTrigger?.kill();
   scrollTrigger = null;
-  ScrollTrigger.getById('services-scroll')?.kill();
+  $ScrollTrigger.getById('services-scroll')?.kill();
 }
 
 onMounted(() => {
   initScroll();
-  window.addEventListener('resize', ScrollTrigger.refresh);
+  window.addEventListener('resize', $ScrollTrigger.refresh);
 });
 
 onBeforeUnmount(() => {
   cleanupScroll();
-  window.removeEventListener('resize', ScrollTrigger.refresh);
+  window.removeEventListener('resize', $ScrollTrigger.refresh);
 });
 </script>
 
