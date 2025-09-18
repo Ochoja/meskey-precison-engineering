@@ -21,8 +21,8 @@ const services = [
 ];
 
 const companies = [
-  { name: 'Meskey Energy', path: '/services/3' }, // kept similar to your original links
-  { name: 'Meskey Group', path: '/services/5' },
+  { name: 'Meskey Energy', path: '/companies/meskeyenergy' }, // kept similar to your original links
+  { name: 'Meskey Group', path: '/companies/meskeygroup' },
 ];
 
 const mobileMenuOpen = ref(false);
@@ -63,7 +63,7 @@ const toggleMobileMenu = () => {
     <div :class="props.dark ? 'text-white ' + 'flex gap-6' : 'flex gap-6'">
       <NuxtLink to="/">Home</NuxtLink>
       <NuxtLink to="/about">About</NuxtLink>
-      <NuxtLink to="/">Projects</NuxtLink>
+      <NuxtLink to="/projects">Projects</NuxtLink>
 
       <!-- Services dropdown (desktop) -->
       <div class="relative">
@@ -98,7 +98,7 @@ const toggleMobileMenu = () => {
 
         <div
           v-if="openDropdown === 'companies'"
-          class="w-[120%] absolute px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
+          class="w-[120%] flex flex-col gap-2 absolute px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
           <NuxtLink v-for="c in companies" :key="c.path" :to="c.path">
             {{ c.name }}
           </NuxtLink>
@@ -152,7 +152,7 @@ const toggleMobileMenu = () => {
     <div class="flex flex-col gap-4 items-center text-lg">
       <NuxtLink to="/">Home</NuxtLink>
       <NuxtLink to="/about">About</NuxtLink>
-      <NuxtLink to="/">Projects</NuxtLink>
+      <NuxtLink to="/projects">Projects</NuxtLink>
 
       <div class="flex flex-col">
         <div
