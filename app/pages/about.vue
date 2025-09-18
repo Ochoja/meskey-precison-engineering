@@ -34,8 +34,8 @@ import aboutimg from '../assets/images/aboutimg.png';
       </p>
     </div>
     <div>
-      <img
-        :src="aboutimg"
+      <NuxtImg
+        src="https://ik.imagekit.io/Ochoja01/meskey/aboutimg.png?updatedAt=1758225850884"
         alt="About Image"
         class="w-full rounded-2xl hidden md:block md:mt-8" />
       <div class="flex justify-between text-center mt-6 stats">

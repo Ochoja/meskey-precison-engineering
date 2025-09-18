@@ -1,6 +1,4 @@
 <script setup>
-import ProjectImg from '~/assets/images/aboutimg.png';
-
 const dummyData = [
   {
     project_name: 'Dangote Cement',
@@ -43,7 +41,9 @@ const dummyData = [
         v-for="(project, index) in dummyData"
         :key="index"
         class="flex flex-col md:flex-row justify-between gap-6 md:gap-16 pb-8 mb-8 border-b border-b-grey-20 last:border-b-0">
-        <img :src="ProjectImg" class="min-w-[40%] rounded-2xl" />
+        <NuxtImg
+          src="https://ik.imagekit.io/Ochoja01/meskey/aboutimg.png?updatedAt=1758225850884"
+          class="min-w-[40%] rounded-2xl" />
 
         <div class="flex flex-col gap-4">
           <h2 class="mb-1 font-medium text-2xl">{{ project.project_name }}</h2>

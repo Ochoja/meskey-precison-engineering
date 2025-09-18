@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
 import { Vue3Marquee } from 'vue3-marquee';
-import aboutImg from '../assets/images/about2.png';
 import LinkLogo from '../assets/icons/link.svg';
-import automationImg from '~/assets/images/automation.png';
-import meteringImg from '~/assets/images/metering.png';
-import monitoringImg from '~/assets/images/monitoring.png';
-import analysisImg from '~/assets/images/analysis.png';
-import measuringImg from '~/assets/images/measuring.png';
 
 definePageMeta({
   layout: 'home',
@@ -36,35 +30,40 @@ const servicelist = [
     service: 'Automation',
     description:
       'We design and fabricate control panels tailored to industrial needs, integrate SCADA systems for centralized monitoring, implement full-scale industrial automation and building control, and deploy remote terminal monitoring systems for seamless real-time oversight.',
-    image: automationImg,
+    image:
+      'https://ik.imagekit.io/Ochoja01/meskey/automation.png?updatedAt=1758225571774',
     to: '/services/4',
   },
   {
     service: 'Metering',
     description:
       'Our metering solutions include precise flow measurement and custody transfer systems, advanced automatic tank gauging (ATG) for inventory accuracy, comprehensive fuel monitoring and transfer setups, as well as fuel purification systems to ensure product quality and compliance.',
-    image: meteringImg,
+    image:
+      'https://ik.imagekit.io/Ochoja01/meskey/metering.png?updatedAt=1758225571585',
     to: '/services/3',
   },
   {
     service: 'Monitoring',
     description:
       'We conduct thorough pipeline integrity checks, pressure and leakage verifications using industry-standard methods, install real-time monitoring systems for critical infrastructure, and provide fire hydrant and industrial safety control systems for risk mitigation.',
-    image: monitoringImg,
+    image:
+      'https://ik.imagekit.io/Ochoja01/meskey/monitoring.png?updatedAt=1758225571773',
     to: '/services/5',
   },
   {
     service: 'Analysis',
     description:
       'Our analytical services cover precise instrument calibration for accuracy and compliance, non-destructive testing methods including dye penetrant inspections, high-sensitivity leak detection using laser and acoustic technologies, and advanced Computational Pipeline Monitoring (CPM) for early fault identification and operational efficiency.',
-    image: analysisImg,
+    image:
+      'https://ik.imagekit.io/Ochoja01/meskey/analysis.png?updatedAt=1758225571879',
     to: '/services/2',
   },
   {
     service: 'Measuring',
     description:
       'At Meskey Precision Engineering Limited, we understand that reliable measurement is the foundation of safe and efficient industrial operations. Every decision, from process optimization to asset management, depends on accurate and timely data. Our measuring solutions are designed to provide clients with complete confidence in the numbers that drive their operations.',
-    image: measuringImg,
+    image:
+      'https://ik.imagekit.io/Ochoja01/meskey/measuring.png?updatedAt=1758225570795',
     to: '/services/1',
   },
 ];
@@ -123,7 +122,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header class="bg-[url(~/assets/images/herobg.png)]">
+  <header
+    class="bg-[url(https://ik.imagekit.io/Ochoja01/meskey/herobg.png?updatedAt=1758227487910)] bg-cover bg-center">
     <Navigation dark="true" />
     <div
       class="text-white text-center py-[25vh] w-[85%] lg:w-[70%] mx-auto flex flex-col gap-6">
@@ -182,7 +182,7 @@ onBeforeUnmount(() => {
       <div
         v-for="(item, index) in servicelist"
         :key="index"
-        class="min-w-[70vw] md:min-w-[55vw] lg:min-w-[25vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
+        class="min-w-[65%] md:min-w-[40%] lg:min-w-[25vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
         :style="{ backgroundImage: `url(${item.image})` }">
         <h5 class="font-medium text-xl">{{ item.service }}</h5>
         <div>
@@ -224,10 +224,10 @@ onBeforeUnmount(() => {
       </NuxtLink>
     </div>
     <div>
-      <img
-        :src="aboutImg"
+      <NuxtImg
+        src="https://ik.imagekit.io/Ochoja01/meskey/about2.png?updatedAt=1758225851901"
         alt="facilities images"
-        class="md:max-w-[80%] lg:max-w-full" />
+        class="md:min-w-[80%] lg:min-w-full" />
     </div>
   </section>
 
