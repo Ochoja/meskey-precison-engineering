@@ -15,11 +15,11 @@ if (route.fullPath.includes('services')) {
     <div
       class="layout-pad grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       <div
-        class="bg-[url(~/assets/images/herobg.png)] min-h-[40vh] rounded-2xl bg-cover bg-center"></div>
+        class="bg-[url(https://ik.imagekit.io/Ochoja01/meskey/herobg.png?updatedAt=1758227487910)] min-h-[40vh] rounded-2xl bg-cover bg-center"></div>
       <div
-        class="bg-[url(~/assets/images/herobg.png)] min-h-[40vh] rounded-2xl bg-cover bg-center"></div>
+        class="bg-[url(https://ik.imagekit.io/Ochoja01/meskey/herobg.png?updatedAt=1758227487910)] min-h-[40vh] rounded-2xl bg-cover bg-center"></div>
       <div
-        class="bg-[url(~/assets/images/herobg.png)] min-h-[40vh] rounded-2xl bg-cover bg-center"></div>
+        class="bg-[url(https://ik.imagekit.io/Ochoja01/meskey/herobg.png?updatedAt=1758227487910)] min-h-[40vh] rounded-2xl bg-cover bg-center"></div>
     </div>
 
     <div>
