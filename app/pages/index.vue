@@ -164,7 +164,7 @@ onBeforeUnmount(() => {
     <div
       class="layout-pad flex flex-col gap-2 md:flex-row justify-between items-center">
       <h2
-        class="text-5xl text-center md:text-left md:max-w-[55%] lg:max-w-[50%]">
+        class="text-3xl md:text-5xl text-center md:text-left md:max-w-[55%] lg:max-w-[50%]">
         Structured Around Five
         <span class="font-medium text-primary-50">Pillars of Excellence</span>
       </h2>
@@ -178,11 +178,11 @@ onBeforeUnmount(() => {
 
     <div
       ref="services"
-      class="servicesWrapper mt-12 flex flex-nowrap gap-6 px-[5%] xl:px-[8%] w-fit">
+      class="servicesWrapper mt-12 flex flex-nowrap gap-6 px-[5%] xl:px-[8%] w-fit overflow-x-hidden">
       <div
         v-for="(item, index) in servicelist"
         :key="index"
-        class="min-w-[65%] md:min-w-[40%] lg:min-w-[25vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
+        class="min-w-[75vw] md:min-w-[40%] lg:min-w-[25vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
         :style="{ backgroundImage: `url(${item.image})` }">
         <h5 class="font-medium text-xl">{{ item.service }}</h5>
         <div>

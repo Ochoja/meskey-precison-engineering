@@ -25,8 +25,12 @@
   --color-grey-110: #0c0d0d;
 }
 
+html,
 body {
   overflow-x: hidden;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: none;
 }
 
 .layout-pad {
