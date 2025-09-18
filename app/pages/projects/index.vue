@@ -38,11 +38,11 @@ const dummyData = [
       </p>
     </header>
 
-    <section class="mt-16">
+    <section class="my-16">
       <div
         v-for="(project, index) in dummyData"
         :key="index"
-        class="flex justify-between gap-16 pb-8 mb-8 border-b border-b-grey-20">
+        class="flex flex-col md:flex-row justify-between gap-6 md:gap-16 pb-8 mb-8 border-b border-b-grey-20 last:border-b-0">
         <img :src="ProjectImg" class="min-w-[40%] rounded-2xl" />
 
         <div class="flex flex-col gap-4">
