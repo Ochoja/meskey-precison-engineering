@@ -1,5 +1,6 @@
 <script setup>
 const route = useRoute();
+const router = useRouter();
 const headerString = ref('Our Projects');
 
 if (route.fullPath.includes('services')) {
@@ -23,6 +24,7 @@ if (route.fullPath.includes('services')) {
 
     <div>
       <button
+        @click="router.push('/projects')"
         class="bg-primary px-6 py-3 text-white font-medium rounded-lg cursor-pointer">
         View More
       </button>

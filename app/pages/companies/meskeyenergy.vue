@@ -1,7 +1,7 @@
 <template>
   <main class="layout-pad mt-8 mb-20">
     <h1 class="text-4xl">Meskey Energy</h1>
-    <p class="font-light text-sm mt-1">Meskey Energy Caption goes here</p>
+    <p class="font-light text-sm mt-1">Reliable Energy. Smarter Solutions.</p>
 
     <section class="mt-6 font-light">
       Meskey Energy is driving the future of power and smart infrastructure by
