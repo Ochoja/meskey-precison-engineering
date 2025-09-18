@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Vue3Marquee } from 'vue3-marquee';
 import aboutImg from '../assets/images/about2.png';
 import LinkLogo from '../assets/icons/link.svg';
@@ -11,7 +11,9 @@ import monitoringImg from '~/assets/images/monitoring.png';
 import analysisImg from '~/assets/images/analysis.png';
 import measuringImg from '~/assets/images/measuring.png';
 
-gsap.registerPlugin(ScrollTrigger);
+if (process.client) {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 definePageMeta({
   layout: 'home',
