@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { ref, watch, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useScrollLock } from '@vueuse/core';
+
 import blackLogo from '@/assets/images/blacklogo.png';
 import whiteLogo from '@/assets/images/whitelogo.png';
 import mainLogo from '@/assets/images/mainlogo.png';
@@ -7,9 +11,7 @@ const router = useRouter();
 const route = useRoute();
 
 const props = defineProps({
-  default: String,
   dark: String,
-  light: String,
 });
 
 const services = [
@@ -21,18 +23,25 @@ const services = [
 ];
 
 const companies = [
-  { name: 'Meskey Energy', path: '/companies/meskeyenergy' }, // kept similar to your original links
+  { name: 'Meskey Energy', path: '/companies/meskeyenergy' },
   { name: 'Meskey Group', path: '/companies/meskeygroup' },
 ];
 
 const mobileMenuOpen = ref(false);
 const openDropdown = ref<null | 'services' | 'companies'>(null);
 
-// Toggle a dropdown: open it if closed, close it if open.
-// Opening one dropdown automatically closes the other.
-const toggleDropdown = (menu: 'services' | 'companies') => {
-  openDropdown.value = openDropdown.value === menu ? null : menu;
-};
+// Fix: Initialize scroll lock only on client side
+let isLocked = ref(false);
+
+onMounted(() => {
+  // Only initialize scroll lock on client side
+  isLocked = useScrollLock(document.body);
+
+  // Watch for changes to mobileMenuOpen and update scroll lock
+  watch(mobileMenuOpen, (newValue) => {
+    isLocked.value = newValue;
+  });
+});
 
 // Close menus when route changes
 watch(
@@ -43,15 +52,17 @@ watch(
   }
 );
 
+const toggleDropdown = (menu: 'services' | 'companies') => {
+  openDropdown.value = openDropdown.value === menu ? null : menu;
+};
+
 const toggleMobileMenu = () => {
-  // close dropdowns when toggling the mobile menu to keep visual state clean
   openDropdown.value = null;
   mobileMenuOpen.value = !mobileMenuOpen.value;
 };
 </script>
 
 <template>
-  <!-- Desktop Navigation -->
   <nav class="hidden layout-pad pt-4 lg:flex justify-between items-center">
     <div>
       <img
@@ -65,7 +76,6 @@ const toggleMobileMenu = () => {
       <NuxtLink to="/about">About</NuxtLink>
       <NuxtLink to="/projects">Projects</NuxtLink>
 
-      <!-- Services dropdown (desktop) -->
       <div class="relative">
         <button
           @click="toggleDropdown('services')"
@@ -85,7 +95,6 @@ const toggleMobileMenu = () => {
         </div>
       </div>
 
-      <!-- Companies dropdown (desktop) -->
       <div class="relative">
         <button
           @click="toggleDropdown('companies')"
@@ -115,7 +124,6 @@ const toggleMobileMenu = () => {
     </div>
   </nav>
 
-  <!-- Mobile and tablet Navigation -->
   <nav class="flex justify-between items-center lg:hidden pt-4 layout-pad">
     <div>
       <img
@@ -135,7 +143,6 @@ const toggleMobileMenu = () => {
     </div>
   </nav>
 
-  <!-- Mobile Nav menu open -->
   <div
     v-if="mobileMenuOpen"
     class="lg:hidden flex flex-col justify-between fixed inset-0 bg-white/65 backdrop-blur-md z-50 layout-pad py-4">
@@ -170,7 +177,6 @@ const toggleMobileMenu = () => {
         </div>
       </div>
 
-      <!-- Mobile Companies -->
       <div class="flex flex-col">
         <div
           @click="toggleDropdown('companies')"

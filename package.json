@@ -14,6 +14,7 @@
     "@nuxt/fonts": "^0.11.4",
     "@nuxt/icon": "^2.0.0",
     "@nuxt/image": "^1.11.0",
+    "@nuxtjs/supabase": "^1.6.2",
     "@tailwindcss/vite": "^4.1.12",
     "eslint": "^9.34.0",
     "gsap": "^3.13.0",

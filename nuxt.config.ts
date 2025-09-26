@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/fonts',
     '@vueuse/nuxt',
+    '@nuxtjs/supabase',
   ],
   fonts: {
     families: [
@@ -29,5 +30,8 @@ export default defineNuxtConfig({
         weights: [300, 400, 500, 600, 700, 800],
       },
     ],
+  },
+  supabase: {
+    redirect: false,
   },
 });
