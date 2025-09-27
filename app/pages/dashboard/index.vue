@@ -87,17 +87,48 @@ const handleResult = ({ status: s, action: a, project }) => {
     }
   }
 };
+
+// -------------------
+// Logout dropdown logic
+// -------------------
+const showDropdown = ref(false);
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
+};
+
+const logout = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) console.error(error);
+  else window.location.reload(); // redirect to login
+};
 </script>
 
 <template>
   <main class="mx-[2%]">
     <!-- Top Bar -->
-    <div class="flex justify-between items-center mb-8 mt-4">
+    <div class="flex justify-between items-center mb-8 mt-4 relative">
       <img :src="logo" alt="Logo" width="200" height="200" />
-      <div class="flex gap-2 items-center">
+      <div class="flex gap-2 items-center relative">
         <Icon name="mingcute:user-4-line" />
-        <span>{{ email }}</span>
-        <Icon name="raphael:arrowdown" />
+
+        <!-- Logout Dropdown -->
+        <div class="relative flex items-center gap-2">
+          <span class="cursor-pointer" @click="toggleDropdown">{{
+            email
+          }}</span>
+          <Icon name="raphael:arrowdown" />
+
+          <div
+            v-if="showDropdown"
+            class="absolute right-0 mt-8 w-40 bg-white border border-gray-300 rounded shadow-lg z-10">
+            <button
+              class="w-full text-left px-4 py-2 hover:bg-gray-100"
+              @click="logout">
+              Logout
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 

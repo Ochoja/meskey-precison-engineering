@@ -44,7 +44,7 @@ const displayedProjects = computed(() => {
 
 // Navigate to project page
 function goToProject(id) {
-  router.push(`/project/${id}`);
+  router.push(`/projects/${id}`);
 }
 </script>
 
