@@ -156,10 +156,11 @@ const handleConfirm = async () => {
 
       <!-- Add/Edit Form -->
       <div v-else class="flex flex-col gap-3 max-h-[80vh] overflow-y-auto pr-8">
-        <input v-model="form.name" type="text" placeholder="Name" />
+        <input v-model="form.name" type="text" placeholder="Name" required />
         <textarea
           v-model="form.description"
           placeholder="Description"
+          required
           rows="5"
           class="min-h-[120px]" />
 
@@ -173,16 +174,22 @@ const handleConfirm = async () => {
           <option value="Analysis">Analysis</option>
         </select>
 
-        <input v-model="form.client" type="text" placeholder="Client" />
+        <input
+          v-model="form.client"
+          type="text"
+          placeholder="Client (Optional)" />
         <input v-model="form.delivery_date" type="date" />
         <input
           v-model="form.main_image"
           type="url"
-          placeholder="Main Image URL" />
+          placeholder="Main Image URL"
+          required />
 
         <!-- Other Images -->
         <div>
-          <label class="mb-2 block font-medium">Other Images (max 4)</label>
+          <label class="mb-2 block font-medium"
+            >Other Images (max 4) (Optional)</label
+          >
           <div class="flex flex-col gap-2">
             <input
               v-for="(img, i) in form.other_images"
