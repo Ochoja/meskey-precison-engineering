@@ -15,7 +15,7 @@ const form = reactive({
   client: '',
   delivery_date: '',
   main_image: '',
-  other_images: ['', '', '', ''],
+  other_images: ['', '', '', ''], // always 4 slots
 });
 
 const titleMap = {
@@ -30,6 +30,26 @@ watch(
   (newVal) => {
     if (props.action === 'edit' && newVal) {
       Object.assign(form, newVal);
+
+      // always normalize to 4 slots
+      form.other_images = [
+        ...(newVal.other_images || []),
+        '',
+        '',
+        '',
+        '',
+      ].slice(0, 4);
+    } else if (props.action === 'add') {
+      // reset form for add mode
+      Object.assign(form, {
+        name: '',
+        description: '',
+        category: '',
+        client: '',
+        delivery_date: '',
+        main_image: '',
+        other_images: ['', '', '', ''],
+      });
     }
   },
   { immediate: true }
@@ -40,11 +60,11 @@ const handleConfirm = async () => {
   try {
     let resultProject = null;
 
-    // Sanitize other_images
+    // Sanitize other_images before saving
     const cleanImages = form.other_images.filter((img) => img.trim() !== '');
     const payload = {
       ...form,
-      other_images: cleanImages.length > 0 ? cleanImages : null, // null if empty
+      other_images: cleanImages.length > 0 ? cleanImages : null,
     };
 
     if (props.action === 'delete') {
@@ -174,7 +194,7 @@ const handleConfirm = async () => {
         </div>
 
         <!-- Footer -->
-        <div class="flex justify-end gap-2 mt-6">
+        <div class="flex justify-end gap-2 mt-6 mb-6">
           <button
             @click="$emit('close')"
             :disabled="loading"
