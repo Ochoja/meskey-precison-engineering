@@ -41,16 +41,17 @@ const projects = computed(() => projectsStore.projects);
           <h2 class="mb-1 font-medium text-2xl">{{ project.name }}</h2>
           <p class="font-light">{{ project.description }}</p>
 
-          <div class="flex gap-6">
-            <div>
+          <!-- Only render if values exist -->
+          <div
+            class="flex gap-6"
+            v-if="project.client || project.delivery_date">
+            <div v-if="project.client">
               <div class="font-semibold">Client:</div>
               <div class="font-light text-sm">{{ project.client }}</div>
             </div>
-            <div>
+            <div v-if="project.delivery_date">
               <div class="font-semibold">Delivered:</div>
-              <div class="font-light text-sm">
-                {{ project.delivery_date || 'In Progress' }}
-              </div>
+              <div class="font-light text-sm">{{ project.delivery_date }}</div>
             </div>
           </div>
 
