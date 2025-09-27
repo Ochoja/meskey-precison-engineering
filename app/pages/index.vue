@@ -23,6 +23,7 @@ const marqueelist = [
   'Pipeline Integrity Checks',
   'Instrumentation',
   'Procurement',
+  'Analysis',
 ];
 
 const servicelist = [

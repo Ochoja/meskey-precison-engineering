@@ -1,33 +1,36 @@
 <script setup>
 import logo from '../../assets/images/mainlogo.png';
-import { ref, onMounted, computed } from 'vue';
 
-definePageMeta({
-  layout: 'auth',
-});
+definePageMeta({ layout: 'auth' });
 
 const user = useSupabaseUser();
 const email = computed(() => user.value?.email || null);
 
 const supabase = useSupabaseClient();
 const projects = ref([]);
-const selectedProjects = ref([]); // store selected project IDs
-const allSelected = computed(() => {
-  return (
+const selectedProjects = ref([]);
+
+const allSelected = computed(
+  () =>
     projects.value.length > 0 &&
     selectedProjects.value.length === projects.value.length
-  );
-});
+);
+
+// modal states
+const showModal = ref(false);
+const modalAction = ref(null); // "add" | "edit" | "delete"
+const activeProject = ref(null);
+
+// status modal states
+const showStatus = ref(false);
+const status = ref(null); // "success" | "error"
+const statusAction = ref(null);
 
 // fetch rows
 onMounted(async () => {
   const { data, error } = await supabase.from('projects').select('*');
-  if (error) {
-    console.error(error);
-  } else {
-    projects.value = data;
-    console.log(projects.value);
-  }
+  if (error) console.error(error);
+  else projects.value = data;
 });
 
 // toggle select all
@@ -48,23 +51,40 @@ const toggleSelect = (id) => {
   }
 };
 
-// delete selected
-const deleteSelected = async () => {
-  if (selectedProjects.value.length === 0) return;
-  if (!confirm(`Delete ${selectedProjects.value.length} project(s)?`)) return;
+// open modal helpers
+const openAdd = () => {
+  modalAction.value = 'add';
+  activeProject.value = null;
+  showModal.value = true;
+};
+const openEdit = (project) => {
+  modalAction.value = 'edit';
+  activeProject.value = project;
+  showModal.value = true;
+};
+const openDelete = (project) => {
+  modalAction.value = 'delete';
+  activeProject.value = project;
+  showModal.value = true;
+};
 
-  const { error } = await supabase
-    .from('projects')
-    .delete()
-    .in('id', selectedProjects.value);
+// receive result from Modal
+const handleResult = ({ status: s, action: a, project }) => {
+  status.value = s;
+  statusAction.value = a;
+  showStatus.value = true;
 
-  if (error) {
-    console.error(error);
-  } else {
-    projects.value = projects.value.filter(
-      (p) => !selectedProjects.value.includes(p.id)
-    );
-    selectedProjects.value = [];
+  // if success, update local projects list
+  if (s === 'success') {
+    if (a === 'delete') {
+      projects.value = projects.value.filter((p) => p.id !== project.id);
+    } else if (a === 'edit') {
+      projects.value = projects.value.map((p) =>
+        p.id === project.id ? project : p
+      );
+    } else if (a === 'add') {
+      projects.value.push(project);
+    }
   }
 };
 </script>
@@ -86,14 +106,14 @@ const deleteSelected = async () => {
       <h4 class="text-2xl font-medium">Projects</h4>
       <div class="flex justify-between">
         <button
+          @click="openAdd"
           class="text-white flex items-center gap-2 rounded-3xl px-4 py-2 cursor-pointer bg-primary">
           <Icon name="ic:round-plus" /> <span>Add Project</span>
         </button>
 
-        <!-- Delete Selected (only show if something is selected) -->
         <button
           v-if="selectedProjects.length > 0"
-          @click="deleteSelected"
+          @click="openDelete({ id: selectedProjects[0] })"
           class="text-white flex items-center gap-2 rounded-3xl px-4 py-2 cursor-pointer bg-red-600">
           <Icon name="fluent:delete-12-filled" /> <span>Delete Selected</span>
         </button>
@@ -102,7 +122,6 @@ const deleteSelected = async () => {
 
     <!-- Table -->
     <div class="border border-gray-300 rounded-lg overflow-hidden">
-      <!-- Header -->
       <div
         class="grid grid-cols-[40px_1fr_2fr_1fr_1fr_1fr_1fr_0.8fr_80px] bg-gray-200 font-semibold text-sm">
         <div class="p-2 flex justify-center">
@@ -121,10 +140,9 @@ const deleteSelected = async () => {
         <div class="p-2 text-center">Action</div>
       </div>
 
-      <!-- Rows -->
       <div
-        v-for="(project, index) in projects"
-        :key="index"
+        v-for="project in projects"
+        :key="project.id"
         class="grid grid-cols-[40px_1fr_2fr_1fr_1fr_1fr_1fr_0.8fr_80px] text-sm border-t border-gray-200 bg-white">
         <div class="p-2 flex justify-center">
           <input
@@ -153,12 +171,31 @@ const deleteSelected = async () => {
           }}
         </div>
         <div class="p-2 flex justify-center gap-2 text-lg">
-          <Icon name="basil:edit-solid" class="text-gray-400 cursor-pointer" />
+          <Icon
+            name="basil:edit-solid"
+            class="text-gray-400 cursor-pointer"
+            @click="openEdit(project)" />
           <Icon
             name="fluent:delete-12-filled"
-            class="text-red-600 cursor-pointer" />
+            class="text-red-600 cursor-pointer"
+            @click="openDelete(project)" />
         </div>
       </div>
     </div>
+
+    <!-- Form Modal -->
+    <Modal
+      v-if="showModal"
+      :action="modalAction"
+      :project="activeProject"
+      @close="showModal = false"
+      @result="handleResult" />
+
+    <!-- Status Modal -->
+    <StatusModal
+      v-if="showStatus"
+      :status="status"
+      :action="statusAction"
+      @close="showStatus = false" />
   </main>
 </template>

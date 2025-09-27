@@ -1,74 +1,215 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-
 const props = defineProps({
-  show: Boolean, // controls visibility
-  mode: String, // "add" | "edit" | "delete"
-  project: Object, // the project to edit/delete
+  action: { type: String, required: true }, // "add" | "edit" | "delete"
+  project: { type: Object, default: null },
 });
 
-const emit = defineEmits(['close', 'submit']);
+const emit = defineEmits(['close', 'result']);
+const supabase = useSupabaseClient();
+const loading = ref(false);
+
+const form = reactive({
+  name: '',
+  description: '',
+  category: '',
+  client: '',
+  delivery_date: '',
+  main_image: '',
+  other_images: ['', '', '', ''],
+});
+
+const titleMap = {
+  add: 'Add Project',
+  edit: 'Edit Project',
+  delete: 'Delete Project',
+};
+
+// preload when editing
+watch(
+  () => props.project,
+  (newVal) => {
+    if (props.action === 'edit' && newVal) {
+      Object.assign(form, newVal);
+    }
+  },
+  { immediate: true }
+);
+
+const handleConfirm = async () => {
+  loading.value = true;
+  try {
+    let resultProject = null;
+
+    // Sanitize other_images
+    const cleanImages = form.other_images.filter((img) => img.trim() !== '');
+    const payload = {
+      ...form,
+      other_images: cleanImages.length > 0 ? cleanImages : null, // null if empty
+    };
+
+    if (props.action === 'delete') {
+      const { error } = await supabase
+        .from('projects')
+        .delete()
+        .eq('id', props.project.id);
+      if (error) throw error;
+      resultProject = props.project;
+    } else if (props.action === 'edit') {
+      const { data, error } = await supabase
+        .from('projects')
+        .update(payload)
+        .eq('id', props.project.id)
+        .select()
+        .single();
+      if (error) throw error;
+      resultProject = data;
+    } else if (props.action === 'add') {
+      const { data, error } = await supabase
+        .from('projects')
+        .insert([payload])
+        .select()
+        .single();
+      if (error) throw error;
+      resultProject = data;
+    }
+
+    emit('result', {
+      status: 'success',
+      action: props.action,
+      project: resultProject,
+    });
+  } catch (err) {
+    console.error(err);
+    emit('result', {
+      status: 'error',
+      action: props.action,
+      project: props.project,
+    });
+  } finally {
+    loading.value = false;
+    emit('close');
+  }
+};
 </script>
 
 <template>
-  <div
-    v-if="show"
-    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6">
+  <div class="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+    <div
+      class="bg-[#fafafa] py-6 pl-6 rounded-xl w-[50%] max-h-[90vh] shadow-lg">
       <!-- Header -->
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-semibold capitalize">{{ mode }} project</h2>
-        <button @click="$emit('close')" class="text-gray-500">✖</button>
+      <h2 class="text-xl font-semibold mb-4 text-center">
+        {{ titleMap[props.action] }}
+      </h2>
+
+      <!-- Delete Confirmation -->
+      <div
+        v-if="props.action === 'delete'"
+        class="flex flex-col items-center text-center gap-6">
+        <p>
+          Are you sure you want to delete
+          <strong>{{ props.project?.name }}</strong
+          >?
+        </p>
+
+        <div class="flex justify-center gap-4 mt-6">
+          <button
+            @click="$emit('close')"
+            :disabled="loading"
+            class="px-6 py-1 border rounded-full bg-white border-grey-30 disabled:opacity-50">
+            Cancel
+          </button>
+          <button
+            @click="handleConfirm"
+            :disabled="loading"
+            class="px-6 py-1 rounded-full bg-red-500 text-white flex items-center gap-2 disabled:opacity-50">
+            <span v-if="loading">
+              Loading
+              <Icon
+                name="line-md:loading-twotone-loop"
+                width="20"
+                height="20" />
+            </span>
+            <span v-else>Delete</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Body -->
-      <div>
-        <template v-if="mode === 'add' || mode === 'edit'">
-          <form @submit.prevent="$emit('submit', project)">
-            <div class="mb-4">
-              <label class="block mb-1 text-sm font-medium">Name</label>
-              <input
-                v-model="project.name"
-                type="text"
-                class="w-full border rounded p-2"
-                required />
-            </div>
-            <div class="mb-4">
-              <label class="block mb-1 text-sm font-medium">Description</label>
-              <textarea
-                v-model="project.description"
-                class="w-full border rounded p-2"
-                rows="3"
-                required />
-            </div>
-            <!-- You can add more fields for category, client, date, etc. -->
-            <button
-              type="submit"
-              class="bg-primary text-white px-4 py-2 rounded">
-              Save
-            </button>
-          </form>
-        </template>
+      <!-- Add/Edit Form -->
+      <div v-else class="flex flex-col gap-3 max-h-[80vh] overflow-y-auto pr-8">
+        <input v-model="form.name" type="text" placeholder="Name" />
+        <textarea
+          v-model="form.description"
+          placeholder="Description"
+          rows="5"
+          class="min-h-[120px]" />
 
-        <template v-else-if="mode === 'delete'">
-          <p>
-            Are you sure you want to delete <b>{{ project?.name }}</b
-            >?
-          </p>
-          <div class="flex justify-end gap-2 mt-4">
-            <button
-              @click="$emit('close')"
-              class="px-4 py-2 rounded border border-gray-300">
-              Cancel
-            </button>
-            <button
-              @click="$emit('submit', project)"
-              class="px-4 py-2 rounded bg-red-600 text-white">
-              Delete
-            </button>
+        <select v-model="form.category" name="category">
+          <option value="">Select Category</option>
+          <option value="Automation">Automation</option>
+          <option value="Procurement">Procurement</option>
+          <option value="Metering">Metering</option>
+          <option value="Measuring">Measuring</option>
+          <option value="Monitoring">Monitoring</option>
+          <option value="Analysis">Analysis</option>
+        </select>
+
+        <input v-model="form.client" type="text" placeholder="Client" />
+        <input v-model="form.delivery_date" type="date" />
+        <input
+          v-model="form.main_image"
+          type="url"
+          placeholder="Main Image URL" />
+
+        <!-- Other Images -->
+        <div>
+          <label class="mb-2 block font-medium">Other Images (max 4)</label>
+          <div class="flex flex-col gap-2">
+            <input
+              v-for="(img, i) in form.other_images"
+              :key="i"
+              v-model="form.other_images[i]"
+              type="url"
+              :placeholder="`Other Image URL ${i + 1}`" />
           </div>
-        </template>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-end gap-2 mt-6">
+          <button
+            @click="$emit('close')"
+            :disabled="loading"
+            class="px-6 py-1 border rounded-full bg-white border-grey-30 disabled:opacity-50">
+            Cancel
+          </button>
+          <button
+            @click="handleConfirm"
+            :disabled="loading"
+            class="px-6 py-1 rounded-full bg-primary text-white flex items-center gap-2 disabled:opacity-50">
+            <span v-if="loading">
+              Loading
+              <Icon
+                name="line-md:loading-twotone-loop"
+                width="20"
+                height="20" />
+            </span>
+            <span v-else>Save</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+input,
+textarea,
+select {
+  margin-bottom: 4px;
+  background: #fff;
+  padding: 12px 8px;
+  border: 1px solid #bec0c0;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 0.8rem;
+}
+</style>
