@@ -33,7 +33,7 @@ import logo from '@/assets/images/whitelogo.png';
           <NuxtLink to="/">Home</NuxtLink>
           <NuxtLink to="/about">About</NuxtLink>
           <NuxtLink>Privacy Policy</NuxtLink>
-          <NuxtLink>Projects</NuxtLink>
+          <NuxtLink to="/projects">Projects</NuxtLink>
         </div>
       </div>
       <div>

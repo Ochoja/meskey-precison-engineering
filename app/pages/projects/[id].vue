@@ -1,59 +1,88 @@
-<script setup lang="ts">
+<script setup>
 import { useProjectsStore } from '~/stores/projects';
 
 const route = useRoute();
+const client = useSupabaseClient();
 const projectsStore = useProjectsStore();
 
-// Ensure projects are loaded (so direct visits to /projects/123 still work)
-await projectsStore.fetchProjects();
-
-// Computed project based on ID
-const project = computed(() => {
-  return projectsStore.projects.find(
-    (p) => String(p.id) === String(route.params.id)
-  );
+// Normalize id to always be string
+const projectId = computed(() => {
+  const id = route.params.id;
+  if (Array.isArray(id)) return id[0];
+  return id ?? '';
 });
 
-// If project not found in store, fetch directly from Supabase
-if (!project.value) {
-  const client = useSupabaseClient();
-  const { data, error } = await client
-    .from('projects')
-    .select('*')
-    .eq('id', route.params.id)
-    .single();
+// Async load project (SSR + CSR safe)
+const { data: project } = await useAsyncData(
+  `project-${projectId.value}`,
+  async () => {
+    if (!projectId.value) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Invalid project id',
+      });
+    }
 
-  if (error || !data) {
-    throw createError({ statusCode: 404, statusMessage: 'Project not found' });
+    const cached = projectsStore.projects.find(
+      (p) => String(p.id) === projectId.value
+    );
+    if (cached) return cached;
+
+    // Otherwise fetch from Supabase
+    const { data, error } = await client
+      .from('projects')
+      .select('*')
+      .eq('id', projectId.value)
+      .single();
+
+    if (error || !data) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Project not found',
+      });
+    }
+
+    projectsStore.projects.push(data);
+    return data;
   }
+);
 
-  projectsStore.projects.push(data); // cache in store for later
-}
+// Images array
+const images = computed(() => {
+  if (!project.value) return [];
+  const extras = Array.isArray(project.value.other_images)
+    ? project.value.other_images.filter(Boolean)
+    : [];
+  return [project.value.main_image, ...extras].filter(Boolean);
+});
 </script>
 
 <template>
-  <main class="layout-pad mt-12">
-    <div v-if="project" class="flex flex-col gap-6">
-      <h1 class="text-4xl font-medium">{{ project.name }}</h1>
-      <p class="font-light">{{ project.description }}</p>
+  <main v-if="project" class="layout-pad mt-12 mb-20">
+    <!-- Project info -->
+    <h1 class="text-4xl font-medium mb-2">{{ project.name }}</h1>
 
-      <div class="flex gap-6" v-if="project.client || project.delivery_date">
-        <div v-if="project.client">
-          <div class="font-semibold">Client:</div>
-          <div class="font-light text-sm">{{ project.client }}</div>
-        </div>
+    <div class="flex flex-wrap font-medium text-primary gap-4">
+      <div v-if="project.category">{{ project.category }}</div>
+      <div v-if="project.client">{{ project.client }}</div>
+      <div v-if="project.delivery_date">{{ project.delivery_date }}</div>
+    </div>
 
-        <div v-if="project.delivery_date">
-          <div class="font-semibold">Delivered:</div>
-          <div class="font-light text-sm">{{ project.delivery_date }}</div>
-        </div>
-      </div>
+    <p class="font-light text-lg mt-4">{{ project.description }}</p>
 
+    <!-- Project images -->
+    <h2 class="mt-12 font-medium text-3xl mb-4">Project Images</h2>
+
+    <div class="grid gap-4 md:grid-cols-2">
       <NuxtImg
-        :src="
-          project.main_image || 'https://placehold.co/600x400?text=No+Image'
-        "
-        class="rounded-2xl border border-primary-10 max-w-3xl" />
+        v-for="(img, i) in images"
+        :key="i"
+        :src="img || 'https://placehold.co/600x400?text=No+Image'"
+        class="h-[400px] object-cover rounded-xl border border-primary-10" />
     </div>
   </main>
+
+  <section v-else>
+    <p>Loading project...</p>
+  </section>
 </template>
