@@ -8,7 +8,13 @@ const router = useRouter();
 const client = useSupabaseClient();
 const projectsStore = useProjectsStore();
 
-// Detect if on service page
+// Prefetch all projects immediately when app loads
+if (!projectsStore.projects.length) {
+  const { data } = await client.from('projects').select('*');
+  if (data) projectsStore.projects.push(...data);
+}
+
+// Detect if on a service page
 const isServicePage = computed(() => route.path.startsWith('/services'));
 
 // Map service id → name
@@ -20,42 +26,33 @@ const serviceMap = {
   5: 'Monitoring',
 };
 
-// Async load projects
-const { data: projects } = await useAsyncData('projects', async () => {
-  // If store already has projects, return them
-  if (projectsStore.projects.length) return projectsStore.projects;
-
-  // Otherwise fetch all projects
-  const { data, error } = await client.from('projects').select('*');
-  if (error || !data) return [];
-
-  // Save to store
-  projectsStore.projects.push(...data);
-  return data;
-});
-
 // Compute projects to display
 const displayedProjects = computed(() => {
-  if (!projects.value) return [];
+  if (!projectsStore.projects.length) return [];
 
   if (isServicePage.value) {
     const serviceId = String(route.params.id);
     const serviceName = serviceMap[serviceId];
-    return projects.value.filter((p) => p.category === serviceName).slice(0, 3);
+    return projectsStore.projects
+      .filter((p) => p.category === serviceName)
+      .slice(0, 3);
   }
 
   // Home page: first 3 projects
-  return projects.value.slice(0, 3);
+  return projectsStore.projects.slice(0, 3);
 });
 
 // Navigate to project page
 function goToProject(id) {
-  router.push(`/projects/${id}`);
+  router.push(`/project/${id}`);
 }
 </script>
 
 <template>
-  <section class="text-center my-16 flex flex-col gap-6">
+  <!-- Only render section if there are projects to show -->
+  <section
+    v-if="displayedProjects.length"
+    class="text-center my-16 flex flex-col gap-6">
     <!-- Section Header -->
     <h2 class="text-2xl font-medium">
       {{ isServicePage ? 'Our Completed Projects' : 'Our Projects' }}
@@ -81,7 +78,7 @@ function goToProject(id) {
     </div>
 
     <!-- CTA Button -->
-    <div v-if="displayedProjects.length">
+    <div v-if="!isServicePage">
       <button
         @click="router.push('/projects')"
         class="bg-primary px-6 py-3 text-white font-medium rounded-lg cursor-pointer hover:bg-primary/90 transition">
