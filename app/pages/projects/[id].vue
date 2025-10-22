@@ -16,21 +16,35 @@ const projectId = computed(() => {
   return Array.isArray(id) ? id[0] : id ?? '';
 });
 
-// Fetch project data
-const { data: project } = await useAsyncData(
+// ✅ Fetch project data safely
+const { data: project, error } = await useAsyncData(
   `project-${projectId.value}`,
   async () => {
-    if (!projectId.value)
+    if (!projectId.value) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Invalid project id',
       });
+    }
 
+    // Try to get from store first
     const cached = projectsStore.projects.find(
       (p) => String(p.id) === projectId.value
     );
     if (cached) return cached;
 
+    // If store empty, try fetching from /api/projects as fallback
+    // (SSR-safe and still uses your Supabase API route)
+    const { data: apiProjects } = await useFetch('/api/projects');
+    if (apiProjects.value?.length) {
+      projectsStore.projects = apiProjects.value;
+      const found = apiProjects.value.find(
+        (p) => String(p.id) === projectId.value
+      );
+      if (found) return found;
+    }
+
+    // Final fallback: fetch directly from Supabase
     const { data, error } = await client
       .from('projects')
       .select('*')
@@ -138,6 +152,7 @@ const onSwiperMounted = async (swiper) => {
   </main>
 
   <section v-else class="layout-pad mt-12">
-    <p>Loading project...</p>
+    <p v-if="error">Project not found.</p>
+    <p v-else>Loading project...</p>
   </section>
 </template>
