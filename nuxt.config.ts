@@ -35,4 +35,7 @@ export default defineNuxtConfig({
   supabase: {
     redirect: false,
   },
+  nitro: {
+    preset: 'vercel',
+  },
 });
