@@ -1,9 +1,9 @@
 <template>
   <main class="layout-pad mt-8 mb-20">
-    <h1 class="text-4xl">Meskey Energy</h1>
+    <h1 class="text-4xl font-medium">Meskey Energy</h1>
     <p class="font-light text-sm mt-1">Reliable Energy. Smarter Solutions.</p>
 
-    <section class="mt-6 font-light">
+    <section class="mt-6 font-light leading-relaxed">
       Meskey Energy is driving the future of power and smart infrastructure by
       bringing world-leading expertise in electrification, automation, and
       digitisation. We deliver intelligent solutions for smart industries,
@@ -16,8 +16,8 @@
     </section>
 
     <section class="mt-6">
-      <h2 class="text-2xl mb-2">Our Services:</h2>
-      <ul class="font-light">
+      <h2 class="text-2xl mb-2 font-medium">Our Services:</h2>
+      <ul class="font-light space-y-2">
         <li>
           <span class="font-semibold"
             >Electrical installations & rural electrification</span
@@ -62,35 +62,65 @@
       sustainability.
     </p>
 
-    <section class="mt-10">
-      <h2 class="text-2xl mb-4">Gallery</h2>
-      <Swiper
-        :modules="[Pagination, Navigation, Autoplay]"
-        :slides-per-view="1"
-        :space-between="20"
-        :pagination="{ clickable: true }"
-        :navigation="true"
-        :autoplay="{ delay: 3000, disableOnInteraction: false }"
-        :breakpoints="{
-          640: { slidesPerView: 1, spaceBetween: 20 }, // mobile
-          1024: { slidesPerView: 3, spaceBetween: 30 }, // desktop
-        }"
-        class="gallery-swiper">
-        <SwiperSlide v-for="(image, index) in images" :key="index">
-          <img :src="image" class="w-full h-[40vh] object-cover rounded-lg" />
-        </SwiperSlide>
-      </Swiper>
+    <!-- Gallery Section -->
+    <section class="mt-12">
+      <div class="flex justify-between items-center">
+        <h2 class="font-medium text-3xl">Gallery</h2>
+
+        <!-- Custom navigation buttons -->
+        <div class="flex gap-4 text-primary text-4xl">
+          <div
+            ref="prevEl"
+            class="cursor-pointer hover:scale-110 transition-transform">
+            <Icon name="solar:round-arrow-left-line-duotone" />
+          </div>
+          <div
+            ref="nextEl"
+            class="cursor-pointer hover:scale-110 transition-transform">
+            <Icon name="solar:round-arrow-right-line-duotone" />
+          </div>
+        </div>
+      </div>
+
+      <ClientOnly>
+        <div class="mt-6">
+          <Swiper
+            :modules="[Navigation, Autoplay]"
+            :space-between="30"
+            :loop="true"
+            :autoplay="{ delay: 4000, disableOnInteraction: false }"
+            :breakpoints="{
+              0: { slidesPerView: 1.1 },
+              640: { slidesPerView: 1.5 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 2.5 },
+            }"
+            class="overflow-visible"
+            @swiper="onSwiperMounted">
+            <SwiperSlide
+              v-for="(image, i) in images"
+              :key="i"
+              class="flex flex-col items-start">
+              <img
+                :src="image"
+                alt="Meskey Energy project image"
+                class="w-full h-[400px] object-cover rounded-xl mb-3 shadow-md" />
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      </ClientOnly>
     </section>
   </main>
 </template>
 
 <script setup>
+import { ref, nextTick } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
+// gallery images
 const images = [
   'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-09-18%20at%207.21.59%20PM.jpeg?updatedAt=1758220615029',
   'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-09-18%20at%207.21.57%20PM%20(1).jpeg?updatedAt=1758220614902',
@@ -98,27 +128,18 @@ const images = [
   'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-09-18%20at%207.21.57%20PM.jpeg?updatedAt=1758220614656',
   'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-09-18%20at%207.22.02%20PM.jpeg?updatedAt=1758220614645',
 ];
+
+const prevEl = ref(null);
+const nextEl = ref(null);
+
+// attach swiper navigation on mount
+const onSwiperMounted = async (swiper) => {
+  await nextTick();
+  if (process.client && prevEl.value && nextEl.value) {
+    swiper.params.navigation.prevEl = prevEl.value;
+    swiper.params.navigation.nextEl = nextEl.value;
+    swiper.navigation.init();
+    swiper.navigation.update();
+  }
+};
 </script>
-
-<style scoped>
-/* Move pagination below the images */
-.gallery-swiper .swiper-pagination {
-  position: static;
-  margin-top: 1rem;
-  text-align: center;
-}
-
-/* Move arrows outside the image area */
-.gallery-swiper .swiper-button-next,
-.gallery-swiper .swiper-button-prev {
-  top: auto;
-  bottom: -40px;
-  color: #333; /* make arrow color visible */
-}
-.gallery-swiper .swiper-button-prev {
-  left: 40%;
-}
-.gallery-swiper .swiper-button-next {
-  right: 40%;
-}
-</style>
