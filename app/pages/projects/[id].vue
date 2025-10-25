@@ -10,31 +10,25 @@ const route = useRoute();
 const client = useSupabaseClient();
 const projectsStore = useProjectsStore();
 
-// Get project ID
+// --- route param ---
 const projectId = computed(() => {
   const id = route.params.id;
-  return Array.isArray(id) ? id[0] : id ?? '';
+  return Array.isArray(id) ? id[0] : id || '';
 });
 
-// ✅ Fetch project data safely
-const { data: project, error } = await useAsyncData(
+// --- data fetch ---
+const { data: project, pending } = await useAsyncData(
   `project-${projectId.value}`,
   async () => {
-    if (!projectId.value) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Invalid project id',
-      });
-    }
+    if (!projectId.value) return null;
 
-    // Try to get from store first
+    // 1️⃣ Try store first
     const cached = projectsStore.projects.find(
       (p) => String(p.id) === projectId.value
     );
     if (cached) return cached;
 
-    // If store empty, try fetching from /api/projects as fallback
-    // (SSR-safe and still uses your Supabase API route)
+    // 2️⃣ Try API route
     const { data: apiProjects } = await useFetch('/api/projects');
     if (apiProjects.value?.length) {
       projectsStore.projects = apiProjects.value;
@@ -44,26 +38,29 @@ const { data: project, error } = await useAsyncData(
       if (found) return found;
     }
 
-    // Final fallback: fetch directly from Supabase
+    // 3️⃣ Try Supabase fallback
     const { data, error } = await client
       .from('projects')
       .select('*')
       .eq('id', projectId.value)
       .single();
 
-    if (error || !data) {
-      throw createError({
-        statusCode: 404,
-        statusMessage: 'Project not found',
-      });
-    }
-
+    if (error || !data) return null;
     projectsStore.projects.push(data);
     return data;
   }
 );
 
-// Combine images
+// --- Handle not found: trigger Nuxt 404 error page ---
+if (!pending.value && !project.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Project not found',
+    fatal: true,
+  });
+}
+
+// --- images ---
 const images = computed(() => {
   if (!project.value) return [];
   const extras = Array.isArray(project.value.other_images)
@@ -72,15 +69,13 @@ const images = computed(() => {
   return [project.value.main_image, ...extras].filter(Boolean);
 });
 
-// Swiper navigation
-const swiperRef = ref(null);
+// --- swiper navigation ---
 const prevEl = ref(null);
 const nextEl = ref(null);
 
-// Attach custom navigation AFTER DOM renders
 const onSwiperMounted = async (swiper) => {
   await nextTick();
-  if (prevEl.value && nextEl.value) {
+  if (process.client && prevEl.value && nextEl.value) {
     swiper.params.navigation.prevEl = prevEl.value;
     swiper.params.navigation.nextEl = nextEl.value;
     swiper.navigation.init();
@@ -90,8 +85,13 @@ const onSwiperMounted = async (swiper) => {
 </script>
 
 <template>
-  <main v-if="project" class="layout-pad mt-12 mb-20">
-    <!-- Project info -->
+  <!-- loading -->
+  <main v-if="pending" class="layout-pad mt-12 mb-20">
+    <p>Loading project...</p>
+  </main>
+
+  <!-- project -->
+  <main v-else class="layout-pad mt-12 mb-20">
     <h1 class="text-4xl font-medium mb-2">{{ project.name }}</h1>
 
     <div class="flex flex-wrap font-medium text-primary gap-4">
@@ -102,28 +102,28 @@ const onSwiperMounted = async (swiper) => {
 
     <p class="font-light text-lg mt-4">{{ project.description }}</p>
 
-    <!-- Project Images -->
     <section class="mt-12">
       <div class="flex justify-between items-center">
         <h2 class="font-medium text-3xl">Project Images</h2>
 
-        <!-- Navigation arrows -->
+        <!-- navigation buttons -->
         <div class="flex gap-4 text-primary text-4xl">
-          <Icon
-            name="solar:round-arrow-left-line-duotone"
+          <div
             ref="prevEl"
-            class="cursor-pointer hover:scale-110 transition-transform" />
-          <Icon
-            name="solar:round-arrow-right-line-duotone"
+            class="cursor-pointer hover:scale-110 transition-transform">
+            <Icon name="solar:round-arrow-left-line-duotone" />
+          </div>
+          <div
             ref="nextEl"
-            class="cursor-pointer hover:scale-110 transition-transform" />
+            class="cursor-pointer hover:scale-110 transition-transform">
+            <Icon name="solar:round-arrow-right-line-duotone" />
+          </div>
         </div>
       </div>
 
       <ClientOnly>
         <div class="mt-6">
           <Swiper
-            ref="swiperRef"
             :modules="[Navigation, Autoplay]"
             :space-between="30"
             :loop="true"
@@ -150,9 +150,4 @@ const onSwiperMounted = async (swiper) => {
       </ClientOnly>
     </section>
   </main>
-
-  <section v-else class="layout-pad mt-12">
-    <p v-if="error">Project not found.</p>
-    <p v-else>Loading project...</p>
-  </section>
 </template>
