@@ -127,7 +127,7 @@ onBeforeUnmount(() => {
     class="bg-[url(https://ik.imagekit.io/Ochoja01/meskey/herobg.png?updatedAt=1758227487910)] bg-cover bg-center">
     <Navigation dark="true" />
     <div
-      class="text-white text-center py-[25vh] w-[85%] lg:w-[70%] mx-auto flex flex-col gap-6">
+      class="text-white text-center py-[20vh] md:py-[25vh] w-[90%] lg:w-[70%] mx-auto flex flex-col gap-6">
       <h1 class="font-medium text-5xl md:text-6xl xl:text-7xl">
         Optimization is our <span class="text-primary">Core</span>
       </h1>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import logo from '../assets/images/mainlogo.png';
+import { ref } from 'vue';
 
 definePageMeta({
   layout: 'auth',
@@ -10,13 +11,19 @@ const supabase = useSupabaseClient();
 const email = ref('');
 const password = ref('');
 const errorMsg = ref('');
+const loading = ref(false); // ✅ loading state
 
 // Login handler
 async function signIn() {
+  loading.value = true; // start loading
+  errorMsg.value = '';
+
   const { error } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   });
+
+  loading.value = false; // stop loading
 
   if (error) {
     errorMsg.value = error.message;
@@ -34,27 +41,37 @@ async function signIn() {
       @submit.prevent="signIn"
       class="w-full md:max-w-[60%] lg:max-w-[50%] bg-[#fafafa] border border-primary-20 px-8 py-6 rounded-2xl shadow-[2px_2px_50px_20px_rgba(0,0,0,0.04)] mx-auto">
       <h4 class="text-2xl mb-6 text-center">Login</h4>
+
       <div>
         <label for="email">Email Address</label>
         <input
           v-model="email"
           type="email"
           id="email"
-          placeholder="example@example.com" />
+          placeholder="example@example.com"
+          required />
 
         <label for="password">Password</label>
         <input
           v-model="password"
           type="password"
           id="password"
-          placeholder="Input your Password" />
+          placeholder="Input your Password"
+          required />
       </div>
 
       <p v-if="errorMsg" class="text-red-500 text-sm mb-3">{{ errorMsg }}</p>
 
       <button
-        class="bg-primary text-white w-full font-medium text-lg py-3 rounded-xl">
-        Login
+        type="submit"
+        :disabled="loading"
+        class="bg-primary text-white w-full font-medium text-lg py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed">
+        <!-- Loading icon when logging in -->
+        <Icon
+          v-if="loading"
+          name="eos-icons:loading"
+          class="animate-spin text-xl" />
+        <span>{{ loading ? 'Logging in...' : 'Login' }}</span>
       </button>
     </form>
   </main>

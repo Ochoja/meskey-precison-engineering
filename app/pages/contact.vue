@@ -99,9 +99,14 @@ p {
   font-weight: 300;
 }
 
+a {
+  text-decoration: underline;
+}
+
 a:hover {
   cursor: pointer;
   text-decoration: underline;
+  color: #ff6600;
 }
 
 label {

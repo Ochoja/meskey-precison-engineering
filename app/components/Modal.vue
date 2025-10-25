@@ -155,7 +155,10 @@ const handleConfirm = async () => {
       </div>
 
       <!-- Add/Edit Form -->
-      <div v-else class="flex flex-col gap-3 max-h-[80vh] overflow-y-auto pr-8">
+      <form
+        v-else
+        @submit.prevent="handleConfirm"
+        class="flex flex-col gap-3 max-h-[80vh] overflow-y-auto pr-8">
         <input v-model="form.name" type="text" placeholder="Name" required />
         <textarea
           v-model="form.description"
@@ -209,7 +212,7 @@ const handleConfirm = async () => {
             Cancel
           </button>
           <button
-            @click="handleConfirm"
+            type="submit"
             :disabled="loading"
             class="px-6 py-1 rounded-full bg-primary text-white flex items-center gap-2 disabled:opacity-50">
             <span v-if="loading">
@@ -222,7 +225,7 @@ const handleConfirm = async () => {
             <span v-else>Save</span>
           </button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
