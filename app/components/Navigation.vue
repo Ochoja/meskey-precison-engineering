@@ -23,8 +23,13 @@ const services = [
 ];
 
 const companies = [
-  { name: 'Meskey Energy', path: '/companies/meskeyenergy' },
   { name: 'Meskey Group', path: '/companies/meskeygroup' },
+  { name: 'Meskey Energy', path: '/companies/meskeyenergy' },
+  { name: 'Meskey Engineering Service', path: '/companies/engservice' },
+  { name: 'Meskey Holding', path: '/companies/meskeyholding' },
+  { name: 'Meskey Technologies', path: '/companies/meskeytechnologies' },
+  { name: 'Meskey Limited', path: '/companies/meskeylimited' },
+  { name: 'Meskey Service', path: '/companies/meskeyservice' },
 ];
 
 const mobileMenuOpen = ref(false);
@@ -107,7 +112,7 @@ const toggleMobileMenu = () => {
 
         <div
           v-if="openDropdown === 'companies'"
-          class="w-[120%] flex flex-col gap-2 absolute px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
+          class="w-[140%] flex flex-col gap-2 absolute px-4 py-2 bg-white text-grey-110 top-8 rounded-lg border border-primary-30">
           <NuxtLink v-for="c in companies" :key="c.path" :to="c.path">
             {{ c.name }}
           </NuxtLink>

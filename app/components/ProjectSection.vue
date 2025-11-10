@@ -2,6 +2,7 @@
 import { useProjectsStore } from '~/stores/projects';
 import { useRouter, useRoute } from 'vue-router';
 import { useSupabaseClient } from '#imports';
+import { computed } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -66,12 +67,12 @@ function goToProject(id) {
         :key="index"
         class="flex flex-col gap-1 cursor-pointer"
         @click="goToProject(project.id)">
-        <div class="min-h-[50vh]">
+        <div class="w-full h-[300px] overflow-hidden rounded-2xl">
           <NuxtImg
             :src="
               project.main_image || 'https://placehold.co/600x400?text=No+Image'
             "
-            class="rounded-2xl w-full h-full object-cover" />
+            class="w-full h-full object-cover rounded-2xl" />
         </div>
         <p>{{ project.name }}</p>
       </div>
