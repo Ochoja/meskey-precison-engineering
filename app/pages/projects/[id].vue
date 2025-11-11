@@ -143,7 +143,7 @@ const onSwiperMounted = async (swiper) => {
               <NuxtImg
                 :src="img || 'https://placehold.co/600x400?text=No+Image'"
                 alt="Project image"
-                class="w-full h-[400px] object-cover rounded-xl mb-3" />
+                class="w-full h-[400px] object-cover rounded-xl mb-3 border border-primary-30" />
             </SwiperSlide>
           </Swiper>
         </div>
