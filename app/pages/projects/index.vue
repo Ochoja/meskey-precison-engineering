@@ -34,7 +34,7 @@ const projects = computed(() => projectsStore.projects);
           :src="
             project.main_image || 'https://placehold.co/600x400?text=No+Image'
           "
-          class="min-w-[40%] rounded-2xl border border-primary-10" />
+          class="min-w-[40%] max-h-[350px] object-cover rounded-2xl border border-primary-10" />
 
         <!-- Project details -->
         <div class="flex flex-col gap-4">
