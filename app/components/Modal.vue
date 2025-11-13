@@ -176,6 +176,7 @@ const handleConfirm = async () => {
           <option value="Monitoring">Monitoring</option>
           <option value="Analysis">Analysis</option>
           <option value="Calibration">Calibration</option>
+          <option value="Welding & Fabrication">Welding & Fabrication</option>
         </select>
 
         <input
