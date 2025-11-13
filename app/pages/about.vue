@@ -51,8 +51,8 @@
     </div>
   </header>
 
-  <section class="mt-24 mb-28 layout-pad">
-    <h2 class="text-center mb-6 text-4xl">Our Story, Mission and Vision</h2>
+  <section class="mt-24 mb-20 layout-pad">
+    <h1 class="text-center mb-6 text-4xl">Our Story, Mission and Vision</h1>
 
     <!-- First row: Mission + Vision -->
     <div class="flex flex-col md:flex-row gap-4 mb-4">
@@ -94,6 +94,118 @@
       </p>
     </div>
   </section>
+
+  <section class="layout-pad mb-28">
+    <h1 class="text-4xl mb-4">Our Workflow</h1>
+
+    <div class="sect">
+      <h2>Engineering Design and Project Management</h2>
+      <p>
+        Meskey Group has in-house resources, capabilities and tools to offer a
+        full suite engineering project services from front-end design and
+        detailed engineering, to planning, execution, commissioning and
+        closeout.
+        <br />Our project management services group has developed a tailored and
+        integrated set of project management processes and systems that are
+        aligned with our engineering design services. Project management
+        professionals combine detailed technical knowledge of management
+        disciplines that include scope, schedule, budget, quality, QHSE and risk
+        management. <br />
+        Engineering calculations and drawings are supported by in- house and
+        third party developed advanced engineering software, and we perform our
+        design according to up-to-date industry codes, standards and
+        best-practice guidelines. <br />
+        Our areas of expertise include:
+      </p>
+    </div>
+
+    <div class="sect">
+      <h2>Feasibility Studies</h2>
+      <p>
+        Feasibility Studies provide a solid foundation for any process led
+        engineering project. Feasibility studies facilitate informed decisions;
+        often-saving companies’ and investors’ time, cost and effort throughout
+        the life of a project. <br />
+        Meskey Group's extensive in-house knowledge and expertise can be applied
+        to your project, setting the precedent for achieving optimum value.
+      </p>
+    </div>
+
+    <div class="sect">
+      <h2>Conceptual Design</h2>
+      <p>
+        Our Conceptual Design Studies shape a project’s success, strategy and
+        development plans for the future. The early phase of project planning is
+        quite complex with various decisions being driven by variables such as;
+        health & safety, security, environmental impact, logistics, technology,
+        complexity, infrastructure availability and economic evaluations, all of
+        which can have a direct impact on capital cost.
+      </p>
+    </div>
+
+    <div class="sect">
+      <h2>Front End Engineering Design</h2>
+      <p>
+        Front End Engineering Design package sets the precedence for achieving
+        optimum value for any process led engineering project while keeping
+        effective controls on cost and Multi-disciplinary teams work in a
+        flexible manner to provide a high-quality bespoke engineering solution
+        to each customer’s unique development. Our success is underpinned by
+        working closely with customers to align their needs with our robust and
+        proven FEED execution processes.We provide informed decision support,
+        cost estimate refinement, detail project scheduling and quantitative
+        risk profiling – all of which align stakeholder’s
+      </p>
+    </div>
+
+    <div class="sect">
+      <h2>Detailed Design</h2>
+      <p>
+        During Detailed Design the scope is developed to produce the definitive
+        information required for construction and installation. Every detailed
+        design project requires a unique engineering solution to ensure the
+        project is executed effectively, minimizing technical, cost and schedule
+        risks. In detailed design we convert the FEED results, tailored to the
+        client’s execution strategy, to deliver an engineering design, which can
+        be safely and efficiently constructed, installed and commissioned. We
+        work closely with equipment suppliers, fabricators and installation
+        contractors in this phase, and manage the technical and contractual
+        interfaces. Our engineering, procurement and quality assurance teams
+        work with supply chain of subcontractors and equipment suppliers, to
+        ensure the whole project is delivered to our client in line with their
+        defined stakeholders requirements and expectations. At Meskey Group we
+        provide a comprehensive detail design service using well established
+        procedures supported by a fully validated suite of design tools.
+      </p>
+    </div>
+
+    <h2 class="mb-[0.3em]">Project Management Services</h2>
+    <ul class="list-disc list-inside space-y-2">
+      <li>Clearly identify project scope requirement</li>
+      <li>Present viable options and execution strategy</li>
+      <li>Prepare material list and cost estimates</li>
+      <li>
+        Develop a detailed level 3 schedule, identifying project critical path
+        and establishing monitoring management plans
+      </li>
+      <li>Develop detailed project scope of work</li>
+      <li>Prepare project budgets or offer fixed cost turnkey price</li>
+      <li>
+        Develop and executed a detailed risk management register complete with
+        risk response plans.
+      </li>
+      <li>Execute project within customer scope, schedule and cost.</li>
+      <li>
+        Provide periodic management report throughout project planning execution
+        and close out
+      </li>
+      <li>Manage project variations using management of change processes</li>
+      <li>
+        Develop and manage Quality, Health, Safety and Environment management
+        plan aimed at ensuring an incident free project.
+      </li>
+    </ul>
+  </section>
 </template>
 
 <style scoped>
@@ -105,5 +217,27 @@ h5 {
 .stats p {
   font-weight: 300;
   font-size: 14px;
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #ff6600;
+}
+
+p {
+  font-weight: 300;
+}
+
+.sect {
+  margin-bottom: 2rem;
+}
+
+.sect h2 {
+  margin-bottom: 0.3em;
+}
+
+li {
+  font-weight: 300;
 }
 </style>
