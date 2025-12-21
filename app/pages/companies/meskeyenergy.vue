@@ -22,8 +22,8 @@
         <div
           v-for="(service, i) in services"
           :key="i"
-          class="bg-white border border-grey-20 rounded-2xl p-6 hover:shadow-lg transition-shadow">
-          <Icon :name="service.icon" class="text-primary text-4xl mb-4" />
+          class="bg-white border border-grey-20 rounded-2xl p-6 hover:shadow-lg transition-shadow hover:border-primary-30 hover:border-[1.5px]">
+          <Icon :name="service.icon" class="text-primary text-4xl mb-2" />
 
           <h3 class="font-medium text-lg mb-2">
             {{ service.title }}
