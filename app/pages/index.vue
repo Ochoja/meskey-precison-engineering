@@ -196,7 +196,7 @@ onBeforeUnmount(() => {
       <div
         v-for="(item, index) in servicelist"
         :key="index"
-        class="min-w-[75vw] md:min-w-[45%] lg:min-w-[26vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
+        class="min-w-[75vw] sm:min-w-[50vw] md:min-w-[40vw] lg:min-w-[26vw] xl:min-w-[24vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
         :style="{ backgroundImage: `url(${item.image})` }">
         <h5 class="font-medium text-xl">{{ item.service }}</h5>
         <div>
