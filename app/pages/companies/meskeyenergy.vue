@@ -53,6 +53,10 @@
           >
           — centralized control, safety interlocks and operational visibility.
         </li>
+        <li>
+          <span class="font-semibold">Data Center</span>
+          — reliable infrastructure for high-performance computing and storage.
+        </li>
       </ul>
     </section>
 
@@ -120,6 +124,10 @@ import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+useHead({
+  title: 'Meskey Energy',
+});
+
 // gallery images
 const images = [
   'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-09-18%20at%207.21.59%20PM.jpeg?updatedAt=1758220615029',
@@ -127,6 +135,9 @@ const images = [
   'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-09-18%20at%207.21.58%20PM.jpeg?updatedAt=1758220614658',
   'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-09-18%20at%207.21.57%20PM.jpeg?updatedAt=1758220614656',
   'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-09-18%20at%207.22.02%20PM.jpeg?updatedAt=1758220614645',
+  'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-12-18%20at%206.14.07%20PM.jpeg',
+  'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-12-18%20at%206.14.05%20PM.jpeg',
+  'https://ik.imagekit.io/Ochoja01/meskey/WhatsApp%20Image%202025-12-18%20at%206.14.05%20PM%20(1).jpeg',
 ];
 
 const prevEl = ref(null);

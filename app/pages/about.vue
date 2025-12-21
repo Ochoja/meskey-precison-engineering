@@ -1,3 +1,9 @@
+<script setup lang="ts">
+useHead({
+  title: 'About Meskey',
+});
+</script>
+
 <template>
   <header
     class="layout-pad mt-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] items-center lg:gap-20">

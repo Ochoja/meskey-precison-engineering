@@ -170,18 +170,24 @@ onBeforeUnmount(() => {
   <!-- Services Horizontal Scroll Section -->
   <section class="mt-16">
     <div
-      class="layout-pad flex flex-col gap-2 md:flex-row justify-between items-center">
+      class="layout-pad flex flex-col gap-2 lg:flex-row justify-between items-center">
       <h2
-        class="text-3xl md:text-5xl text-center md:text-left md:max-w-[55%] lg:max-w-[50%]">
+        class="text-3xl md:text-4xl lg:text-5xl text-center lg:text-left lg:max-w-[55%]">
         Structured Around Five
         <span class="font-medium text-primary-50">Pillars of Excellence</span>
       </h2>
-      <p
-        class="font-light text-center md:text-left md:max-w-[50%] lg:max-w-[40%]">
-        We provide reliable, high-performance engineering solutions that enhance
-        safety, efficiency, and precision across oil, gas, and industrial
-        operations.
-      </p>
+      <div class="font-light text-center lg:text-left lg:max-w-[40%]">
+        <p>
+          We provide reliable, high-performance engineering solutions that
+          enhance safety, efficiency, and precision across oil, gas, and
+          industrial operations.
+        </p>
+        <p
+          class="text-primary-30 md:text-right relative top-8 flex gap-1 items-center justify-end font-medium">
+          <span> Scroll Down to reveal </span>
+          <Icon name="mynaui:arrow-down" class="text-2xl"></Icon>
+        </p>
+      </div>
     </div>
 
     <div
@@ -190,7 +196,7 @@ onBeforeUnmount(() => {
       <div
         v-for="(item, index) in servicelist"
         :key="index"
-        class="min-w-[75vw] md:min-w-[40%] lg:min-w-[25vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
+        class="min-w-[75vw] md:min-w-[45%] lg:min-w-[26vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
         :style="{ backgroundImage: `url(${item.image})` }">
         <h5 class="font-medium text-xl">{{ item.service }}</h5>
         <div>

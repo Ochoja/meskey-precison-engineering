@@ -38,4 +38,13 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'vercel',
   },
+  app: {
+    head: {
+      title: 'Meskey Precision Engineering', // default fallback title
+      htmlAttrs: {
+        lang: 'en',
+      },
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    },
+  },
 });
