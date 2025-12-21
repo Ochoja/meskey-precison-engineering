@@ -16,48 +16,24 @@
     </section>
 
     <section class="mt-6">
-      <h2 class="text-2xl mb-2 font-medium">Our Services:</h2>
-      <ul class="font-light space-y-2">
-        <li>
-          <span class="font-semibold"
-            >Electrical installations & rural electrification</span
-          >
-          — end-to-end projects to connect communities and enterprises to
-          reliable power.
-        </li>
-        <li>
-          <span class="font-semibold"
-            >Transformer & streetlight installation</span
-          >
-          — robust deployment and planning for safer, better-lit towns and urban
-          areas.
-        </li>
-        <li>
-          <span class="font-semibold">Power plant maintenance</span> — scheduled
-          and predictive services to maximise uptime and performance.
-        </li>
-        <li>
-          <span class="font-semibold"
-            >Metering, cable scheduling & tap charger solutions</span
-          >
-          — precision planning and monitoring to improve efficiency and billing
-          accuracy.
-        </li>
-        <li>
-          <span class="font-semibold">UPS, inverters & battery banks</span> —
-          resilient backup systems for mission-critical operations.
-        </li>
-        <li>
-          <span class="font-semibold"
-            >Power control panels & control rooms</span
-          >
-          — centralized control, safety interlocks and operational visibility.
-        </li>
-        <li>
-          <span class="font-semibold">Data Center</span>
-          — reliable infrastructure for high-performance computing and storage.
-        </li>
-      </ul>
+      <h2 class="text-2xl mb-4 font-medium">Our Services</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          v-for="(service, i) in services"
+          :key="i"
+          class="bg-white border border-grey-20 rounded-2xl p-6 hover:shadow-lg transition-shadow">
+          <Icon :name="service.icon" class="text-primary text-4xl mb-4" />
+
+          <h3 class="font-medium text-lg mb-2">
+            {{ service.title }}
+          </h3>
+
+          <p class="font-light text-sm leading-relaxed text-grey-70">
+            {{ service.description }}
+          </p>
+        </div>
+      </div>
     </section>
 
     <p class="mt-8 font-light">
@@ -127,6 +103,50 @@ import 'swiper/css/navigation';
 useHead({
   title: 'Meskey Energy',
 });
+
+const services = [
+  {
+    title: 'Electrical Installations & Rural Electrification',
+    description:
+      'End-to-end projects connecting communities and enterprises to reliable power.',
+    icon: 'solar:bolt-bold',
+  },
+  {
+    title: 'Transformer & Streetlight Installation',
+    description:
+      'Robust deployment and planning for safer, better-lit towns and urban areas.',
+    icon: 'mdi:transmission-tower',
+  },
+  {
+    title: 'Power Plant Maintenance',
+    description:
+      'Scheduled and predictive services to maximise uptime and performance.',
+    icon: 'mdi:factory',
+  },
+  {
+    title: 'Metering, Cable Scheduling & Tap Charger',
+    description:
+      'Precision planning and monitoring to improve efficiency and billing accuracy.',
+    icon: 'mdi:gauge',
+  },
+  {
+    title: 'UPS, Inverters & Battery Banks',
+    description: 'Resilient backup systems for mission-critical operations.',
+    icon: 'mdi:battery-charging-high',
+  },
+  {
+    title: 'Power Control Panels & Control Rooms',
+    description:
+      'Centralized control, safety interlocks, and operational visibility.',
+    icon: 'mdi:monitor-dashboard',
+  },
+  {
+    title: 'Data Centers',
+    description:
+      'Reliable infrastructure for high-performance computing and storage.',
+    icon: 'mdi:server',
+  },
+];
 
 // gallery images
 const images = [
