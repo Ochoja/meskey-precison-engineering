@@ -29,7 +29,7 @@
             {{ service.title }}
           </h3>
 
-          <p class="font-light text-sm leading-relaxed text-grey-70">
+          <p class="font-light text-sm leading-relaxed text-grey-90">
             {{ service.description }}
           </p>
         </div>
