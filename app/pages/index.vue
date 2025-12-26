@@ -17,8 +17,8 @@ useSeoMeta({
   ogDescription:
     'Automation, metering, monitoring, instrumentation, pipeline integrity, and SCADA integration for oil & gas and industrial operations.',
   ogType: 'website',
-  ogUrl: 'https://www.meskeyprecisioneng.org/',
-  ogImage: 'https://meskey.com/og-image.png',
+  ogUrl: 'https://www.meskeyprecisioneng.org',
+  ogImage: 'https://www.meskeyprecisioneng.org/logo.png',
 });
 
 const router = useRouter();
