@@ -1,20 +1,14 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { useScrollLock, useMediaQuery } from '@vueuse/core';
+import { useRoute } from 'vue-router';
+import { useScrollLock, useMediaQuery, onClickOutside } from '@vueuse/core';
 
-import blackLogo from '@/assets/images/blacklogo.png';
+// Assets
 import whiteLogo from '@/assets/images/whitelogo.png';
 import mainLogo from '@/assets/images/mainlogo.png';
 
-const router = useRouter();
 const route = useRoute();
-
-const props = defineProps({
-  dark: String,
-});
-
-/* ------------------ NAV DATA ------------------ */
+const props = defineProps({ dark: String });
 
 const services = [
   { name: 'Metering', path: '/services/3' },
@@ -34,25 +28,38 @@ const companies = [
   { name: 'Meskey Service', path: '/companies/meskeyservice' },
 ];
 
-/* ------------------ STATE ------------------ */
-
+// --- State ---
 const mobileMenuOpen = ref(false);
 const openDropdown = ref<null | 'services' | 'companies'>(null);
 
-/* ------------------ SCROLL LOCK ------------------ */
+// --- Template Refs ---
+const servicesRef = ref(null);
+const companiesRef = ref(null);
+const el = ref<HTMLElement | null>(null);
 
-// SSR-safe body reference
-const body = typeof document !== 'undefined' ? document.body : null;
+// --- Scroll Lock Logic ---
+// Initialize the lock. We get back a reactive "isLocked" ref.
+const isLocked = useScrollLock(el);
 
-const isLocked = useScrollLock(body);
-
-watch(mobileMenuOpen, (open) => {
-  isLocked.value = open;
+onMounted(() => {
+  el.value = document.body;
 });
 
-/* ------------------ CLOSE ON DESKTOP ------------------ */
+// Sync the lock with your menu state
+watch(mobileMenuOpen, (val) => {
+  isLocked.value = val;
+});
 
-// Tailwind lg breakpoint
+// --- Click Outside Logic ---
+onClickOutside(servicesRef, () => {
+  if (openDropdown.value === 'services') openDropdown.value = null;
+});
+
+onClickOutside(companiesRef, () => {
+  if (openDropdown.value === 'companies') openDropdown.value = null;
+});
+
+// --- Responsive & Navigation Watchers ---
 const isDesktop = useMediaQuery('(min-width: 1024px)');
 
 watch(isDesktop, (desktop) => {
@@ -62,8 +69,6 @@ watch(isDesktop, (desktop) => {
   }
 });
 
-/* ------------------ CLOSE ON ROUTE CHANGE ------------------ */
-
 watch(
   () => route.fullPath,
   () => {
@@ -71,8 +76,6 @@ watch(
     openDropdown.value = null;
   }
 );
-
-/* ------------------ METHODS ------------------ */
 
 const toggleDropdown = (menu: 'services' | 'companies') => {
   openDropdown.value = openDropdown.value === menu ? null : menu;
@@ -85,7 +88,6 @@ const toggleMobileMenu = () => {
 </script>
 
 <template>
-  <!-- Desktop Navigation -->
   <nav class="hidden layout-pad pt-4 lg:flex justify-between items-center">
     <div>
       <img
@@ -99,8 +101,7 @@ const toggleMobileMenu = () => {
       <NuxtLink to="/about">About</NuxtLink>
       <NuxtLink to="/projects">Projects</NuxtLink>
 
-      <!-- Services Dropdown -->
-      <div class="relative">
+      <div class="relative" ref="servicesRef">
         <button
           @click="toggleDropdown('services')"
           class="flex items-center gap-1"
@@ -112,15 +113,14 @@ const toggleMobileMenu = () => {
 
         <div
           v-if="openDropdown === 'services'"
-          class="absolute top-8 flex flex-col gap-2 px-4 py-2 bg-white text-grey-110 rounded-lg border border-primary-30">
+          class="absolute top-8 flex flex-col gap-2 px-4 py-2 bg-white text-grey-110 rounded-lg border border-primary-30 z-10">
           <NuxtLink v-for="s in services" :key="s.path" :to="s.path">
             {{ s.name }}
           </NuxtLink>
         </div>
       </div>
 
-      <!-- Companies Dropdown -->
-      <div class="relative">
+      <div class="relative" ref="companiesRef">
         <button
           @click="toggleDropdown('companies')"
           class="flex items-center gap-1"
@@ -132,7 +132,7 @@ const toggleMobileMenu = () => {
 
         <div
           v-if="openDropdown === 'companies'"
-          class="absolute top-8 w-[140%] flex flex-col gap-2 px-4 py-2 bg-white text-grey-110 rounded-lg border border-primary-30">
+          class="absolute top-8 w-[140%] flex flex-col gap-2 px-4 py-2 bg-white text-grey-110 rounded-lg border border-primary-30 z-10">
           <NuxtLink v-for="c in companies" :key="c.path" :to="c.path">
             {{ c.name }}
           </NuxtLink>
@@ -147,7 +147,6 @@ const toggleMobileMenu = () => {
     </NuxtLink>
   </nav>
 
-  <!-- Mobile Header -->
   <nav class="flex justify-between items-center lg:hidden pt-4 layout-pad">
     <img
       :src="props.dark ? whiteLogo : mainLogo"
@@ -160,7 +159,6 @@ const toggleMobileMenu = () => {
       :class="props.dark ? 'text-white text-3xl' : 'text-3xl'" />
   </nav>
 
-  <!-- Mobile Menu -->
   <div
     v-if="mobileMenuOpen"
     class="lg:hidden fixed inset-0 z-50 flex flex-col justify-between bg-white/65 backdrop-blur-md layout-pad py-4">
@@ -178,8 +176,7 @@ const toggleMobileMenu = () => {
       <NuxtLink to="/about">About</NuxtLink>
       <NuxtLink to="/projects">Projects</NuxtLink>
 
-      <!-- Services -->
-      <div class="flex flex-col">
+      <div class="flex flex-col items-center">
         <div
           @click="toggleDropdown('services')"
           class="flex items-center gap-1 cursor-pointer">
@@ -189,15 +186,14 @@ const toggleMobileMenu = () => {
 
         <div
           v-show="openDropdown === 'services'"
-          class="flex flex-col mt-1 ml-4">
+          class="flex flex-col mt-1 items-center opacity-80">
           <NuxtLink v-for="s in services" :key="s.path" :to="s.path">
             {{ s.name }}
           </NuxtLink>
         </div>
       </div>
 
-      <!-- Companies -->
-      <div class="flex flex-col">
+      <div class="flex flex-col items-center">
         <div
           @click="toggleDropdown('companies')"
           class="flex items-center gap-1 cursor-pointer">
@@ -207,7 +203,7 @@ const toggleMobileMenu = () => {
 
         <div
           v-show="openDropdown === 'companies'"
-          class="flex flex-col mt-1 ml-4">
+          class="flex flex-col mt-1 items-center opacity-80">
           <NuxtLink v-for="c in companies" :key="c.path" :to="c.path">
             {{ c.name }}
           </NuxtLink>
