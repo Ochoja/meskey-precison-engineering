@@ -10,12 +10,12 @@ definePageMeta({
 useSeoMeta({
   title: 'Meskey Precision Engineering',
   description:
-    'Meskey Precision Engineering Limited delivers mission-critical engineering solutions across oil and gas, industrial automation, instrumentation, and pipeline integrity, executing complex projects safely and efficiently in hazardous environments.',
+    'Meskey Precision Engineering Limited provides reliable, high-impact engineering solutions for oil & gas and industrial sectors, tackling complex projects with safety, efficiency, and precision.',
 
   // Open Graph (Google, LinkedIn, WhatsApp, Facebook)
   ogTitle: 'Meskey Precision Engineering',
   ogDescription:
-    'Meskey Precision Engineering Limited delivers mission-critical engineering solutions across oil and gas, industrial automation, instrumentation, and pipeline integrity, executing complex projects safely and efficiently in hazardous environments.',
+    'Meskey Precision Engineering Limited provides reliable, high-impact engineering solutions for oil & gas and industrial sectors, tackling complex projects with safety, efficiency, and precision.',
   ogType: 'website',
   ogUrl: 'https://www.meskeyprecisioneng.org',
   ogImage: 'https://www.meskeyprecisioneng.org/logo.png',
