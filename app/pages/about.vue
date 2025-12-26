@@ -1,6 +1,8 @@
 <script setup lang="ts">
-useHead({
+useSeoMeta({
   title: 'About Meskey',
+  description:
+    'Meskey Precision Engineering Limited (MPEL) is a multidisciplinary engineering company delivering mission-critical solutions in oil & gas, industrial automation, instrumentation, and pipeline infrastructure. We specialize in hazardous environments where reliability and accuracy are paramount, combining decades of experience with global standards to ensure safe and efficient results.',
 });
 </script>
 
