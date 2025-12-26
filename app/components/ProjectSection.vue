@@ -80,11 +80,11 @@ function goToProject(id) {
 
     <!-- CTA Button -->
     <div v-if="!isServicePage">
-      <button
-        @click="router.push('/projects')"
+      <NuxtLink
+        to="/projects"
         class="bg-primary px-6 py-3 text-white font-medium rounded-lg cursor-pointer hover:bg-primary/90 transition">
         View More
-      </button>
+      </NuxtLink>
     </div>
   </section>
 </template>

@@ -162,11 +162,11 @@ onBeforeUnmount(() => {
         whether brownfield or greenfield.
       </p>
       <div>
-        <button
-          @click="router.push('/contact')"
+        <NuxtLink
+          to="/contact"
           class="bg-primary font-medium text-white py-3 px-6 rounded-lg">
           Contact Us
-        </button>
+        </NuxtLink>
       </div>
     </div>
   </header>
@@ -327,11 +327,11 @@ onBeforeUnmount(() => {
           </p>
         </div>
         <div>
-          <button
-            @click="router.push('/contact')"
-            class="text-grey-110 font-medium bg-white rounded-lg px-4 py-2 cursor-pointer">
+          <NuxtLink
+            to="/contact"
+            class="text-grey-110 font-medium bg-white hover:bg-primary-40 hover:border hover:border-white hover:text-white rounded-lg px-4 py-2 cursor-pointer">
             Contact Us
-          </button>
+          </NuxtLink>
         </div>
       </div>
     </div>
