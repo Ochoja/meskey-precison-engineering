@@ -171,7 +171,7 @@ onBeforeUnmount(() => {
     </div>
   </header>
 
-  <Vue3Marquee class="bg-grey-110 py-6 overflow-hidden">
+  <Vue3Marquee :pause-on-hover="true" class="bg-grey-110 py-6 overflow-hidden">
     <div
       v-for="(item, key) in marqueelist"
       :key="key"
