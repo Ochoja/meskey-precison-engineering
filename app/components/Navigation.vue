@@ -21,11 +21,6 @@ const services = [
 const companies = [
   { name: 'Meskey Group', path: '/companies/meskeygroup' },
   { name: 'Meskey Energy', path: '/companies/meskeyenergy' },
-  { name: 'Meskey Engineering Service', path: '/companies/engservice' },
-  { name: 'Meskey Holding', path: '/companies/meskeyholding' },
-  { name: 'Meskey Technologies', path: '/companies/meskeytechnologies' },
-  { name: 'Meskey Limited', path: '/companies/meskeylimited' },
-  { name: 'Meskey Service', path: '/companies/meskeyservice' },
 ];
 
 // --- State ---
@@ -88,6 +83,7 @@ const toggleMobileMenu = () => {
 </script>
 
 <template>
+  <!-- Desktop Navigation -->
   <nav class="hidden layout-pad pt-4 lg:flex justify-between items-center">
     <div>
       <img
@@ -104,7 +100,7 @@ const toggleMobileMenu = () => {
       <div class="relative" ref="servicesRef">
         <button
           @click="toggleDropdown('services')"
-          class="flex items-center gap-1"
+          class="flex items-center gap-1 cursor-pointer"
           aria-haspopup="true"
           :aria-expanded="openDropdown === 'services'">
           <span>Services</span>
@@ -123,7 +119,7 @@ const toggleMobileMenu = () => {
       <div class="relative" ref="companiesRef">
         <button
           @click="toggleDropdown('companies')"
-          class="flex items-center gap-1"
+          class="flex items-center gap-1 cursor-pointer"
           aria-haspopup="true"
           :aria-expanded="openDropdown === 'companies'">
           <span>Our Companies</span>
@@ -147,6 +143,7 @@ const toggleMobileMenu = () => {
     </NuxtLink>
   </nav>
 
+  <!-- Mobile Navigation -->
   <nav class="flex justify-between items-center lg:hidden pt-4 layout-pad">
     <img
       :src="props.dark ? whiteLogo : mainLogo"
@@ -156,7 +153,7 @@ const toggleMobileMenu = () => {
     <Icon
       name="line-md:close-to-menu-transition"
       @click="toggleMobileMenu"
-      :class="props.dark ? 'text-white text-3xl' : 'text-3xl'" />
+      :class="props.dark ? 'text-white text-3xl' : 'text-3xl cursor-pointer'" />
   </nav>
 
   <div
@@ -224,7 +221,7 @@ const toggleMobileMenu = () => {
       </div>
 
       <div class="flex gap-2 items-center">
-        <a href="tel:+2348032827341">Phone</a>
+        <a href="tel:+2347030399465">Phone</a>
         <Icon name="fluent:link-20-regular" />
       </div>
     </div>

@@ -11,13 +11,13 @@
         <div>
           <h6>Support</h6>
           <a href="mailto:support@meskyprecisioneng.org"
-            >support@meskyprecisioneng.org</a
+            >support@meskeyprecisioneng.org</a
           >
         </div>
         <div>
           <h6>General Enquiries</h6>
           <a href="mailto:info@meskeyprecisioneng.org"
-            >info@meskyprecisioneng.org</a
+            >info@meskeyprecisioneng.org</a
           >
         </div>
         <div>
@@ -41,7 +41,6 @@
         <div>
           <h6>Phone</h6>
           <div>
-            <a href="tel:+2348032827341">+234 (0) 803 282 7341</a>
             <a href="tel:+2347030399465">+234 (0) 703 039 9465</a>
           </div>
         </div>
