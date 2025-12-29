@@ -18,7 +18,9 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@pinia/nuxt',
     'motion-v/nuxt',
+    '@nuxtjs/sitemap', // should always be at the end
   ],
+
   fonts: {
     families: [
       {

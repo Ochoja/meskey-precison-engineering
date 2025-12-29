@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.meskeyprecisioneng.org/</loc>
+  </url>
+
+  <!-- About page -->
+  <url>
+    <loc>https://www.meskeyprecisioneng.org/about</loc>
+  </url>
+
+  <!-- Projects page (overview) -->
+  <url>
+    <loc>https://www.meskeyprecisioneng.org/projects</loc>
+  </url>
+
+  <!-- Contact page -->
+  <url>
+    <loc>https://www.meskeyprecisioneng.org/contact</loc>
+  </url>
+</urlset>
