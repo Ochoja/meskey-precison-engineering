@@ -138,7 +138,7 @@ const toggleMobileMenu = () => {
 
     <NuxtLink
       to="/contact"
-      class="bg-primary font-medium text-white py-3 px-6 rounded-lg">
+      class="bg-primary hover:bg-primary-50 font-medium text-white py-3 px-6 rounded-lg">
       Contact Us
     </NuxtLink>
   </nav>
@@ -153,7 +153,11 @@ const toggleMobileMenu = () => {
     <Icon
       name="line-md:close-to-menu-transition"
       @click="toggleMobileMenu"
-      :class="props.dark ? 'text-white text-3xl' : 'text-3xl cursor-pointer'" />
+      :class="
+        props.dark
+          ? 'text-white text-3xl cursor-pointer'
+          : 'text-3xl cursor-pointer'
+      " />
   </nav>
 
   <div
@@ -209,16 +213,17 @@ const toggleMobileMenu = () => {
 
       <NuxtLink
         to="/contact"
-        class="bg-primary px-6 py-3 text-white font-medium rounded-lg">
+        class="bg-primary hover:bg-primary-50 px-6 py-3 text-white font-medium rounded-lg">
         Contact Us
       </NuxtLink>
     </div>
 
     <div class="flex justify-between mx-4 text-grey-80">
-      <div class="flex gap-2 items-center">
-        <a href="mailto:support@meskyprecisioneng.com">Email</a>
-        <Icon name="fluent:link-20-regular" />
-      </div>
+      <a
+        href="mailto:support@meskyprecisioneng.com"
+        class="flex gap-2 items-center">
+        <span>Email</span> <Icon name="fluent:link-20-regular" />
+      </a>
 
       <div class="flex gap-2 items-center">
         <a href="tel:+2347030399465">Phone</a>

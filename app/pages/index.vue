@@ -164,7 +164,7 @@ onBeforeUnmount(() => {
       <div>
         <NuxtLink
           to="/contact"
-          class="bg-primary font-medium text-white py-3 px-6 rounded-lg">
+          class="bg-primary hover:bg-primary-50 font-medium text-white py-3 px-6 rounded-lg">
           Contact Us
         </NuxtLink>
       </div>
