@@ -20,7 +20,7 @@
     "@tailwindcss/vite": "^4.1.12",
     "eslint": "^9.34.0",
     "gsap": "^3.13.0",
-    "motion-v": "^1.7.4",
+    "motion-v": "^1.10.2",
     "nuxt": "^4.0.3",
     "pinia": "^3.0.3",
     "swiper": "^12.0.2",

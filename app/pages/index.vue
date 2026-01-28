@@ -24,6 +24,11 @@ useSeoMeta({
 const router = useRouter();
 const services = ref<HTMLElement | null>(null);
 
+// Refs for GSAP animations
+const heroContent = ref<HTMLElement | null>(null);
+const aboutSection = ref<HTMLElement | null>(null);
+const whySection = ref<HTMLElement | null>(null);
+
 // ✅ use gsap + ScrollTrigger via Nuxt injections
 const { $gsap, $ScrollTrigger } = useNuxtApp();
 
@@ -93,6 +98,11 @@ const servicelist = [
 let scrollTween: gsap.core.Tween | null = null;
 let scrollTrigger: typeof $ScrollTrigger | null = null;
 
+// Timelines for section entrance animations
+let heroTimeline: gsap.core.Timeline | null = null;
+let aboutTimeline: gsap.core.Timeline | null = null;
+let whyTimeline: gsap.core.Timeline | null = null;
+
 async function initScroll() {
   await nextTick();
   if (!services.value) return;
@@ -124,6 +134,84 @@ async function initScroll() {
   $ScrollTrigger.refresh();
 }
 
+async function initGsapAnimations() {
+  await nextTick();
+
+  // Hero content - fade + slide up on initial load
+  if (heroContent.value) {
+    heroTimeline?.kill();
+    const heroEls = heroContent.value.querySelectorAll('h1, p, a');
+
+    $gsap.set(heroEls, { autoAlpha: 0, y: 40 });
+
+    heroTimeline = $gsap.timeline({
+      defaults: { duration: 0.8, ease: 'power3.out' },
+    });
+
+    heroTimeline.to(heroEls, {
+      autoAlpha: 1,
+      y: 0,
+      stagger: 0.15,
+    });
+  }
+
+  // About section - animate when scrolled into view
+  $ScrollTrigger.getById('about-section')?.kill();
+  if (aboutSection.value) {
+    aboutTimeline?.kill();
+
+    const aboutEls = aboutSection.value.querySelectorAll(
+      'button, h3, p, a, img',
+    );
+
+    $gsap.set(aboutEls, { autoAlpha: 0, y: 40 });
+
+    aboutTimeline = $gsap.timeline({
+      scrollTrigger: {
+        id: 'about-section',
+        trigger: aboutSection.value,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+      defaults: { duration: 0.7, ease: 'power3.out' },
+    });
+
+    aboutTimeline.to(aboutEls, {
+      autoAlpha: 1,
+      y: 0,
+      stagger: 0.1,
+    });
+  }
+
+  // Why choose us section - animate cards and content on scroll
+  $ScrollTrigger.getById('why-section')?.kill();
+  if (whySection.value) {
+    whyTimeline?.kill();
+
+    const whyEls = whySection.value.querySelectorAll(
+      'button, h1, h6, p, a, .bg-white, .bg-primary',
+    );
+
+    $gsap.set(whyEls, { autoAlpha: 0, y: 40 });
+
+    whyTimeline = $gsap.timeline({
+      scrollTrigger: {
+        id: 'why-section',
+        trigger: whySection.value,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+      defaults: { duration: 0.7, ease: 'power3.out' },
+    });
+
+    whyTimeline.to(whyEls, {
+      autoAlpha: 1,
+      y: 0,
+      stagger: 0.1,
+    });
+  }
+}
+
 function cleanupScroll() {
   scrollTween?.kill();
   scrollTween = null;
@@ -132,13 +220,27 @@ function cleanupScroll() {
   $ScrollTrigger.getById('services-scroll')?.kill();
 }
 
+function cleanupAnimations() {
+  heroTimeline?.kill();
+  heroTimeline = null;
+  aboutTimeline?.kill();
+  aboutTimeline = null;
+  whyTimeline?.kill();
+  whyTimeline = null;
+
+  $ScrollTrigger.getById('about-section')?.kill();
+  $ScrollTrigger.getById('why-section')?.kill();
+}
+
 onMounted(() => {
   initScroll();
+  initGsapAnimations();
   window.addEventListener('resize', $ScrollTrigger.refresh);
 });
 
 onBeforeUnmount(() => {
   cleanupScroll();
+  cleanupAnimations();
   window.removeEventListener('resize', $ScrollTrigger.refresh);
 });
 </script>
@@ -148,6 +250,7 @@ onBeforeUnmount(() => {
     class="bg-[url(https://ik.imagekit.io/Ochoja01/meskey/herobg.png?updatedAt=1758227487910)] bg-cover bg-center">
     <Navigation dark="true" />
     <div
+      ref="heroContent"
       class="text-white text-center py-[20vh] md:py-[25vh] w-[90%] lg:w-[70%] mx-auto flex flex-col gap-6">
       <h1 class="font-medium text-5xl md:text-6xl xl:text-7xl">
         Optimization is our <span class="text-primary">Core</span>
@@ -225,6 +328,7 @@ onBeforeUnmount(() => {
 
   <!-- About Section -->
   <section
+    ref="aboutSection"
     class="layout-pad mt-16 grid items-center md:grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12">
     <div>
       <button
@@ -263,7 +367,7 @@ onBeforeUnmount(() => {
   <ProjectSection></ProjectSection>
 
   <!-- Why Choose Us -->
-  <section class="layout-pad mt-16 mb-32">
+  <section ref="whySection" class="layout-pad mt-16 mb-32">
     <button
       class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">
       Why Choose Us
