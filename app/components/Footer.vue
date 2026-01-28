@@ -9,19 +9,21 @@ import logo from '@/assets/images/whitelogo.png';
         class="flex flex-col gap-6 max-w-[80%] md:max-w-[30%] lg:max-w-[20%]">
         <img :src="logo" alt="Meskey Logo" />
         <div>
-          <h6>Lagos Office</h6>
-          <p>Zone C, Block 8 shop 23 ASPAMDA Plaza Trade fair complex Lagos.</p>
+          <h6 class="font-">Lagos Office</h6>
+          <p class="text-sm md:text-base">
+            Zone C, Block 8 shop 23 ASPAMDA Plaza Trade fair complex Lagos.
+          </p>
         </div>
         <div>
           <h6>FCT Abuja Office</h6>
-          <p>
+          <p class="text-sm md:text-base">
             Dawaki Abuja Behind Sunset Energy Fueling Station Murtala Mohammed
             Way (Kubwa Express)
           </p>
         </div>
         <div>
           <h6>Northern Region</h6>
-          <p>
+          <p class="text-sm md:text-base">
             No 4 School Road, Off Makama Plaza, Opposite Kaduna Refinery
             Complex, Kaduna
           </p>
@@ -29,7 +31,7 @@ import logo from '@/assets/images/whitelogo.png';
       </div>
       <div>
         <h6>Quick Links</h6>
-        <div class="child-container">
+        <div class="child-container text-sm md:text-base">
           <NuxtLink to="/">Home</NuxtLink>
           <NuxtLink to="/about">About</NuxtLink>
           <NuxtLink>Privacy Policy</NuxtLink>
@@ -38,7 +40,7 @@ import logo from '@/assets/images/whitelogo.png';
       </div>
       <div>
         <h6>Services</h6>
-        <div class="child-container">
+        <div class="child-container text-sm md:text-base">
           <NuxtLink to="/services/4">Automation</NuxtLink>
           <NuxtLink to="/services/1">Measuring</NuxtLink>
           <NuxtLink to="/services/2">Analysis</NuxtLink>
@@ -48,7 +50,7 @@ import logo from '@/assets/images/whitelogo.png';
       </div>
       <div>
         <h6>Contact Us</h6>
-        <div class="child-container">
+        <div class="child-container text-sm md:text-base">
           <a href="mailto:info@meskeyprecisioneng.org">
             info@meskeyprecisioneng.org
           </a>
@@ -80,7 +82,7 @@ a:hover {
 }
 
 h6 {
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1.2rem;
 }
 
@@ -88,6 +90,6 @@ h6 {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 </style>
