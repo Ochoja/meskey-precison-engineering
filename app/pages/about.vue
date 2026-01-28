@@ -1,14 +1,171 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
+
 useSeoMeta({
   title: 'About Meskey',
   description:
     'Meskey Precision Engineering Limited (MPEL) is a multidisciplinary engineering company delivering mission-critical solutions in oil & gas, industrial automation, instrumentation, and pipeline infrastructure. We specialize in hazardous environments where reliability and accuracy are paramount, combining decades of experience with global standards to ensure safe and efficient results.',
 });
+
+// Refs for sections / animated blocks
+const heroSection = ref<HTMLElement | null>(null);
+const statsRef = ref<HTMLElement | null>(null);
+const storySection = ref<HTMLElement | null>(null);
+const workflowSection = ref<HTMLElement | null>(null);
+
+// Nuxt gsap + ScrollTrigger
+const { $gsap, $ScrollTrigger } = useNuxtApp();
+
+// Timelines
+let heroTimeline: gsap.core.Timeline | null = null;
+let storyTimeline: gsap.core.Timeline | null = null;
+let workflowTimeline: gsap.core.Timeline | null = null;
+let statsTimeline: gsap.core.Timeline | null = null;
+
+const onResize = () => {
+  $ScrollTrigger.refresh();
+};
+
+async function initAnimations() {
+  await nextTick();
+
+  // Hero block entrance
+  if (heroSection.value) {
+    heroTimeline?.kill();
+    const heroEls = heroSection.value.querySelectorAll('button, h1, p, img');
+
+    $gsap.set(heroEls, { autoAlpha: 0, y: 40 });
+
+    heroTimeline = $gsap.timeline({
+      defaults: { duration: 0.8, ease: 'power3.out' },
+    });
+
+    heroTimeline.to(heroEls, {
+      autoAlpha: 1,
+      y: 0,
+      stagger: 0.12,
+    });
+  }
+
+  // Stats counter (once on scroll into view)
+  if (statsRef.value) {
+    statsTimeline?.kill();
+    const counters = Array.from(
+      statsRef.value.querySelectorAll<HTMLElement>('[data-count-to]'),
+    );
+
+    counters.forEach((el) => {
+      el.textContent = '0';
+    });
+
+    statsTimeline = $gsap.timeline({
+      scrollTrigger: {
+        id: 'about-stats',
+        trigger: statsRef.value,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      },
+    });
+
+    counters.forEach((el) => {
+      const target = Number(el.dataset.countTo || '0');
+      const suffix = el.dataset.suffix || '';
+      const counterObj = { val: 0 };
+
+      statsTimeline!.to(
+        counterObj,
+        {
+          val: target,
+          duration: 1.4,
+          ease: 'power2.out',
+          onUpdate: () => {
+            el.textContent = `${Math.floor(counterObj.val)}${suffix}`;
+          },
+        },
+        '<0.1',
+      );
+    });
+  }
+
+  // Story / Mission / Vision cards stagger
+  if (storySection.value) {
+    storyTimeline?.kill();
+    const cards = storySection.value.querySelectorAll('.about-card');
+
+    $gsap.set(cards, { autoAlpha: 0, y: 40 });
+
+    storyTimeline = $gsap.timeline({
+      scrollTrigger: {
+        id: 'about-story',
+        trigger: storySection.value,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+      defaults: { duration: 0.7, ease: 'power3.out' },
+    });
+
+    storyTimeline.to(cards, {
+      autoAlpha: 1,
+      y: 0,
+      stagger: 0.15,
+    });
+  }
+
+  // Workflow steps reveal down the timeline
+  if (workflowSection.value) {
+    workflowTimeline?.kill();
+    const steps = workflowSection.value.querySelectorAll('.workflow-step');
+
+    $gsap.set(steps, { autoAlpha: 0, x: -30 });
+
+    workflowTimeline = $gsap.timeline({
+      scrollTrigger: {
+        id: 'about-workflow',
+        trigger: workflowSection.value,
+        start: 'top 80%',
+        toggleActions: 'play none none reverse',
+      },
+      defaults: { duration: 0.6, ease: 'power2.out' },
+    });
+
+    workflowTimeline.to(steps, {
+      autoAlpha: 1,
+      x: 0,
+      stagger: 0.12,
+    });
+  }
+}
+
+function cleanupAnimations() {
+  heroTimeline?.kill();
+  heroTimeline = null;
+  storyTimeline?.kill();
+  storyTimeline = null;
+  workflowTimeline?.kill();
+  workflowTimeline = null;
+  statsTimeline?.kill();
+  statsTimeline = null;
+
+  $ScrollTrigger.getById('about-stats')?.kill();
+  $ScrollTrigger.getById('about-story')?.kill();
+  $ScrollTrigger.getById('about-workflow')?.kill();
+}
+
+onMounted(() => {
+  initAnimations();
+  window.addEventListener('resize', onResize);
+});
+
+onBeforeUnmount(() => {
+  cleanupAnimations();
+  window.removeEventListener('resize', onResize);
+});
 </script>
 
 <template>
   <header
-    class="layout-pad mt-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] items-center lg:gap-20">
+    ref="heroSection"
+    class="layout-pad mt-16 md:mt-20 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] items-center lg:gap-20">
     <div>
       <button
         class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">
@@ -42,31 +199,41 @@ useSeoMeta({
         src="https://ik.imagekit.io/Ochoja01/meskey/photo_2025-11-12_07-18-55.jpg?updatedAt=1762930103619"
         alt="About Image"
         class="w-full rounded-2xl hidden md:block md:mt-8" />
-      <div class="flex justify-between text-center mt-6 stats">
+      <div ref="statsRef" class="flex justify-between text-center mt-6 stats">
         <div>
-          <h5>100+</h5>
+          <h5 data-count-to="100" data-suffix="+">0</h5>
           <p class="text-sm md:text-base">Skilled Engineers</p>
         </div>
         <div>
-          <h5>50+</h5>
+          <h5 data-count-to="50" data-suffix="+">0</h5>
           <p class="text-sm md:text-base">Successful Projects Delivered</p>
         </div>
         <div>
-          <h5>10+ years</h5>
+          <h5 data-count-to="10" data-suffix="+ years">0</h5>
           <p class="text-sm md:text-base">Combined Industry Experience</p>
         </div>
       </div>
     </div>
   </header>
 
-  <section class="mt-24 mb-20 layout-pad">
-    <h1 class="text-center mb-6 text-3xl md:text-4xl">
-      Our Story, Mission and Vision
-    </h1>
+  <section ref="storySection" class="mt-24 mb-20 layout-pad relative">
+    <div
+      class="mx-auto mb-10 max-w-3xl text-center flex flex-col gap-2 items-center">
+      <p
+        class="inline-flex items-center rounded-full border border-primary-20 text-grey bg-primary-10 px-6 py-2 text-xs md:text-sm">
+        Our Identity
+      </p>
+      <h1 class="text-3xl md:text-4xl">Our Story, Mission &amp; Vision</h1>
+      <p class="font-light text-sm md:text-base text-grey-80">
+        The principles that guide how we engineer, lead, and deliver for our
+        partners across industries.
+      </p>
+    </div>
 
     <!-- First row: Mission + Vision -->
     <div class="flex flex-col md:flex-row gap-4 mb-4">
-      <div class="flex-1 bg-primary-10 rounded-2xl p-6 border border-grey-20">
+      <div
+        class="about-card flex-1 bg-gradient-to-br from-primary-5 to-primary-30 rounded-2xl p-6 border border-primary-20/70">
         <h3 class="text-2xl md:text-3xl font-medium text-primary mb-2">
           Our Mission
         </h3>
@@ -77,7 +244,8 @@ useSeoMeta({
         </p>
       </div>
 
-      <div class="flex-1 bg-primary-10 rounded-2xl p-6 border border-grey-20">
+      <div
+        class="about-card flex-1 bg-gradient-to-br from-primary-5 to-primary-30 rounded-2xl p-6 border border-primary-20/70">
         <h3 class="text-2xl md:text-3xl font-medium text-primary mb-2">
           Our Vision
         </h3>
@@ -91,7 +259,8 @@ useSeoMeta({
     </div>
 
     <!-- Second row: Story -->
-    <div class="bg-primary-10 rounded-2xl p-6 border border-grey-20">
+    <div
+      class="about-card bg-gradient-to-br from-primary-5 to-primary-30 rounded-2xl p-6 border border-primary-20/70 mt-4">
       <h3 class="text-2xl md:text-3xl font-medium text-primary mb-2">
         Our Story
       </h3>
@@ -111,10 +280,24 @@ useSeoMeta({
     </div>
   </section>
 
-  <section class="layout-pad mb-28">
-    <h1 class="text-3xl md:text-4xl mb-4">Our Workflow</h1>
+  <section ref="workflowSection" class="layout-pad mb-28 relative">
+    <div class="mb-8 flex flex-col gap-2">
+      <p
+        class="inline-flex items-center rounded-full border border-primary-20 text-grey bg-primary-10 px-6 py-2 text-xs md:text-sm w-fit">
+        How We Deliver
+      </p>
+      <h1 class="text-3xl md:text-4xl">Our Workflow</h1>
+      <p class="font-light text-sm md:text-base text-grey-80 max-w-2xl">
+        A structured, standards-driven approach that takes projects from idea to
+        safe, efficient operation — with clarity at every step.
+      </p>
+    </div>
 
-    <div class="sect">
+    <!-- Vertical timeline line -->
+    <div
+      class="pointer-events-none absolute left-[1.1rem] top-28 bottom-4 hidden md:block border-l border-dashed border-primary-20"></div>
+
+    <div class="sect workflow-step">
       <h2>Engineering Design and Project Management</h2>
       <p class="text-sm md:text-base">
         Meskey Group has in-house resources, capabilities and tools to offer a
@@ -135,7 +318,7 @@ useSeoMeta({
       </p>
     </div>
 
-    <div class="sect">
+    <div class="sect workflow-step">
       <h2>Feasibility Studies</h2>
       <p class="text-sm md:text-base">
         Feasibility Studies provide a solid foundation for any process led
@@ -147,7 +330,7 @@ useSeoMeta({
       </p>
     </div>
 
-    <div class="sect">
+    <div class="sect workflow-step">
       <h2>Conceptual Design</h2>
       <p class="text-sm md:text-base">
         Our Conceptual Design Studies shape a project’s success, strategy and
@@ -159,7 +342,7 @@ useSeoMeta({
       </p>
     </div>
 
-    <div class="sect">
+    <div class="sect workflow-step">
       <h2>Front End Engineering Design</h2>
       <p class="text-sm md:text-base">
         Front End Engineering Design package sets the precedence for achieving
@@ -174,7 +357,7 @@ useSeoMeta({
       </p>
     </div>
 
-    <div class="sect">
+    <div class="sect workflow-step">
       <h2>Detailed Design</h2>
       <p class="text-sm md:text-base">
         During Detailed Design the scope is developed to produce the definitive

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
-import { useScrollLock, useMediaQuery, onClickOutside } from '@vueuse/core';
+import { useMediaQuery, onClickOutside } from '@vueuse/core';
 
 // Assets
 import whiteLogo from '@/assets/images/whitelogo.png';
@@ -30,19 +30,28 @@ const openDropdown = ref<null | 'services' | 'companies'>(null);
 // --- Template Refs ---
 const servicesRef = ref(null);
 const companiesRef = ref(null);
-const el = ref<HTMLElement | null>(null);
 
-// --- Scroll Lock Logic ---
-// Initialize the lock. We get back a reactive "isLocked" ref.
-const isLocked = useScrollLock(el);
+// --- Scroll Lock Logic (robust, works on mobile/iOS) ---
+let lockedScrollY = 0;
+const lockScroll = () => {
+  lockedScrollY = window.scrollY || 0;
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${lockedScrollY}px`;
+  document.body.style.width = '100%';
+};
 
-onMounted(() => {
-  el.value = document.body;
-});
+const unlockScroll = () => {
+  document.documentElement.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, lockedScrollY);
+};
 
-// Sync the lock with your menu state
-watch(mobileMenuOpen, (val) => {
-  isLocked.value = val;
+watch(mobileMenuOpen, (open) => {
+  if (open) lockScroll();
+  else unlockScroll();
 });
 
 // --- Click Outside Logic ---
@@ -69,7 +78,7 @@ watch(
   () => {
     mobileMenuOpen.value = false;
     openDropdown.value = null;
-  }
+  },
 );
 
 const toggleDropdown = (menu: 'services' | 'companies') => {
@@ -80,6 +89,11 @@ const toggleMobileMenu = () => {
   openDropdown.value = null;
   mobileMenuOpen.value = !mobileMenuOpen.value;
 };
+
+onBeforeUnmount(() => {
+  // Safety: if user navigates away with menu open
+  if (mobileMenuOpen.value) unlockScroll();
+});
 </script>
 
 <template>

@@ -2,6 +2,7 @@
 import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
 import { Vue3Marquee } from 'vue3-marquee';
 import LinkLogo from '../assets/icons/link.svg';
+import Draggable from 'gsap/Draggable';
 
 definePageMeta({
   layout: 'home',
@@ -23,14 +24,18 @@ useSeoMeta({
 
 const router = useRouter();
 const services = ref<HTMLElement | null>(null);
+const servicesSection = ref<HTMLElement | null>(null);
 
 // Refs for GSAP animations
 const heroContent = ref<HTMLElement | null>(null);
 const aboutSection = ref<HTMLElement | null>(null);
 const whySection = ref<HTMLElement | null>(null);
+const servicesHintDock = ref<HTMLElement | null>(null);
+const servicesHintTop = ref<HTMLElement | null>(null);
 
 // ✅ use gsap + ScrollTrigger via Nuxt injections
 const { $gsap, $ScrollTrigger } = useNuxtApp();
+$gsap.registerPlugin(Draggable);
 
 const marqueelist = [
   'Measuring',
@@ -96,7 +101,14 @@ const servicelist = [
 ];
 
 let scrollTween: gsap.core.Tween | null = null;
-let scrollTrigger: typeof $ScrollTrigger | null = null;
+let scrollTrigger: any | null = null;
+let hintLoopTimeline: gsap.core.Timeline | null = null;
+let servicesDraggable: Draggable | null = null;
+let dragProxyEl: HTMLDivElement | null = null;
+
+const onResize = () => {
+  $ScrollTrigger.refresh();
+};
 
 // Timelines for section entrance animations
 let heroTimeline: gsap.core.Timeline | null = null;
@@ -110,9 +122,14 @@ async function initScroll() {
   // Kill any existing before re-init
   $ScrollTrigger.getById('services-scroll')?.kill();
   scrollTween?.kill();
+  hintLoopTimeline?.kill();
+  servicesDraggable?.kill();
+  servicesDraggable = null;
+  dragProxyEl = null;
 
   const getScrollAmount = () =>
     -(services.value!.scrollWidth - window.innerWidth);
+  const getScrollDistance = () => Math.max(0, (getScrollAmount() ?? 0) * -1);
 
   scrollTween = $gsap.to(services.value, {
     x: getScrollAmount,
@@ -121,7 +138,7 @@ async function initScroll() {
 
   scrollTrigger = $ScrollTrigger.create({
     id: 'services-scroll',
-    trigger: '.servicesWrapper',
+    trigger: servicesSection.value ?? '.servicesWrapper',
     start: 'top 5%',
     end: () => `+=${getScrollAmount() * -1}`,
     pin: true,
@@ -129,7 +146,101 @@ async function initScroll() {
     scrub: 1,
     invalidateOnRefresh: true,
     markers: false,
+    onEnter: () => {
+      if (servicesHintDock.value)
+        $gsap.to(servicesHintDock.value, { autoAlpha: 1, duration: 0.25 });
+      servicesDraggable?.enable();
+    },
+    onEnterBack: () => {
+      if (servicesHintDock.value)
+        $gsap.to(servicesHintDock.value, { autoAlpha: 1, duration: 0.25 });
+      servicesDraggable?.enable();
+    },
+    onLeave: () => {
+      if (servicesHintDock.value)
+        $gsap.to(servicesHintDock.value, { autoAlpha: 0, duration: 0.2 });
+      servicesDraggable?.disable();
+    },
+    onLeaveBack: () => {
+      if (servicesHintDock.value)
+        $gsap.to(servicesHintDock.value, { autoAlpha: 0, duration: 0.2 });
+      servicesDraggable?.disable();
+    },
   });
+
+  // Make the pinned services row draggable (carousel-like) while keeping it in sync with ScrollTrigger.
+  // We drag a proxy element and convert its x-position into ScrollTrigger scroll().
+  dragProxyEl = document.createElement('div');
+  $gsap.set(dragProxyEl, { x: 0 });
+
+  const clampProgress = $gsap.utils.clamp(0, 1);
+  const syncProxyToScroll = () => {
+    if (!servicesDraggable || !dragProxyEl || !scrollTrigger) return;
+    const distance = getScrollDistance();
+    if (!distance) return;
+    const progress = clampProgress(scrollTrigger.progress || 0);
+    // proxy x goes from 0 (start) to -distance (end)
+    $gsap.set(dragProxyEl, { x: -progress * distance });
+    servicesDraggable.update();
+  };
+
+  // create draggable instance, but use services element as the interaction trigger
+  const created = Draggable.create(dragProxyEl, {
+    type: 'x',
+    trigger: services.value,
+    dragClickables: true,
+    allowNativeTouchScrolling: false,
+    onPress: () => {
+      // Keep proxy aligned when the user starts dragging
+      syncProxyToScroll();
+    },
+    onDrag: function () {
+      if (!scrollTrigger) return;
+      const distance = getScrollDistance();
+      if (!distance) return;
+      const progress = clampProgress(-this.x / distance);
+      const scrollPos =
+        scrollTrigger.start +
+        progress * (scrollTrigger.end - scrollTrigger.start);
+      scrollTrigger.scroll(scrollPos);
+    },
+    onDragEnd: () => {
+      // ensure final alignment
+      syncProxyToScroll();
+    },
+  });
+  servicesDraggable = created?.[0] ?? null;
+
+  // Initially disabled until the pinned section becomes active
+  servicesDraggable?.disable();
+
+  // Continuous "scroll down" cue shared by top + dock hints
+  const movers: Element[] = [];
+  if (servicesHintTop.value) {
+    servicesHintTop.value
+      .querySelectorAll('[data-scroll-cue="mover"]')
+      .forEach((el) => movers.push(el));
+  }
+  if (servicesHintDock.value) {
+    servicesHintDock.value
+      .querySelectorAll('[data-scroll-cue="mover"]')
+      .forEach((el) => movers.push(el));
+    $gsap.set(servicesHintDock.value, { autoAlpha: 0 });
+  }
+
+  if (movers.length) {
+    hintLoopTimeline = $gsap.timeline({
+      repeat: -1,
+      defaults: { ease: 'power1.inOut' },
+    });
+    hintLoopTimeline
+      .to(movers, { y: 8, duration: 0.8 })
+      .to(movers, { y: 0, duration: 0.8 });
+  }
+
+  // Keep the draggable proxy synced to scroll progress (scroll wheel / trackpad users).
+  scrollTrigger?.vars && (scrollTrigger.vars.onUpdate = syncProxyToScroll);
+  syncProxyToScroll();
 
   $ScrollTrigger.refresh();
 }
@@ -218,6 +329,11 @@ function cleanupScroll() {
   scrollTrigger?.kill();
   scrollTrigger = null;
   $ScrollTrigger.getById('services-scroll')?.kill();
+  hintLoopTimeline?.kill();
+  hintLoopTimeline = null;
+  servicesDraggable?.kill();
+  servicesDraggable = null;
+  dragProxyEl = null;
 }
 
 function cleanupAnimations() {
@@ -235,13 +351,13 @@ function cleanupAnimations() {
 onMounted(() => {
   initScroll();
   initGsapAnimations();
-  window.addEventListener('resize', $ScrollTrigger.refresh);
+  window.addEventListener('resize', onResize);
 });
 
 onBeforeUnmount(() => {
   cleanupScroll();
   cleanupAnimations();
-  window.removeEventListener('resize', $ScrollTrigger.refresh);
+  window.removeEventListener('resize', onResize);
 });
 </script>
 
@@ -285,7 +401,7 @@ onBeforeUnmount(() => {
   </Vue3Marquee>
 
   <!-- Services Horizontal Scroll Section -->
-  <section class="mt-16">
+  <section ref="servicesSection" class="mt-16 relative pb-16">
     <div
       class="layout-pad flex flex-col gap-2 lg:flex-row justify-between items-center">
       <h2
@@ -300,30 +416,46 @@ onBeforeUnmount(() => {
           industrial operations.
         </p>
         <p
+          ref="servicesHintTop"
           class="text-primary-30 md:text-right relative top-8 flex gap-1 items-center justify-end font-medium">
-          <span> Scroll Down to reveal </span>
-          <Icon name="mynaui:arrow-down" class="text-2xl"></Icon>
+          <span data-scroll-cue="mover">Scroll down to reveal</span>
+          <Icon
+            data-scroll-cue="mover"
+            name="mynaui:arrow-down"
+            class="text-2xl"></Icon>
         </p>
+      </div>
+    </div>
+
+    <!-- Docked cue: shows while the services section is pinned -->
+    <div
+      ref="servicesHintDock"
+      class="pointer-events-none fixed left-0 right-0 bottom-4 lg:bottom-12 z-40 flex justify-center opacity-0">
+      <div
+        class="bg-white backdrop-blur-md border border-primary-20 rounded-full px-4 py-2 text-primary-30 flex gap-2 items-center font-medium shadow-sm">
+        <span data-scroll-cue="mover">Scroll down to reveal</span>
+        <Icon
+          data-scroll-cue="mover"
+          name="mynaui:arrow-down"
+          class="text-xl"></Icon>
       </div>
     </div>
 
     <div
       ref="services"
-      class="servicesWrapper mt-12 flex flex-nowrap gap-6 px-[5%] xl:px-[8%] w-fit overflow-x-hidden">
+      class="servicesWrapper mb-4 md:mb-12 mt-12 flex flex-nowrap gap-6 px-[5%] xl:px-[8%] w-fit overflow-x-hidden">
       <NuxtLink
         :to="item.to"
         v-for="(item, index) in servicelist"
         :key="index"
-        class="min-w-[75vw] sm:min-w-[50vw] md:min-w-[40vw] lg:min-w-[26vw] xl:min-w-[24vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[62vh] md:min-h-[65vh]"
+        class="min-w-[75vw] sm:min-w-[50vw] md:min-w-[40vw] lg:min-w-[26vw] xl:min-w-[24vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[58vh] md:min-h-[65vh]"
         :style="{ backgroundImage: `url(${item.image})` }">
         <h5 class="font-medium text-xl">{{ item.service }}</h5>
         <div>
           <p class="font-light text-sm md:text-base mb-2">
             {{ item.description }}
           </p>
-          <NuxtLink :to="item.to">
-            <NuxtImg :src="LinkLogo" alt="link" height="40" width="40" />
-          </NuxtLink>
+          <NuxtImg :src="LinkLogo" alt="link" height="40" width="40" />
         </div>
       </NuxtLink>
     </div>
@@ -332,7 +464,7 @@ onBeforeUnmount(() => {
   <!-- About Section -->
   <section
     ref="aboutSection"
-    class="layout-pad mt-16 grid items-center md:grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12">
+    class="layout-pad grid items-center md:grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12">
     <div>
       <button
         class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">
