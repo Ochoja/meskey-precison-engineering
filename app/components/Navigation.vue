@@ -248,10 +248,6 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-a {
-  cursor: pointer;
-}
-
 a:hover {
   font-weight: 500;
 }
