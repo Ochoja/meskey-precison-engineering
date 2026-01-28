@@ -2,7 +2,6 @@
 import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
 import { Vue3Marquee } from 'vue3-marquee';
 import LinkLogo from '../assets/icons/link.svg';
-import Draggable from 'gsap/Draggable';
 
 definePageMeta({
   layout: 'home',
@@ -12,30 +11,24 @@ useSeoMeta({
   title: 'Meskey Precision Engineering',
   description:
     'Meskey Precision Engineering Limited provides reliable, high-impact engineering solutions for oil & gas and industrial sectors, tackling complex projects with safety, efficiency, and precision.',
-
-  // Open Graph (Google, LinkedIn, WhatsApp, Facebook)
   ogTitle: 'Meskey Precision Engineering',
   ogDescription:
-    'Meskey Precision Engineering Limited provides reliable, high-impact engineering solutions for oil & gas and industrial sectors, tackling complex projects with safety, efficiency, and precision.',
+    'Meskey Precision Engineering Limited provides reliable, high-impact engineering solutions for oil & gas and industrial sectors.',
   ogType: 'website',
   ogUrl: 'https://www.meskeyprecisioneng.org',
   ogImage: 'https://www.meskeyprecisioneng.org/logo.png',
 });
 
-const router = useRouter();
 const services = ref<HTMLElement | null>(null);
 const servicesSection = ref<HTMLElement | null>(null);
 
-// Refs for GSAP animations
 const heroContent = ref<HTMLElement | null>(null);
 const aboutSection = ref<HTMLElement | null>(null);
 const whySection = ref<HTMLElement | null>(null);
 const servicesHintDock = ref<HTMLElement | null>(null);
 const servicesHintTop = ref<HTMLElement | null>(null);
 
-// ✅ use gsap + ScrollTrigger via Nuxt injections
 const { $gsap, $ScrollTrigger } = useNuxtApp();
-$gsap.registerPlugin(Draggable);
 
 const marqueelist = [
   'Measuring',
@@ -43,18 +36,9 @@ const marqueelist = [
   'Monitoring',
   'Control Systems',
   'Fuel Management Systems',
-  'Fuel Polishing/Treatment',
   'Calibration Services',
-  'Fire Hydrant',
-  'Control Panel Fabrication',
-  'Factory Acceptance Test (FAT)',
-  'Site Acceptance Test (SAT)',
-  'Commissioning',
   'SCADA Integration',
   'Pipeline Integrity Checks',
-  'Instrumentation',
-  'Procurement',
-  'Analysis',
 ];
 
 const servicelist = [
@@ -101,35 +85,23 @@ const servicelist = [
 ];
 
 let scrollTween: gsap.core.Tween | null = null;
-let scrollTrigger: any | null = null;
+let scrollTrigger: ScrollTrigger | null = null;
 let hintLoopTimeline: gsap.core.Timeline | null = null;
-let servicesDraggable: Draggable | null = null;
-let dragProxyEl: HTMLDivElement | null = null;
 
 const onResize = () => {
   $ScrollTrigger.refresh();
 };
 
-// Timelines for section entrance animations
-let heroTimeline: gsap.core.Timeline | null = null;
-let aboutTimeline: gsap.core.Timeline | null = null;
-let whyTimeline: gsap.core.Timeline | null = null;
-
 async function initScroll() {
   await nextTick();
   if (!services.value) return;
 
-  // Kill any existing before re-init
-  $ScrollTrigger.getById('services-scroll')?.kill();
+  scrollTrigger?.kill();
   scrollTween?.kill();
   hintLoopTimeline?.kill();
-  servicesDraggable?.kill();
-  servicesDraggable = null;
-  dragProxyEl = null;
 
   const getScrollAmount = () =>
     -(services.value!.scrollWidth - window.innerWidth);
-  const getScrollDistance = () => Math.max(0, (getScrollAmount() ?? 0) * -1);
 
   scrollTween = $gsap.to(services.value, {
     x: getScrollAmount,
@@ -137,226 +109,84 @@ async function initScroll() {
   });
 
   scrollTrigger = $ScrollTrigger.create({
-    id: 'services-scroll',
-    trigger: servicesSection.value ?? '.servicesWrapper',
+    trigger: servicesSection.value!,
     start: 'top 5%',
     end: () => `+=${getScrollAmount() * -1}`,
     pin: true,
-    animation: scrollTween,
     scrub: 1,
+    animation: scrollTween,
     invalidateOnRefresh: true,
-    markers: false,
-    onEnter: () => {
-      if (servicesHintDock.value)
-        $gsap.to(servicesHintDock.value, { autoAlpha: 1, duration: 0.25 });
-      servicesDraggable?.enable();
-    },
-    onEnterBack: () => {
-      if (servicesHintDock.value)
-        $gsap.to(servicesHintDock.value, { autoAlpha: 1, duration: 0.25 });
-      servicesDraggable?.enable();
-    },
-    onLeave: () => {
-      if (servicesHintDock.value)
-        $gsap.to(servicesHintDock.value, { autoAlpha: 0, duration: 0.2 });
-      servicesDraggable?.disable();
-    },
-    onLeaveBack: () => {
-      if (servicesHintDock.value)
-        $gsap.to(servicesHintDock.value, { autoAlpha: 0, duration: 0.2 });
-      servicesDraggable?.disable();
-    },
+    onEnter: () =>
+      servicesHintDock.value &&
+      $gsap.to(servicesHintDock.value, { autoAlpha: 1 }),
+    onLeave: () =>
+      servicesHintDock.value &&
+      $gsap.to(servicesHintDock.value, { autoAlpha: 0 }),
+    onEnterBack: () =>
+      servicesHintDock.value &&
+      $gsap.to(servicesHintDock.value, { autoAlpha: 1 }),
+    onLeaveBack: () =>
+      servicesHintDock.value &&
+      $gsap.to(servicesHintDock.value, { autoAlpha: 0 }),
   });
 
-  // Make the pinned services row draggable (carousel-like) while keeping it in sync with ScrollTrigger.
-  // We drag a proxy element and convert its x-position into ScrollTrigger scroll().
-  dragProxyEl = document.createElement('div');
-  $gsap.set(dragProxyEl, { x: 0 });
-
-  const clampProgress = $gsap.utils.clamp(0, 1);
-  const syncProxyToScroll = () => {
-    if (!servicesDraggable || !dragProxyEl || !scrollTrigger) return;
-    const distance = getScrollDistance();
-    if (!distance) return;
-    const progress = clampProgress(scrollTrigger.progress || 0);
-    // proxy x goes from 0 (start) to -distance (end)
-    $gsap.set(dragProxyEl, { x: -progress * distance });
-    servicesDraggable.update();
-  };
-
-  // create draggable instance, but use services element as the interaction trigger
-  const created = Draggable.create(dragProxyEl, {
-    type: 'x',
-    trigger: services.value,
-    dragClickables: true,
-    allowNativeTouchScrolling: false,
-    onPress: () => {
-      // Keep proxy aligned when the user starts dragging
-      syncProxyToScroll();
-    },
-    onDrag: function () {
-      if (!scrollTrigger) return;
-      const distance = getScrollDistance();
-      if (!distance) return;
-      const progress = clampProgress(-this.x / distance);
-      const scrollPos =
-        scrollTrigger.start +
-        progress * (scrollTrigger.end - scrollTrigger.start);
-      scrollTrigger.scroll(scrollPos);
-    },
-    onDragEnd: () => {
-      // ensure final alignment
-      syncProxyToScroll();
-    },
-  });
-  servicesDraggable = created?.[0] ?? null;
-
-  // Initially disabled until the pinned section becomes active
-  servicesDraggable?.disable();
-
-  // Continuous "scroll down" cue shared by top + dock hints
   const movers: Element[] = [];
-  if (servicesHintTop.value) {
-    servicesHintTop.value
-      .querySelectorAll('[data-scroll-cue="mover"]')
-      .forEach((el) => movers.push(el));
-  }
-  if (servicesHintDock.value) {
-    servicesHintDock.value
-      .querySelectorAll('[data-scroll-cue="mover"]')
-      .forEach((el) => movers.push(el));
-    $gsap.set(servicesHintDock.value, { autoAlpha: 0 });
-  }
+  [servicesHintTop.value, servicesHintDock.value].forEach((el) => {
+    el?.querySelectorAll('[data-scroll-cue="mover"]').forEach((m) =>
+      movers.push(m),
+    );
+  });
 
   if (movers.length) {
-    hintLoopTimeline = $gsap.timeline({
-      repeat: -1,
-      defaults: { ease: 'power1.inOut' },
-    });
-    hintLoopTimeline
+    hintLoopTimeline = $gsap
+      .timeline({ repeat: -1 })
       .to(movers, { y: 8, duration: 0.8 })
       .to(movers, { y: 0, duration: 0.8 });
   }
 
-  // Keep the draggable proxy synced to scroll progress (scroll wheel / trackpad users).
-  scrollTrigger?.vars && (scrollTrigger.vars.onUpdate = syncProxyToScroll);
-  syncProxyToScroll();
-
   $ScrollTrigger.refresh();
 }
 
-async function initGsapAnimations() {
+async function initAnimations() {
   await nextTick();
 
-  // Hero content - fade + slide up on initial load
   if (heroContent.value) {
-    heroTimeline?.kill();
-    const heroEls = heroContent.value.querySelectorAll('h1, p, a');
-
-    $gsap.set(heroEls, { autoAlpha: 0, y: 40 });
-
-    heroTimeline = $gsap.timeline({
-      defaults: { duration: 0.8, ease: 'power3.out' },
-    });
-
-    heroTimeline.to(heroEls, {
+    const els = heroContent.value.querySelectorAll('h1, p, a');
+    $gsap.set(els, { autoAlpha: 0, y: 40 });
+    $gsap.to(els, {
       autoAlpha: 1,
       y: 0,
       stagger: 0.15,
+      duration: 0.8,
     });
   }
 
-  // About section - animate when scrolled into view
-  $ScrollTrigger.getById('about-section')?.kill();
-  if (aboutSection.value) {
-    aboutTimeline?.kill();
-
-    const aboutEls = aboutSection.value.querySelectorAll(
-      'button, h3, p, a, img',
-    );
-
-    $gsap.set(aboutEls, { autoAlpha: 0, y: 40 });
-
-    aboutTimeline = $gsap.timeline({
-      scrollTrigger: {
-        id: 'about-section',
-        trigger: aboutSection.value,
-        start: 'top 80%',
-        toggleActions: 'play none none reverse',
-      },
-      defaults: { duration: 0.7, ease: 'power3.out' },
-    });
-
-    aboutTimeline.to(aboutEls, {
+  [aboutSection.value, whySection.value].forEach((section) => {
+    if (!section) return;
+    const els = section.querySelectorAll('*');
+    $gsap.set(els, { autoAlpha: 0, y: 40 });
+    $gsap.to(els, {
       autoAlpha: 1,
       y: 0,
       stagger: 0.1,
-    });
-  }
-
-  // Why choose us section - animate cards and content on scroll
-  $ScrollTrigger.getById('why-section')?.kill();
-  if (whySection.value) {
-    whyTimeline?.kill();
-
-    const whyEls = whySection.value.querySelectorAll(
-      'button, h1, h6, p, a, .bg-white, .bg-primary',
-    );
-
-    $gsap.set(whyEls, { autoAlpha: 0, y: 40 });
-
-    whyTimeline = $gsap.timeline({
       scrollTrigger: {
-        id: 'why-section',
-        trigger: whySection.value,
+        trigger: section,
         start: 'top 80%',
-        toggleActions: 'play none none reverse',
       },
-      defaults: { duration: 0.7, ease: 'power3.out' },
     });
-
-    whyTimeline.to(whyEls, {
-      autoAlpha: 1,
-      y: 0,
-      stagger: 0.1,
-    });
-  }
-}
-
-function cleanupScroll() {
-  scrollTween?.kill();
-  scrollTween = null;
-  scrollTrigger?.kill();
-  scrollTrigger = null;
-  $ScrollTrigger.getById('services-scroll')?.kill();
-  hintLoopTimeline?.kill();
-  hintLoopTimeline = null;
-  servicesDraggable?.kill();
-  servicesDraggable = null;
-  dragProxyEl = null;
-}
-
-function cleanupAnimations() {
-  heroTimeline?.kill();
-  heroTimeline = null;
-  aboutTimeline?.kill();
-  aboutTimeline = null;
-  whyTimeline?.kill();
-  whyTimeline = null;
-
-  $ScrollTrigger.getById('about-section')?.kill();
-  $ScrollTrigger.getById('why-section')?.kill();
+  });
 }
 
 onMounted(() => {
   initScroll();
-  initGsapAnimations();
+  initAnimations();
   window.addEventListener('resize', onResize);
 });
 
 onBeforeUnmount(() => {
-  cleanupScroll();
-  cleanupAnimations();
+  scrollTrigger?.kill();
+  scrollTween?.kill();
+  hintLoopTimeline?.kill();
   window.removeEventListener('resize', onResize);
 });
 </script>
