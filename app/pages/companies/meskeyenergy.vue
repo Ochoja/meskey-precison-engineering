@@ -1,9 +1,9 @@
 <template>
   <main class="layout-pad mt-8 mb-20">
-    <h1 class="text-4xl font-medium">Meskey Energy</h1>
+    <h1 class="text-3xl md:text-4xl">Meskey Energy</h1>
     <p class="font-light text-sm mt-1">Reliable Energy. Smarter Solutions.</p>
 
-    <section class="mt-6 font-light leading-relaxed">
+    <section class="mt-6 font-light leading-relaxed text-sm md:text-base">
       Meskey Energy is driving the future of power and smart infrastructure by
       bringing world-leading expertise in electrification, automation, and
       digitisation. We deliver intelligent solutions for smart industries,
@@ -16,7 +16,7 @@
     </section>
 
     <section class="mt-6">
-      <h2 class="text-2xl mb-4 font-medium">Our Services</h2>
+      <h2 class="text-2xl mb-4">Our Services</h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
@@ -45,7 +45,7 @@
     <!-- Gallery Section -->
     <section class="mt-12">
       <div class="flex justify-between items-center">
-        <h2 class="font-medium text-3xl">Gallery</h2>
+        <h2 class="text-3xl">Gallery</h2>
 
         <!-- Custom navigation buttons -->
         <div class="flex gap-4 text-primary text-4xl">

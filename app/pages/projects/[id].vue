@@ -24,7 +24,7 @@ const { data: project, pending } = await useAsyncData(
 
     // 1️⃣ Try store first
     const cached = projectsStore.projects.find(
-      (p) => String(p.id) === projectId.value
+      (p) => String(p.id) === projectId.value,
     );
     if (cached) return cached;
 
@@ -33,7 +33,7 @@ const { data: project, pending } = await useAsyncData(
     if (apiProjects.value?.length) {
       projectsStore.projects = apiProjects.value;
       const found = apiProjects.value.find(
-        (p) => String(p.id) === projectId.value
+        (p) => String(p.id) === projectId.value,
       );
       if (found) return found;
     }
@@ -48,7 +48,7 @@ const { data: project, pending } = await useAsyncData(
     if (error || !data) return null;
     projectsStore.projects.push(data);
     return data;
-  }
+  },
 );
 
 // --- Handle not found: trigger Nuxt 404 error page ---
@@ -92,7 +92,7 @@ const onSwiperMounted = async (swiper) => {
 
   <!-- project -->
   <main v-else class="layout-pad mt-12 mb-20">
-    <h1 class="text-4xl font-medium mb-2">{{ project.name }}</h1>
+    <h1 class="text-2xl lg:text-4xl font-medium mb-2">{{ project.name }}</h1>
 
     <div class="flex flex-wrap font-medium text-primary gap-4">
       <div v-if="project.category">{{ project.category }}</div>
@@ -100,11 +100,11 @@ const onSwiperMounted = async (swiper) => {
       <div v-if="project.delivery_date">{{ project.delivery_date }}</div>
     </div>
 
-    <p class="font-light text-lg mt-4">{{ project.description }}</p>
+    <p class="font-light mt-4 text-sm lg:text-lg">{{ project.description }}</p>
 
     <section class="mt-12">
       <div class="flex justify-between items-center">
-        <h2 class="font-medium text-3xl">Project Images</h2>
+        <h2 class="font-medium text-2xl lg:text-3xl">Project Images</h2>
 
         <!-- navigation buttons -->
         <div class="flex gap-4 text-primary text-4xl">

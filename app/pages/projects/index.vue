@@ -12,10 +12,12 @@ const projects = computed(() => projectsStore.projects);
     <!-- Header -->
     <header
       class="flex flex-col lg:flex-row justify-between gap-4 pb-12 border-b border-b-primary-10">
-      <h1 class="font-medium text-6xl min-w-[40vw] xl:min-w-[30vw] flex-1">
+      <h1
+        class="font-medium text-5xl md:text-6xl min-w-[40vw] xl:min-w-[30vw] flex-1">
         Our Portfolio.
       </h1>
-      <p class="font-light lg:max-w-[50vw] xl:max-w-[45vw]">
+      <p
+        class="font-light text-sm md:text-base lg:max-w-[50vw] xl:max-w-[45vw]">
         Our portfolio reflects the breadth and depth of our expertise, featuring
         successful projects across oil & gas, industrial, and automation
         sectors. Each project demonstrates our commitment to precision, safety,
