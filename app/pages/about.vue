@@ -14,10 +14,10 @@ useSeoMeta({
         class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">
         About Us
       </button>
-      <h1 class="text-3xl mb-2">
+      <h1 class="text-2xl md:text-3xl mb-2">
         Engineering Excellence That Drives Performance
       </h1>
-      <p class="font-light">
+      <p class="font-light text-sm lg:text-base">
         Meskey Precision Engineering Limited (MPEL) is a multidisciplinary
         engineering company delivering mission-critical solutions in oil & gas,
         industrial automation, instrumentation, and pipeline infrastructure. We
@@ -45,28 +45,32 @@ useSeoMeta({
       <div class="flex justify-between text-center mt-6 stats">
         <div>
           <h5>100+</h5>
-          <p>Skilled Engineers</p>
+          <p class="text-sm md:text-base">Skilled Engineers</p>
         </div>
         <div>
           <h5>50+</h5>
-          <p>Successful Projects Delivered</p>
+          <p class="text-sm md:text-base">Successful Projects Delivered</p>
         </div>
         <div>
           <h5>10+ years</h5>
-          <p>Combined Industry Experience</p>
+          <p class="text-sm md:text-base">Combined Industry Experience</p>
         </div>
       </div>
     </div>
   </header>
 
   <section class="mt-24 mb-20 layout-pad">
-    <h1 class="text-center mb-6 text-4xl">Our Story, Mission and Vision</h1>
+    <h1 class="text-center mb-6 text-3xl md:text-4xl">
+      Our Story, Mission and Vision
+    </h1>
 
     <!-- First row: Mission + Vision -->
     <div class="flex flex-col md:flex-row gap-4 mb-4">
       <div class="flex-1 bg-primary-10 rounded-2xl p-6 border border-grey-20">
-        <h3 class="text-3xl font-medium text-primary mb-2">Our Mission</h3>
-        <p class="font-light text-grey">
+        <h3 class="text-2xl md:text-3xl font-medium text-primary mb-2">
+          Our Mission
+        </h3>
+        <p class="font-light text-grey text-sm md:text-base">
           To become a leading force in precision engineering across Africa and
           beyond — known for innovation, dependability, and delivering optimized
           solutions in even the most challenging environments.
@@ -74,8 +78,10 @@ useSeoMeta({
       </div>
 
       <div class="flex-1 bg-primary-10 rounded-2xl p-6 border border-grey-20">
-        <h3 class="text-3xl font-medium text-primary mb-2">Our Vision</h3>
-        <p class="font-light text-grey">
+        <h3 class="text-2xl md:text-3xl font-medium text-primary mb-2">
+          Our Vision
+        </h3>
+        <p class="font-light text-grey text-sm md:text-base">
           To deliver reliable, high-performance engineering solutions that
           enhance safety, efficiency, and sustainability across the oil, gas,
           and industrial sectors, while maintaining the highest standards of
@@ -86,8 +92,10 @@ useSeoMeta({
 
     <!-- Second row: Story -->
     <div class="bg-primary-10 rounded-2xl p-6 border border-grey-20">
-      <h3 class="text-3xl font-medium text-primary mb-2">Our Story</h3>
-      <p class="font-light text-grey">
+      <h3 class="text-2xl md:text-3xl font-medium text-primary mb-2">
+        Our Story
+      </h3>
+      <p class="font-light text-grey text-sm md:text-base">
         Meskey Precision Engineering Limited was established to meet the growing
         demand for technically sound, locally relevant engineering solutions in
         Nigeria’s energy and industrial sectors. From modest beginnings, we have
@@ -104,11 +112,11 @@ useSeoMeta({
   </section>
 
   <section class="layout-pad mb-28">
-    <h1 class="text-4xl mb-4">Our Workflow</h1>
+    <h1 class="text-3xl md:text-4xl mb-4">Our Workflow</h1>
 
     <div class="sect">
       <h2>Engineering Design and Project Management</h2>
-      <p>
+      <p class="text-sm md:text-base">
         Meskey Group has in-house resources, capabilities and tools to offer a
         full suite engineering project services from front-end design and
         detailed engineering, to planning, execution, commissioning and
@@ -129,7 +137,7 @@ useSeoMeta({
 
     <div class="sect">
       <h2>Feasibility Studies</h2>
-      <p>
+      <p class="text-sm md:text-base">
         Feasibility Studies provide a solid foundation for any process led
         engineering project. Feasibility studies facilitate informed decisions;
         often-saving companies’ and investors’ time, cost and effort throughout
@@ -141,7 +149,7 @@ useSeoMeta({
 
     <div class="sect">
       <h2>Conceptual Design</h2>
-      <p>
+      <p class="text-sm md:text-base">
         Our Conceptual Design Studies shape a project’s success, strategy and
         development plans for the future. The early phase of project planning is
         quite complex with various decisions being driven by variables such as;
@@ -153,7 +161,7 @@ useSeoMeta({
 
     <div class="sect">
       <h2>Front End Engineering Design</h2>
-      <p>
+      <p class="text-sm md:text-base">
         Front End Engineering Design package sets the precedence for achieving
         optimum value for any process led engineering project while keeping
         effective controls on cost and Multi-disciplinary teams work in a
@@ -168,7 +176,7 @@ useSeoMeta({
 
     <div class="sect">
       <h2>Detailed Design</h2>
-      <p>
+      <p class="text-sm md:text-base">
         During Detailed Design the scope is developed to produce the definitive
         information required for construction and installation. Every detailed
         design project requires a unique engineering solution to ensure the
@@ -188,7 +196,7 @@ useSeoMeta({
     </div>
 
     <h2 class="mb-[0.3em]">Project Management Services</h2>
-    <ul class="list-disc list-inside space-y-2">
+    <ul class="list-disc list-inside space-y-2 text-sm md:text-base">
       <li>Clearly identify project scope requirement</li>
       <li>Present viable options and execution strategy</li>
       <li>Prepare material list and cost estimates</li>
@@ -219,7 +227,13 @@ useSeoMeta({
 <style scoped>
 h5 {
   font-weight: 500;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+}
+
+@media screen and (min-width: 650px) {
+  h5 {
+    font-size: 1.3rem;
+  }
 }
 
 .stats p {
