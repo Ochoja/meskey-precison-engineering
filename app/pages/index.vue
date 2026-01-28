@@ -252,10 +252,10 @@ onBeforeUnmount(() => {
     <div
       ref="heroContent"
       class="text-white text-center py-[20vh] md:py-[25vh] w-[90%] lg:w-[70%] mx-auto flex flex-col gap-6">
-      <h1 class="font-medium text-5xl md:text-6xl xl:text-7xl">
+      <h1 class="font-medium text-4xl md:text-6xl xl:text-7xl">
         Optimization is our <span class="text-primary">Core</span>
       </h1>
-      <p class="font-light md:text-lg">
+      <p class="font-light text-sm md:text-lg">
         At Meskey Precision Engineering Limited, we integrate automation,
         metering, monitoring, and analytical expertise to deliver
         high-performance engineering solutions across oil & gas, industrial, and
@@ -294,7 +294,7 @@ onBeforeUnmount(() => {
         <span class="font-medium text-primary-50">Pillars of Excellence</span>
       </h2>
       <div class="font-light text-center lg:text-left lg:max-w-[40%]">
-        <p>
+        <p class="text-sm md:text-base">
           We provide reliable, high-performance engineering solutions that
           enhance safety, efficiency, and precision across oil, gas, and
           industrial operations.
@@ -310,19 +310,22 @@ onBeforeUnmount(() => {
     <div
       ref="services"
       class="servicesWrapper mt-12 flex flex-nowrap gap-6 px-[5%] xl:px-[8%] w-fit overflow-x-hidden">
-      <div
+      <NuxtLink
+        :to="item.to"
         v-for="(item, index) in servicelist"
         :key="index"
-        class="min-w-[75vw] sm:min-w-[50vw] md:min-w-[40vw] lg:min-w-[26vw] xl:min-w-[24vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[65vh]"
+        class="min-w-[75vw] sm:min-w-[50vw] md:min-w-[40vw] lg:min-w-[26vw] xl:min-w-[24vw] bg-cover bg-center rounded-3xl text-white p-4 flex flex-col gap-8 justify-between min-h-[62vh] md:min-h-[65vh]"
         :style="{ backgroundImage: `url(${item.image})` }">
         <h5 class="font-medium text-xl">{{ item.service }}</h5>
         <div>
-          <p class="font-light mb-2">{{ item.description }}</p>
+          <p class="font-light text-sm md:text-base mb-2">
+            {{ item.description }}
+          </p>
           <NuxtLink :to="item.to">
             <NuxtImg :src="LinkLogo" alt="link" height="40" width="40" />
           </NuxtLink>
         </div>
-      </div>
+      </NuxtLink>
     </div>
   </section>
 
@@ -335,8 +338,10 @@ onBeforeUnmount(() => {
         class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">
         About Us
       </button>
-      <h3 class="mb-2 text-3xl">Engineering Precision Where it matters Most</h3>
-      <p class="font-light">
+      <h3 class="mb-2 text-2xl md:text-3xl">
+        Engineering Precision Where it matters Most
+      </h3>
+      <p class="font-light text-sm md:text-base">
         Meskey Precision Engineering Limited (MPEL) is a multidisciplinary
         engineering company delivering mission-critical solutions across oil and
         gas, industrial automation, instrumentation, and pipeline integrity
@@ -372,7 +377,7 @@ onBeforeUnmount(() => {
       class="mb-3 text-grey bg-primary-10 px-6 py-2 rounded-full border border-grey-20">
       Why Choose Us
     </button>
-    <h1 class="text-3xl mb-6">
+    <h1 class="text-2xl md:text-3xl mb-6">
       Why Meskey Precision is the
       <span class="font-semibold text-primary-50">Right Choice</span>
     </h1>
@@ -381,10 +386,10 @@ onBeforeUnmount(() => {
         <div class="flex flex-col md:flex-row gap-4 mb-4">
           <div class="bg-white p-4 border border-primary-20 rounded-2xl h-full">
             <Icon name="stash:globe" class="text-4xl text-primary mb-2" />
-            <h6 class="font-medium text-xl mb-2">
+            <h6 class="font-medium text-lg md:text-xl mb-2">
               Standards-Driven, Globally Informed
             </h6>
-            <p class="font-light">
+            <p class="font-light text-sm md:text-base">
               Combining local expertise with global standards such as ISO and
               API, we ensure every project meets the highest benchmarks in
               safety, quality, and regulatory compliance.
@@ -392,10 +397,10 @@ onBeforeUnmount(() => {
           </div>
           <div class="bg-white p-4 border border-primary-20 rounded-2xl h-full">
             <Icon name="f7:graph-circle" class="text-4xl text-primary mb-2" />
-            <h6 class="font-medium text-xl mb-2">
+            <h6 class="font-medium text-lg md:text-xl mb-2">
               Precision Meets Performance
             </h6>
-            <p class="font-light">
+            <p class="font-light text-sm md:text-base">
               Our systems are built with uncompromising attention to detail,
               designed and calibrated to deliver accurate results, long-term
               durability, and maximum operational efficiency.
@@ -406,10 +411,10 @@ onBeforeUnmount(() => {
           <Icon
             name="fluent:weather-haze-24-regular"
             class="text-4xl text-primary mb-2" />
-          <h6 class="font-medium text-xl mb-2">
+          <h6 class="font-medium text-lg md:text-xl mb-2">
             Engineered for Harsh Environments
           </h6>
-          <p class="font-light">
+          <p class="font-light text-sm md:text-base">
             We specialize in delivering reliable, mission-critical solutions
             that perform under extreme conditions — from offshore platforms to
             hazardous industrial zones — ensuring consistent uptime and safety
@@ -421,10 +426,10 @@ onBeforeUnmount(() => {
         class="bg-primary p-4 text-white rounded-2xl flex flex-col justify-between">
         <div>
           <Icon name="mingcute:apple-intelligence-line" class="text-4xl mb-2" />
-          <h6 class="font-medium text-xl mb-2">
+          <h6 class="font-medium text-lg md:text-xl mb-2">
             Intelligence in Every Operation
           </h6>
-          <p class="font-light mb-6">
+          <p class="font-light mb-6 text-sm md:text-base">
             We deploy intelligent automation and monitoring systems that provide
             real-time insights and remote control capabilities, empowering
             operators with faster, data-driven decision-making.

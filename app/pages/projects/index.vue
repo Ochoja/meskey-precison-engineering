@@ -38,8 +38,12 @@ const projects = computed(() => projectsStore.projects);
 
         <!-- Project details -->
         <div class="flex flex-col gap-4">
-          <h2 class="mb-1 font-medium text-2xl">{{ project.name }}</h2>
-          <p class="font-light line-clamp-6">{{ project.description }}</p>
+          <h2 class="mb-1 font-medium text-xl lg:text-2xl">
+            {{ project.name }}
+          </h2>
+          <p class="font-light text-sm lg:text-base line-clamp-6">
+            {{ project.description }}
+          </p>
 
           <!-- Only render if values exist -->
           <div
