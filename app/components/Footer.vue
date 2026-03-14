@@ -17,14 +17,13 @@ import logo from '@/assets/images/whitelogo.png';
         <div>
           <h6>FCT Abuja Office</h6>
           <p class="text-sm md:text-base">
-            Dawaki Abuja Behind Sunset Energy Fueling Station Murtala Mohammed
-            Way (Kubwa Express)
+            Central Business District, FCT Abuja
           </p>
         </div>
         <div>
           <h6>Northern Region</h6>
           <p class="text-sm md:text-base">
-            No 4 School Road, Off Makama Plaza, Opposite Kaduna Refinery
+            No 4 School Road, Off Makama Road, Opposite Kaduna Refinery
             Complex, Kaduna
           </p>
         </div>
@@ -56,7 +55,8 @@ import logo from '@/assets/images/whitelogo.png';
           </a>
           <!-- <a>+234 (0) 802 872 0639</a> -->
           <!-- <a href="tel:+2348032827341">+234 (0) 803 282 7341</a> -->
-          <a href="tel:+2347030399465">+234 (0) 703 039 9465</a>
+          <a href="tel:+2348170061600">+234 (0) 817 006 1600</a>
+          <a href="tel:+2347071562566">+234 (0) 707 156 2566</a>
         </div>
       </div>
     </div>
