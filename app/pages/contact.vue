@@ -21,10 +21,10 @@
           >
         </div>
         <div>
-          <h6>Lagos Office</h6>
+          <h6>Location</h6>
           <p>Zone C, Block 8 shop 23 ASPAMDA Plaza Trade fair complex Lagos.</p>
         </div>
-        <div>
+        <!-- <div>
           <h6>Kaduna Office</h6>
           <p>
             No 4 School Road, Off Makama Plaza, Opposite Kaduna Refinery
@@ -37,11 +37,13 @@
             Dawaki Abuja Behind Sunset Energy Fueling Station Murtala Mohammed
             Way (Kubwa Express)
           </p>
-        </div>
+        </div> -->
         <div>
           <h6>Phone</h6>
           <div>
-            <a href="tel:+2347030399465">+234 (0) 703 039 9465</a>
+            <a href="tel:+2348170061600">+234 (0) 817 006 1600</a>
+            <a href="tel:+2347071562566">+234 (0) 707 156 2566</a>
+            <!-- <a href="tel:+2347030399465">+234 (0) 703 039 9465</a> -->
           </div>
         </div>
       </div>
