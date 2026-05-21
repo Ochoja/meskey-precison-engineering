@@ -22,7 +22,7 @@
         </div>
         <div>
           <h6>Location</h6>
-          <p>Zone C, Block 8 shop 23 ASPAMDA Plaza Trade fair complex Lagos.</p>
+          <p>Sotrade Srl Via Portuense 2482 00054 Fiumicino (RM)</p>
         </div>
         <!-- <div>
           <h6>Kaduna Office</h6>
@@ -41,8 +41,10 @@
         <div>
           <h6>Phone</h6>
           <div>
-            <a href="tel:+2348170061600">+234 (0) 817 006 1600</a>
-            <a href="tel:+2347071562566">+234 (0) 707 156 2566</a>
+            <a href="+390669489242">+39 06 69489242</a>
+            <a href="+393384609">39 338 4609</a>
+            <!-- <a href="tel:+2348170061600">+234 (0) 817 006 1600</a> -->
+            <!-- <a href="tel:+2347071562566">+234 (0) 707 156 2566</a> -->
             <!-- <a href="tel:+2347030399465">+234 (0) 703 039 9465</a> -->
           </div>
         </div>
