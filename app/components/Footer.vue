@@ -9,12 +9,12 @@ import logo from '@/assets/images/whitelogo.png';
         class="flex flex-col gap-6 max-w-[80%] md:max-w-[30%] lg:max-w-[20%]">
         <img :src="logo" alt="Meskey Logo" />
         <div>
-          <h6 class="font-">Location</h6>
+          <h6 class="font-">International Office</h6>
           <p class="text-sm md:text-base">
-            Sotrade Sri Via Portuense 2482 00054 Fiumicino (RM)
+            Sotrade SRL Via Portuense 2482 00054 Fiumicino (RM) Rome, Italy
           </p>
         </div>
-        <!-- <div>
+        <div>
           <h6>FCT Abuja Office</h6>
           <p class="text-sm md:text-base">
             Central Business District, FCT Abuja
@@ -23,10 +23,10 @@ import logo from '@/assets/images/whitelogo.png';
         <div>
           <h6>Northern Region</h6>
           <p class="text-sm md:text-base">
-            No 4 School Road, Off Makama Road, Opposite Kaduna Refinery
-            Complex, Kaduna
+            No 4 School Road, Off Makama Road, Opposite Kaduna Refinery Complex,
+            Kaduna
           </p>
-        </div> -->
+        </div>
       </div>
       <div>
         <h6>Quick Links</h6>

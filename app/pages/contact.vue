@@ -21,10 +21,10 @@
           >
         </div>
         <div>
-          <h6>Location</h6>
-          <p>Sotrade Srl Via Portuense 2482 00054 Fiumicino (RM)</p>
+          <h6>International Office</h6>
+          <p>Sotrade SRL Via Portuense 2482 00054 Fiumicino (RM) Rome, Italy</p>
         </div>
-        <!-- <div>
+        <div>
           <h6>Kaduna Office</h6>
           <p>
             No 4 School Road, Off Makama Plaza, Opposite Kaduna Refinery
@@ -32,6 +32,10 @@
           </p>
         </div>
         <div>
+          <h6>Abuja Office</h6>
+          <p>Central Business District, FCT Abuja</p>
+        </div>
+        <!-- <div>
           <h6>Abuja Office</h6>
           <p>
             Dawaki Abuja Behind Sunset Energy Fueling Station Murtala Mohammed
