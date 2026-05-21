@@ -11,7 +11,7 @@ import logo from '@/assets/images/whitelogo.png';
         <div>
           <h6 class="font-">Location</h6>
           <p class="text-sm md:text-base">
-            Zone C, Block 8 shop 23 ASPAMDA Plaza Trade fair complex Lagos.
+            Sotrade Sri Via Portuense 2482 00054 Fiumicino (RM)
           </p>
         </div>
         <!-- <div>
@@ -55,8 +55,10 @@ import logo from '@/assets/images/whitelogo.png';
           </a>
           <!-- <a>+234 (0) 802 872 0639</a> -->
           <!-- <a href="tel:+2348032827341">+234 (0) 803 282 7341</a> -->
-          <a href="tel:+2348170061600">+234 (0) 817 006 1600</a>
-          <a href="tel:+2347071562566">+234 (0) 707 156 2566</a>
+          <!-- <a href="tel:+2348170061600">+234 (0) 817 006 1600</a> -->
+          <!-- <a href="tel:+2347071562566">+234 (0) 707 156 2566</a> -->
+          <a href="+390669489242">+39 06 69489242</a>
+          <a href="+393384609">39 338 4609</a>
         </div>
       </div>
     </div>
