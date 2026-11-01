@@ -1,10 +1,5 @@
 <script setup>
-import logo from '../../assets/images/mainlogo.png';
-
-definePageMeta({ layout: 'auth' });
-
-const user = useSupabaseUser();
-const email = computed(() => user.value?.email || null);
+definePageMeta({ layout: 'dashboard' });
 
 const supabase = useSupabaseClient();
 const projects = ref([]);
@@ -87,79 +82,38 @@ const handleResult = ({ status: s, action: a, project }) => {
     }
   }
 };
-
-// -------------------
-// Logout dropdown logic
-// -------------------
-const showDropdown = ref(false);
-
-const toggleDropdown = () => {
-  showDropdown.value = !showDropdown.value;
-};
-
-const logout = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) console.error(error);
-  else window.location.reload(); // redirect to login
-};
 </script>
 
 <template>
-  <main class="mx-[2%]">
-    <!-- Top Bar -->
-    <div class="flex justify-between items-center mb-8 mt-4 relative">
-      <img :src="logo" alt="Logo" width="200" height="200" />
-      <div class="flex gap-2 items-center relative">
-        <Icon name="mingcute:user-4-line" />
-
-        <!-- Logout Dropdown -->
-        <div class="relative flex items-center gap-2">
-          <span class="cursor-pointer" @click="toggleDropdown">{{
-            email
-          }}</span>
-          <Icon name="raphael:arrowdown" />
-
-          <div
-            v-if="showDropdown"
-            class="absolute right-0 mt-8 w-40 bg-white border border-gray-300 rounded shadow-lg z-10">
-            <button
-              class="w-full text-left px-4 py-2 hover:bg-gray-100"
-              @click="logout">
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  <main>
     <!-- Projects Heading -->
     <div class="flex flex-col gap-4 mb-4">
       <h4 class="text-2xl font-medium">Projects</h4>
       <div class="flex justify-between">
         <button
-          @click="openAdd"
-          class="text-white flex items-center gap-2 rounded-3xl px-4 py-2 cursor-pointer bg-primary">
+          class="text-white flex items-center gap-2 rounded-3xl px-4 py-2 cursor-pointer bg-primary"
+          @click="openAdd">
           <Icon name="ic:round-plus" /> <span>Add Project</span>
         </button>
 
         <button
           v-if="selectedProjects.length > 0"
-          @click="openDelete({ id: selectedProjects[0] })"
-          class="text-white flex items-center gap-2 rounded-3xl px-4 py-2 cursor-pointer bg-red-600">
+          class="text-white flex items-center gap-2 rounded-3xl px-4 py-2 cursor-pointer bg-red-600"
+          @click="openDelete({ id: selectedProjects[0] })">
           <Icon name="fluent:delete-12-filled" /> <span>Delete Selected</span>
         </button>
       </div>
     </div>
 
     <!-- Table -->
-    <div class="border border-gray-300 rounded-lg overflow-hidden">
+    <div class="border border-gray-300 rounded-lg overflow-x-auto">
       <div
-        class="grid grid-cols-[40px_1fr_2fr_1fr_1fr_1fr_1fr_0.8fr_80px] bg-gray-200 font-semibold text-sm">
+        class="min-w-[900px] grid grid-cols-[40px_1fr_2fr_1fr_1fr_1fr_1fr_0.8fr_80px] bg-gray-200 font-semibold text-sm">
         <div class="p-2 flex justify-center">
           <input
             type="checkbox"
             :checked="allSelected"
-            @change="toggleSelectAll" />
+            @change="toggleSelectAll" >
         </div>
         <div class="p-2">Name</div>
         <div class="p-2">Description</div>
@@ -174,12 +128,12 @@ const logout = async () => {
       <div
         v-for="project in projects"
         :key="project.id"
-        class="grid grid-cols-[40px_1fr_2fr_1fr_1fr_1fr_1fr_0.8fr_80px] text-sm border-t border-gray-200 bg-white">
+        class="min-w-[900px] grid grid-cols-[40px_1fr_2fr_1fr_1fr_1fr_1fr_0.8fr_80px] text-sm border-t border-gray-200 bg-white">
         <div class="p-2 flex justify-center">
           <input
             type="checkbox"
             :checked="selectedProjects.includes(project.id)"
-            @change="toggleSelect(project.id)" />
+            @change="toggleSelect(project.id)" >
         </div>
         <div class="p-2 truncate">{{ project.name }}</div>
         <div class="p-2 truncate">{{ project.description }}</div>
